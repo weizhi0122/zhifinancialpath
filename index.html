@@ -4,38 +4,43 @@
 <meta charset="UTF-8">
 <title>智 Financial Path｜財商教育與顧問式規劃平台</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="從基礎保障到高端資產傳承，以淺顯易懂的方式建立正確財商觀念。提供風險測驗、退休分析、保單健診與學習路徑。">
+
+<meta name="description" content="從基礎保障到資產傳承，建立真正的財商架構。提供風險測驗、退休分析、保單健診與系統化學習路徑。">
+<meta name="keywords" content="退休規劃, 財商教育, 勞保年金計算, 保單健診, 財務自由, 資產配置, 財務規劃">
 
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333}
-.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0;z-index:1000}
 .nav-inner{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .brand{font-weight:700;color:#0b3d91;font-size:18px;text-decoration:none}
-.links a{margin-left:18px;text-decoration:none;color:#333}
+.links a{margin-left:18px;text-decoration:none;color:#333;font-size:14px}
 .links a:hover{color:#0b3d91}
 
 .hero{max-width:1200px;margin:auto;padding:80px 20px;text-align:center}
 .hero h1{font-size:36px;margin-bottom:20px}
-.hero p{font-size:18px;color:#555;max-width:800px;margin:auto}
+.hero p{font-size:18px;color:#555;max-width:800px;margin:auto;line-height:1.6}
 .hero-buttons{margin-top:30px}
-.btn{display:inline-block;background:#0b3d91;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;margin:8px}
+.btn{display:inline-block;background:#0b3d91;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;margin:8px;font-size:15px}
 .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #0b3d91}
+.btn:hover{opacity:.9}
 
-.section{max-width:1200px;margin:60px auto;padding:0 20px}
-.section h2{text-align:center;margin-bottom:40px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.section{max-width:1200px;margin:70px auto;padding:0 20px}
+.section h2{text-align:center;margin-bottom:40px;font-size:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
 .card{background:#fff;padding:25px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
 .card h3{margin-top:0;color:#0b3d91}
-.card p{font-size:14px;color:#555;line-height:1.6}
-.card .btn{margin-top:12px;padding:10px 15px;font-size:14px}
+.card p{font-size:14px;color:#555;line-height:1.6;margin-bottom:10px}
 
-.philosophy{text-align:center;font-size:16px;color:#555;max-width:800px;margin:auto;line-height:1.7}
+.philosophy{text-align:center;font-size:16px;color:#555;max-width:800px;margin:auto;line-height:1.8}
 
-.cta{background:#0b3d91;color:white;text-align:center;padding:60px 20px;margin-top:60px}
-.cta h2{margin-top:0}
-.cta a{display:inline-block;margin-top:20px;background:white;color:#0b3d91;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600}
+.cta{background:#0b3d91;color:white;text-align:center;padding:70px 20px;margin-top:70px}
+.cta h2{margin-top:0;font-size:26px}
+.cta p{max-width:700px;margin:auto;line-height:1.6}
+.cta a{display:inline-block;margin-top:25px;background:white;color:#0b3d91;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600}
 
-footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:40px}
+footer{text-align:center;padding:35px 15px;color:#777;font-size:13px;margin-top:40px;background:#fff;border-top:1px solid #e6e8ee}
+footer a{color:#0b3d91;text-decoration:none;margin:0 6px}
+footer a:hover{text-decoration:underline}
 </style>
 </head>
 
@@ -48,6 +53,7 @@ footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:
       <a href="./path.html">學習路徑</a>
       <a href="./library.html">知識庫</a>
       <a href="./tools.html">工具</a>
+      <a href="./cases.html">案例解析</a>
       <a href="./about.html">關於我們</a>
     </div>
   </div>
@@ -56,7 +62,7 @@ footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:
 <section class="hero">
   <h1>從基礎保障到資產傳承<br>建立真正的財商架構</h1>
   <p>
-  我們不是銷售產品，而是幫助你理解財務決策背後的邏輯。
+  我們不是銷售產品，而是幫助你理解財務決策背後的邏輯。  
   透過系統化學習與顧問式分析工具，讓你在保障、投資與退休規劃上做出理性選擇。
   </p>
 
@@ -78,19 +84,18 @@ footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:
 
     <div class="card">
       <h3>專業退休規劃分析</h3>
-      <p>含勞保年金估算、通膨調整、壓力測試與退休準備度評分。</p>
+      <p>含勞保估算、通膨調整、壓力測試與退休準備度評分。</p>
       <a class="btn" href="./tool_retirement_pro.html">開始分析</a>
     </div>
 
     <div class="card">
       <h3>保單健診分析</h3>
-      <p>透過結構式表單，檢視是否保障錯配、重複或保額不足。</p>
+      <p>透過結構式問卷檢視保障是否錯配、重複或保額不足。</p>
       <div style="margin-top:12px;">
         <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdUhuHLCki3ZsVlxbxqmNutGDBrWwZxVWLxR4TZp1cYM2q4Bw/viewform?usp=header" target="_blank">開始填寫表單</a>
         <a class="btn ghost" href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE 取得解析</a>
-       </div>
-     </div>
-
+      </div>
+    </div>
 
   </div>
 </section>
@@ -100,7 +105,7 @@ footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:
   <div class="philosophy">
     先建立安全邊界，再思考成長；<br>
     先理解現金流，再談資產配置；<br>
-    先規劃退休現金流，再追求投資報酬。
+    先規劃退休現金流，再追求投資報酬。  
     <br><br>
     財商不是一夜致富，而是長期穩定的系統。
   </div>
@@ -108,13 +113,19 @@ footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:
 
 <section class="cta">
   <h2>想取得更完整的個人規劃路徑？</h2>
-  加入 LINE，輸入「財務規劃」，取得專屬學習建議與進階分析。
-  <br>
-  <a href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE</a>
+  <p>
+  加入 LINE 並輸入「財務規劃」，  
+  取得專屬學習建議與進階分析模型。
+  </p>
+  <a href="https://lin.ee/yvD5Vu8" target="_blank">立即加入 LINE</a>
 </section>
 
 <footer>
-  © 2026 智 Financial Path ｜ 本站為教育用途，不構成投資建議
+  © 2026 智 Financial Path ｜ 本站為教育用途，不構成投資建議  
+  <br>
+  <a href="./disclaimer.html">免責聲明</a>｜
+  <a href="./about.html">關於我們</a>｜
+  <a href="./cases.html">案例解析</a>
 </footer>
 
 </body>
