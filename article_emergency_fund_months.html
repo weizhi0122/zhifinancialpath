@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>緊急預備金到底要存幾個月？｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用風險等級與家庭責任推導預備金合理月數，而非憑感覺存錢。">
 
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:900px;margin:auto;padding:30px 20px 80px}
+h1,h2,h3{color:#0b3d91}
+.note{background:#fff;padding:15px;border-left:4px solid #0b3d91;margin:20px 0;border-radius:12px}
+hr{margin:40px 0;border:none;border-top:1px solid #ddd}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;border-radius:12px;overflow:hidden}
+th,td{border:1px solid #e6e6e6;padding:10px;font-size:14px}
+th{background:#eef4ff}
+.calc-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+input{padding:8px;margin:6px 0;width:100%;border:1px solid #ccc;border-radius:8px}
+button{background:#0b3d91;color:#fff;padding:10px 14px;border:none;border-radius:8px;margin-top:10px;cursor:pointer}
+.result{margin-top:15px;background:#eef4ff;padding:12px;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:15px;">回主頁</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>緊急預備金到底要存幾個月？</h1>
+
+<p>
+預備金不是存多少比較安心，
+而是能不能撐過「收入中斷期」。
+</p>
+
+<hr>
+
+<h2>一、預備金真正功能</h2>
+
+<ul>
+<li>應對失業</li>
+<li>應對收入中斷</li>
+<li>應對重大臨時支出</li>
+</ul>
+
+<div class="note">
+預備金的目標不是投資報酬，
+而是時間緩衝。
+</div>
+
+<hr>
+
+<h2>二、基本建議月數</h2>
+
+<table>
+<tr><th>情境</th><th>建議月數</th></tr>
+<tr><td>單身、工作穩定</td><td>3–6 個月</td></tr>
+<tr><td>雙薪家庭</td><td>6 個月</td></tr>
+<tr><td>單薪扶養家庭</td><td>9–12 個月</td></tr>
+<tr><td>自營業/收入不穩</td><td>12 個月以上</td></tr>
+</table>
+
+<hr>
+
+<h2>三、風險模型推導</h2>
+
+<p>
+預備金 = 每月必要支出 × 風險月數
+</p>
+
+例如：
+
+<ul>
+<li>每月支出 80,000</li>
+<li>建議 6 個月</li>
+</ul>
+
+<p><strong>需要 480,000 元</strong></p>
+
+<hr>
+
+<h2>四、常見誤區</h2>
+
+<ul>
+<li>把投資資金當預備金</li>
+<li>預備金放波動性資產</li>
+<li>沒有區分「必要支出」與「可彈性支出」</li>
+</ul>
+
+<div class="note">
+預備金應高度流動、低風險。
+</div>
+
+<hr>
+
+<h2>五、簡易試算工具</h2>
+
+<div class="calc-box">
+<label>每月必要支出（元）</label>
+<input type="number" id="monthly" value="80000">
+
+<label>建議風險月數</label>
+<input type="number" id="months" value="6">
+
+<button onclick="calcFund()">計算預備金</button>
+
+<div id="result" class="result" style="display:none;"></div>
+</div>
+
+<hr>
+
+<h2>六、下一步</h2>
+
+<p>
+若預備金不足，
+建議優先建立預備金，
+再考慮其他保障與投資配置。
+</p>
+
+<p>
+你也可以使用完整工具：
+</p>
+
+<p>
+<a href="./tool_emergency_fund.html">前往預備金計算器 →</a>
+</p>
+
+<hr>
+
+<div class="footer-links">
+<a href="./library.html">← 回知識庫</a>
+<a href="./index.html">回主頁</a>
+</div>
+
+</div>
+
+<script>
+function calcFund() {
+    var monthly = parseInt(document.getElementById("monthly").value) || 0;
+    var months = parseInt(document.getElementById("months").value) || 0;
+    var total = monthly * months;
+
+    var resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.innerHTML = "建議預備金：約 " + total.toLocaleString() + " 元";
+}
+</script>
+
+</body>
+</html>
