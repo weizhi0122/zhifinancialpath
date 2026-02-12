@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>家庭資產盤點表｜智 Financial Path</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
+    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+    .nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
+    .links a{margin-left:14px;color:#333;text-decoration:none}
+    .links a:hover{color:#0b3d91}
+    .container{max-width:1100px;margin:auto;padding:28px 20px}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+    .muted{font-size:13px;color:#666;line-height:1.5}
+    table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border-radius:12px;overflow:hidden}
+    th,td{border-bottom:1px solid #eef0f6;padding:10px;text-align:left;font-size:14px;vertical-align:top}
+    th{background:#f7f9ff;color:#0b3d91}
+    input,textarea{width:100%;padding:8px;border:1px solid #d7dbe6;border-radius:10px;font-size:14px}
+    textarea{min-height:42px}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
+    a{color:#0b3d91;text-decoration:none}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./index.html">智 Financial Path</a>
+    <div class="links">
+      <a href="./tools.html">工具</a>
+      <a href="./library.html">知識庫</a>
+      <a href="./path.html">學習路徑</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>家庭資產盤點表</h1>
+  <p class="muted">目的：把「資訊」集中，讓家人找得到。這不是報稅或投資建議工具，教育用途。</p>
+
+  <div class="card">
+    <p class="muted">建議先填：帳戶/投資/保單/不動產/負債/重要文件。填完可按「匯出文字」複製保存。</p>
+
+    <table id="t">
+      <thead>
+        <tr>
+          <th style="width:140px;">類別</th>
+          <th>項目/機構</th>
+          <th style="width:160px;">帳號/保單號（可略）</th>
+          <th style="width:140px;">持有人</th>
+          <th>備註（位置/受益人/聯絡方式）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 先給 6 列 -->
+      </tbody>
+    </table>
+
+    <div class="btnrow">
+      <button class="btn" onclick="addRow()">新增一列</button>
+      <button class="btn ghost" onclick="exportText()">匯出文字（可複製）</button>
+      <button class="btn ghost" onclick="clearAll()">清空</button>
+    </div>
+
+    <pre id="out" class="muted" style="margin-top:10px;white-space:pre-wrap;display:none;background:#f7f9ff;padding:12px;border-radius:12px;"></pre>
+  </div>
+
+  <footer><a href="./disclaimer.html">免責聲明</a></footer>
+</div>
+
+<script>
+const tbody = document.querySelector('#t tbody');
+
+function rowTemplate(){
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input placeholder="例：銀行/投資/保單/房產/負債/文件"></td>
+    <td><input placeholder="例：國泰世華/元大/XXX人壽/XX地段"></td>
+    <td><input placeholder="選填"></td>
+    <td><input placeholder="例：本人/配偶"></td>
+    <td><textarea placeholder="例：受益人、保單櫃位置、聯絡窗口..."></textarea></td>
+  `;
+  return tr;
+}
+
+function addRow(){ tbody.appendChild(rowTemplate()); }
+
+function clearAll(){
+  if(!confirm('確定要清空嗎？')) return;
+  tbody.innerHTML = '';
+  for(let i=0;i<6;i++) addRow();
+  document.getElementById('out').style.display='none';
+}
+
+function exportText(){
+  const rows = [...tbody.querySelectorAll('tr')].map(tr=>{
+    const inputs = tr.querySelectorAll('input,textarea');
+    const vals = [...inputs].map(x=>x.value.trim());
+    if(vals.every(v=>!v)) return null;
+    return `- [${vals[0]||'未分類'}] ${vals[1]||''} / ${vals[2]||''} / 持有人：${vals[3]||''}\n  備註：${vals[4]||''}`;
+  }).filter(Boolean);
+
+  const out = document.getElementById('out');
+  out.style.display='';
+  out.textContent = rows.length ? ('【家庭資產盤點摘要】\n' + rows.join('\n')) : '目前沒有可匯出的內容。';
+}
+
+for(let i=0;i<6;i++) addRow();
+</script>
+</body>
+</html>
 
