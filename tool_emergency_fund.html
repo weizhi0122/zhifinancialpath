@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>緊急預備金計算器｜智 Financial Path</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
+    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
+    .links a{margin-left:14px;color:#333;text-decoration:none}
+    .links a:hover{color:#0b3d91}
+    .container{max-width:1000px;margin:auto;padding:28px 20px}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+    label{display:block;margin:12px 0 6px;font-size:14px;color:#444}
+    input,select{width:100%;padding:10px;border:1px solid #d7dbe6;border-radius:10px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{margin-top:14px;display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
+    .muted{font-size:13px;color:#666;line-height:1.5}
+    .result{margin-top:14px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91}
+    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./index.html">智 Financial Path</a>
+    <div class="links">
+      <a href="./tools.html">工具</a>
+      <a href="./library.html">知識庫</a>
+      <a href="./path.html">學習路徑</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>緊急預備金計算器</h1>
+  <p class="muted">用保守方式估算：先把「必要支出」抓出來，再決定要備幾個月。教育用途。</p>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>每月「必要支出」(NT$)</label>
+        <input id="need" type="number" min="0" placeholder="例：65000" />
+      </div>
+      <div>
+        <label>收入穩定度</label>
+        <select id="stability">
+          <option value="3">穩定（公職/大企業/固定薪）→ 建議 3–6 個月</option>
+          <option value="6">普通（一般受薪/可被替代）→ 建議 6–9 個月</option>
+          <option value="9">不穩（業務/接案/獎金比高）→ 建議 9–12 個月</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>家庭責任</label>
+        <select id="family">
+          <option value="0">低（單身/無撫養）</option>
+          <option value="1">中（有伴侶或部分撫養）</option>
+          <option value="2">高（有小孩/主要撫養者）</option>
+        </select>
+      </div>
+      <div>
+        <label>是否有高額固定負擔（房貸/學貸等）</label>
+        <select id="fixed">
+          <option value="0">否</option>
+          <option value="1">是</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calc()">計算建議預備金</button>
+
+    <div id="out" class="result" style="display:none;"></div>
+    <p class="muted" style="margin-top:10px;">小提醒：預備金建議放「高流動、低波動」工具（如活存/貨幣型/短期工具），不要拿來押波動資產。</p>
+  </div>
+
+  <footer><a href="./disclaimer.html">免責聲明</a></footer>
+</div>
+
+<script>
+function n(v){ return Number(v||0); }
+function fmt(x){ return x.toLocaleString('zh-Hant-TW'); }
+
+function calc(){
+  const need = n(document.getElementById('need').value);
+  if(!need){ alert('請輸入每月必要支出'); return; }
+
+  const base = n(document.getElementById('stability').value); // 3/6/9
+  const family = n(document.getElementById('family').value);  // 0/1/2
+  const fixed = n(document.getElementById('fixed').value);    // 0/1
+
+  // 區間：base 到 base+3（依責任與固定負擔上調）
+  let minM = base;
+  let maxM = base + 3;
+
+  if(family === 1){ minM += 1; maxM += 1; }
+  if(family === 2){ minM += 2; maxM += 2; }
+  if(fixed === 1){ minM += 1; maxM += 1; }
+
+  // 上限封頂 18 個月避免過度保守
+  if(maxM > 18) maxM = 18;
+  if(minM > maxM) minM = maxM;
+
+  const minMoney = need * minM;
+  const maxMoney = need * maxM;
+
+  const out = document.getElementById('out');
+  out.style.display = '';
+  out.innerHTML =
+    `建議預備金：<b>${minM}～${maxM}</b> 個月<br>` +
+    `金額區間：<b>NT$ ${fmt(minMoney)} ～ ${fmt(maxMoney)}</b><br>` +
+    `（以每月必要支出 NT$ ${fmt(need)} 計）`;
+}
+</script>
+</body>
+</html>
 
