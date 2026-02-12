@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>保額怎麼抓才合理？｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用家庭現金流與扶養責任推導合理保額，而不是憑感覺決定。">
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:900px;margin:auto;padding:30px 20px 70px}
+h1,h2,h3{color:#0b3d91}
+.note{background:#fff;padding:15px;border-left:4px solid #0b3d91;margin:20px 0;border-radius:12px}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+th,td{border:1px solid #e6e6e6;padding:10px;font-size:14px}
+th{background:#eef4ff}
+hr{margin:40px 0;border:none;border-top:1px solid #ddd}
+.calc input{width:100%;padding:8px;margin:5px 0;border-radius:6px;border:1px solid #ccc}
+.btn{background:#0b3d91;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;margin-top:10px}
+.result{margin-top:15px;background:#eef4ff;padding:10px;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:15px;">回主頁</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>保額怎麼抓才合理？</h1>
+
+<p>
+多數人決定保額時，會問：
+</p>
+
+<ul>
+<li>業務建議多少？</li>
+<li>朋友買多少？</li>
+<li>保費繳得起多少？</li>
+</ul>
+
+<p>
+但真正該問的是：
+</p>
+
+<div class="note">
+如果風險發生，家庭需要多少現金才能撐住？
+</div>
+
+<hr>
+
+<h2>一、重大疾病保額推導</h2>
+
+<p>
+公式邏輯：
+</p>
+
+<div class="note">
+重大疾病建議保額 = 預估療程費 + 收入中斷期間家庭支出
+</div>
+
+<h3>範例</h3>
+
+<table>
+<tr><th>項目</th><th>金額</th></tr>
+<tr><td>每月家庭支出</td><td>80,000</td></tr>
+<tr><td>停工 6 個月</td><td>480,000</td></tr>
+<tr><td>療程費預估</td><td>800,000</td></tr>
+<tr><td><strong>建議保額</strong></td><td><strong>約 1,280,000</strong></td></tr>
+</table>
+
+<hr>
+
+<h2>二、壽險保額推導（家庭責任法）</h2>
+
+<p>
+若家庭支柱身故，需要補家庭未來收入。
+</p>
+
+<div class="note">
+壽險保額 = （每年家庭缺口 × 扶養年數）
+</div>
+
+<h3>示意</h3>
+
+<table>
+<tr><th>項目</th><th>數字</th></tr>
+<tr><td>每年家庭淨缺口</td><td>600,000</td></tr>
+<tr><td>孩子成長年數</td><td>20 年</td></tr>
+<tr><td><strong>壽險建議額度</strong></td><td><strong>約 1,200 萬</strong></td></tr>
+</table>
+
+<hr>
+
+<h2>三、常見錯誤</h2>
+
+<ul>
+<li>重大疾病只保 30–50 萬</li>
+<li>壽險額度低於房貸金額</li>
+<li>有醫療但沒有收入保障</li>
+</ul>
+
+<hr>
+
+<h2>四、快速試算（教育用途）</h2>
+
+<div class="calc">
+<label>每月家庭支出</label>
+<input id="cost" type="number" value="80000">
+
+<label>收入中斷月數</label>
+<input id="months" type="number" value="6">
+
+<label>療程預估費用</label>
+<input id="medical" type="number" value="800000">
+
+<button class="btn" onclick="calculate()">計算建議保額</button>
+
+<div id="output" class="result"></div>
+</div>
+
+<script>
+function calculate(){
+  var cost = Number(document.getElementById("cost").value);
+  var months = Number(document.getElementById("months").value);
+  var medical = Number(document.getElementById("medical").value);
+  var total = cost * months + medical;
+  document.getElementById("output").innerHTML = 
+  "建議重大風險準備額度約為： <strong>" + total.toLocaleString() + " 元</strong>";
+}
+</script>
+
+<hr>
+
+<h2>五、下一步</h2>
+
+<p>
+你可以用工具進一步檢視：
+</p>
+
+<p>
+<a href="./tool_insurance_checklist.html">前往保單健診清單 →</a>
+</p>
+
+<p>
+若希望依照家庭責任完整推導，
+加入 LINE 並輸入「保額分析」。
+</p>
+
+<p>
+<a href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE</a>
+</p>
+
+<hr>
+
+<div class="footer-links">
+<a href="./library.html">← 回知識庫</a>
+<a href="./index.html">回主頁</a>
+</div>
+
+</div>
+
+</body>
+</html>
