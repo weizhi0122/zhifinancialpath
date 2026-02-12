@@ -8,89 +8,49 @@
 
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333}
-
-/* 頂部導覽 */
-.topbar{
-background:#fff;
-border-bottom:1px solid #e6e8ee;
-padding:12px 20px;
-position:sticky;
-top:0;
-z-index:999;
-}
-.topbar-inner{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-.topbar a{
-color:#0b3d91;
-text-decoration:none;
-font-size:14px;
-}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
 .topbar a:hover{text-decoration:underline}
 
-/* 內容 */
-.container{
-max-width:1100px;
-margin:auto;
-padding:40px 20px 60px;
-}
-
+.container{max-width:1100px;margin:auto;padding:40px 20px 60px}
 h1{color:#0b3d91;margin-bottom:10px}
 .sub{color:#666;margin-bottom:30px}
 
-.section{
-background:#fff;
-padding:28px;
-border-radius:14px;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
-margin-bottom:28px;
-}
+.section{background:#fff;padding:28px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.05);margin-bottom:28px}
+.section h2{color:#0b3d91;margin-top:0}
 
-.section h2{
-color:#0b3d91;
-margin-top:0;
-}
-
-.article-list{
-margin-top:15px;
-}
-
+.article-list{margin-top:15px}
 .article-list a{
 display:block;
-padding:10px 0;
+padding:10px 10px;
 color:#0b3d91;
 text-decoration:none;
 border-bottom:1px solid #eee;
 font-size:15px;
+border-radius:10px;
 }
+.article-list a:hover{background:#f3f7ff;transition:.15s}
+.article-list a:last-child{border-bottom:none}
 
-.article-list a:hover{
-background:#f3f7ff;
-padding-left:8px;
-transition:.2s;
-}
-
-.footer-links{
-text-align:center;
-margin-top:50px;
-}
-
-.footer-links a{
-margin:0 15px;
+.badge{
+display:inline-block;
+font-size:12px;
 color:#0b3d91;
-text-decoration:none;
+background:#eef4ff;
+padding:3px 10px;
+border-radius:999px;
+margin-left:10px;
 }
+
+.footer-links{text-align:center;margin-top:50px}
+.footer-links a{margin:0 15px;color:#0b3d91;text-decoration:none}
 .footer-links a:hover{text-decoration:underline}
 </style>
 </head>
 
 <body>
 
-<!-- 🔷 統一導覽 -->
 <div class="topbar">
   <div class="topbar-inner">
     <a href="javascript:history.back()">← 回上頁</a>
@@ -104,75 +64,69 @@ text-decoration:none;
 <div class="container">
 
 <h1>知識庫</h1>
-<p class="sub">
-用「能理解、能應用」的方式，建立長期穩定的財務架構。
-</p>
+<p class="sub">用「能理解、能應用」的方式，建立長期穩定的財務架構。</p>
 
 <!-- 基礎保障 -->
 <div class="section">
-<h2>基礎保障</h2>
-<p>處理極端風險，避免家庭現金流崩潰。</p>
-
-<div class="article-list">
-<a href="./article_misinsurance.html">為什麼多數家庭保障都錯配？</a>
-<a href="#">保險購買順序應該怎麼排？</a>
-<a href="#">保額怎麼抓才合理？</a>
-</div>
+  <h2>基礎保障</h2>
+  <p>處理極端風險，避免家庭現金流崩潰。</p>
+  <div class="article-list">
+    <a href="./article_misinsurance.html">為什麼多數家庭保障都錯配？ <span class="badge">已上線</span></a>
+    <a href="./article_insurance_order.html">保險購買順序應該怎麼排？ <span class="badge">已上線</span></a>
+    <a href="./article_coverage_amount.html">保額怎麼抓才合理？ <span class="badge">準備中</span></a>
+    <a href="./article_protection_common_waste.html">常見保障浪費清單（哪些其實不必要） <span class="badge">準備中</span></a>
+  </div>
 </div>
 
 <!-- 預備金與負債 -->
 <div class="section">
-<h2>預備金與負債</h2>
-<p>財務止血優先於投資成長。</p>
-
-<div class="article-list">
-<a href="#">緊急預備金到底要存幾個月？</a>
-<a href="#">信用卡、信貸、房貸先還誰？</a>
-<a href="#">利率差 1% 為何差很多？</a>
+  <h2>預備金與負債</h2>
+  <p>財務止血優先於投資成長。</p>
+  <div class="article-list">
+    <a href="./article_emergency_fund_months.html">緊急預備金到底要存幾個月？ <span class="badge">準備中</span></a>
+    <a href="./article_debt_priority.html">信用卡、信貸、房貸先還誰？ <span class="badge">準備中</span></a>
+    <a href="./article_rate_impact.html">利率差 1% 為何差很多？ <span class="badge">準備中</span></a>
+  </div>
 </div>
-</div>
 
-<!-- 投資入門 -->
+<!-- 投資與市場 -->
 <div class="section">
-<h2>投資與市場</h2>
-<p>建立方法，不靠感覺做決策。</p>
-
-<div class="article-list">
-<a href="#">資產配置是什麼？為什麼比選股重要？</a>
-<a href="#">定期定額 vs 一次投入怎麼選？</a>
-<a href="#">市場下跌時你該做什麼？</a>
-</div>
+  <h2>投資與市場</h2>
+  <p>建立方法，不靠感覺做決策。</p>
+  <div class="article-list">
+    <a href="./article_asset_allocation_basics.html">資產配置是什麼？為什麼比選股重要？ <span class="badge">準備中</span></a>
+    <a href="./article_dca_vs_lumpsum.html">定期定額 vs 一次投入怎麼選？ <span class="badge">準備中</span></a>
+    <a href="./article_bear_market_playbook.html">市場下跌時你該做什麼？ <span class="badge">準備中</span></a>
+  </div>
 </div>
 
 <!-- 退休規劃 -->
 <div class="section">
-<h2>退休規劃</h2>
-<p>退休不是數字，而是一套現金流系統。</p>
-
-<div class="article-list">
-<a href="#">勞保年金怎麼算？</a>
-<a href="#">退休缺口怎麼評估？</a>
-<a href="#">被動收入 vs 提領資產差異</a>
+  <h2>退休規劃</h2>
+  <p>退休不是數字，而是一套現金流系統。</p>
+  <div class="article-list">
+    <a href="./article_labor_pension_formula.html">勞保年金怎麼算？（公式與案例） <span class="badge">準備中</span></a>
+    <a href="./article_retirement_gap_method.html">退休缺口怎麼評估？（流程與模型） <span class="badge">準備中</span></a>
+    <a href="./article_income_vs_withdrawal.html">被動收入 vs 提領資產差異（哪個更穩） <span class="badge">準備中</span></a>
+  </div>
 </div>
-</div>
 
-<!-- 傳承 -->
+<!-- 資產傳承 -->
 <div class="section">
-<h2>資產傳承</h2>
-<p>讓資產順利交接，而不是留下問題。</p>
-
-<div class="article-list">
-<a href="#">遺囑與受益人差在哪？</a>
-<a href="#">信託什麼情況才需要？</a>
-</div>
+  <h2>資產傳承</h2>
+  <p>讓資產順利交接，而不是留下問題。</p>
+  <div class="article-list">
+    <a href="./article_beneficiary_vs_inheritance.html">遺囑與受益人差在哪？ <span class="badge">準備中</span></a>
+    <a href="./article_trust_when_needed.html">信託什麼情況才需要？ <span class="badge">準備中</span></a>
+    <a href="./article_family_asset_folder.html">家庭重要文件清單（避免家人找不到） <span class="badge">準備中</span></a>
+  </div>
 </div>
 
 <div class="footer-links">
-<a href="./path.html">← 回學習路徑</a>
-<a href="./index.html">回主頁</a>
+  <a href="./path.html">← 回學習路徑</a>
+  <a href="./index.html">回主頁</a>
 </div>
 
 </div>
-
 </body>
 </html>
