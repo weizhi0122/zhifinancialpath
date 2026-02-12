@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>保單健檢清單｜智 Financial Path</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
+    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
+    .links a{margin-left:14px;color:#333;text-decoration:none}
+    .links a:hover{color:#0b3d91}
+    .container{max-width:1000px;margin:auto;padding:28px 20px}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+    h2{margin:0 0 10px}
+    .muted{font-size:13px;color:#666;line-height:1.5}
+    .group{margin:14px 0}
+    .item{display:flex;gap:10px;align-items:flex-start;margin:10px 0}
+    .item input{margin-top:3px}
+    textarea{width:100%;min-height:90px;padding:10px;border:1px solid #d7dbe6;border-radius:10px}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    .result{margin-top:12px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91;white-space:pre-wrap}
+    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
+    a{color:#0b3d91;text-decoration:none}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./index.html">智 Financial Path</a>
+    <div class="links">
+      <a href="./tools.html">工具</a>
+      <a href="./library.html">知識庫</a>
+      <a href="./path.html">學習路徑</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>保單健檢清單</h1>
+  <p class="muted">這份清單的目標：把你「要問的問題」整理出來。不是推任何商品，教育用途。</p>
+
+  <div class="card">
+    <h2>1) 保障地基（先不翻車）</h2>
+    <div class="group" id="g1">
+      <div class="item"><input type="checkbox"><div>我知道自己最怕的風險是什麼（醫療、失能、身故、意外）。</div></div>
+      <div class="item"><input type="checkbox"><div>我有「緊急預備金」，不靠保單解約金救急。</div></div>
+      <div class="item"><input type="checkbox"><div>我能說出每張保單的用途（不是只知道「月繳多少」）。</div></div>
+    </div>
+
+    <h2 style="margin-top:18px;">2) 常見浪費（高機率踩雷）</h2>
+    <div class="group" id="g2">
+      <div class="item"><input type="checkbox"><div>我確認沒有買到功能重疊的保障（例如多張類似醫療/意外）。</div></div>
+      <div class="item"><input type="checkbox"><div>我確認沒有把「投資/儲蓄型」當成主要保障來源。</div></div>
+      <div class="item"><input type="checkbox"><div>我知道哪些是主約、哪些是附約，取消會影響哪些保障。</div></div>
+    </div>
+
+    <h2 style="margin-top:18px;">3) 你要問業務/顧問的問題</h2>
+    <p class="muted">下面填完後按「生成問題清單」，你就有一份帶去問的稿。</p>
+    <label class="muted">你的家庭狀況（選填）</label>
+    <textarea id="profile" placeholder="例：已婚/有小孩、主要收入來源、房貸壓力、想守住家庭基本生活..."></textarea>
+
+    <div class="btnrow">
+      <button class="btn" onclick="gen()">生成問題清單</button>
+      <button class="btn ghost" onclick="resetAll()">清除勾選/內容</button>
+    </div>
+
+    <div id="out" class="result" style="display:none;"></div>
+  </div>
+
+  <footer><a href="./disclaimer.html">免責聲明</a></footer>
+</div>
+
+<script>
+function gen(){
+  const checked1 = [...document.querySelectorAll('#g1 input[type=checkbox]')].filter(x=>x.checked).length;
+  const checked2 = [...document.querySelectorAll('#g2 input[type=checkbox]')].filter(x=>x.checked).length;
+  const profile = document.getElementById('profile').value.trim();
+
+  const lines = [];
+  lines.push('【保單健檢提問清單】');
+  if(profile) lines.push('我的狀況：' + profile);
+  lines.push('');
+  lines.push('A. 保障結構');
+  lines.push('- 我目前醫療/意外/失能/壽險各自的目的與保額是多少？是否符合家庭責任？');
+  lines.push('- 如果發生重大事件（住院/失能/身故），家裡「每月現金流」可以撐多久？缺口是多少？');
+  lines.push('');
+  lines.push('B. 重複與浪費');
+  lines.push('- 我是否有保障功能重疊？哪些可以調整以降低保費、提高有效保額？');
+  lines.push('- 哪些保單是投資/儲蓄性質？我是否不小心把它當保障？');
+  lines.push('');
+  lines.push('C. 取消/調整影響');
+  lines.push('- 哪些是主約/附約？如果調整/停繳，會影響哪些保障？');
+  lines.push('- 有沒有更簡單、透明的方式達成同等保障？（例如把保障與投資分開）');
+  lines.push('');
+  lines.push('（我的自評）');
+  lines.push('- 保障地基完成度：' + checked1 + '/3');
+  lines.push('- 避免浪費完成度：' + checked2 + '/3');
+
+  const out = document.getElementById('out');
+  out.style.display = '';
+  out.textContent = lines.join('\n');
+}
+
+function resetAll(){
+  document.querySelectorAll('input[type=checkbox]').forEach(x=>x.checked=false);
+  document.getElementById('profile').value = '';
+  document.getElementById('out').style.display='none';
+}
+</script>
+</body>
+</html>
 
