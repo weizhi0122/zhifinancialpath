@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>專業退休規劃分析｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
+.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between}
+.brand{font-weight:bold;color:#0b3d91;text-decoration:none}
+.links a{margin-left:15px;text-decoration:none;color:#333}
+.container{max-width:1100px;margin:auto;padding:30px 20px}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 4px 10px rgba(0,0,0,.05);margin-bottom:20px}
+label{display:block;margin-top:10px;font-size:14px}
+input{width:100%;padding:8px;border-radius:8px;border:1px solid #ccc}
+button{margin-top:15px;background:#0b3d91;color:white;padding:10px 15px;border:none;border-radius:8px;cursor:pointer}
+.result{margin-top:15px;background:#eef4ff;padding:15px;border-radius:10px}
+canvas{margin-top:20px}
+footer{text-align:center;margin-top:20px;color:#777;font-size:13px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./index.html">智 Financial Path</a>
+    <div class="links">
+      <a href="./tools.html">工具</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<h1>專業退休規劃分析工具</h1>
+
+<div class="card">
+<h3>基本資料</h3>
+
+<label>退休後每年生活支出（今天幣值）</label>
+<input type="number" id="annualSpend" placeholder="例：1800000">
+
+<label>目前年齡</label>
+<input type="number" id="currentAge" placeholder="例：40">
+
+<label>預計退休年齡</label>
+<input type="number" id="retireAge" placeholder="例：65">
+
+<label>預期壽命</label>
+<input type="number" id="lifeAge" placeholder="例：90">
+
+<label>通膨率（%）</label>
+<input type="number" id="inflation" value="2">
+
+<h3>勞保年金估算（簡化教育版）</h3>
+
+<label>平均投保薪資（月）</label>
+<input type="number" id="salary" placeholder="例：45800">
+
+<label>投保年資（年）</label>
+<input type="number" id="years" placeholder="例：35">
+
+<label>延後請領加成（%）</label>
+<input type="number" id="delay" value="0">
+
+<h3>資產模式</h3>
+
+<label>安全提領率（%）</label>
+<input type="number" id="withdrawRate" value="3.5">
+
+<label>被動收益率（%）</label>
+<input type="number" id="passiveRate" value="3.5">
+
+<label>目前已準備退休資產</label>
+<input type="number" id="currentAsset" placeholder="例：12000000">
+
+<button onclick="calculate()">開始分析</button>
+
+<div id="output" class="result" style="display:none"></div>
+
+</div>
+
+<canvas id="pieChart"></canvas>
+<canvas id="barChart"></canvas>
+<canvas id="cashflowChart"></canvas>
+
+<footer>
+本工具為教育用途，公式為簡化估算，不構成投資建議。
+</footer>
+
+</div>
+
+<script>
+let pieChart, barChart, cashflowChart;
+
+function calculate(){
+
+const annualSpend = Number(document.getElementById("annualSpend").value);
+const currentAge = Number(document.getElementById("currentAge").value);
+const retireAge = Number(document.getElementById("retireAge").value);
+const lifeAge = Number(document.getElementById("lifeAge").value);
+const inflation = Number(document.getElementById("inflation").value)/100;
+
+const salary = Number(document.getElementById("salary").value);
+const years = Number(document.getElementById("years").value);
+const delay = Number(document.getElementById("delay").value)/100;
+
+const withdrawRate = Number(document.getElementById("withdrawRate").value)/100;
+const passiveRate = Number(document.getElementById("passiveRate").value)/100;
+const currentAsset = Number(document.getElementById("currentAsset").value);
+
+const yearsToRetire = retireAge - currentAge;
+const retirementYears = lifeAge - retireAge;
+
+// 勞保簡化公式（兩種取高）
+let pension1 = salary * years * 0.0155;
+let pension2 = salary * years * 0.013 + 3000;
+let monthlyPension = Math.max(pension1, pension2);
+monthlyPension = monthlyPension * (1 + delay);
+let annualPension = monthlyPension * 12;
+
+// 通膨調整到退休時支出
+let inflatedSpend = annualSpend * Math.pow(1+inflation, yearsToRetire);
+
+// 年度缺口
+let annualGap = inflatedSpend - annualPension;
+if(annualGap < 0) annualGap = 0;
+
+// 資產需求
+let needWithdraw = annualGap / withdrawRate;
+let needPassive = annualGap / passiveRate;
+
+let output = document.getElementById("output");
+output.style.display="block";
+output.innerHTML = `
+退休時通膨調整後年支出：約 ${Math.round(inflatedSpend).toLocaleString()} 元<br>
+預估勞保年金：約 ${Math.round(annualPension).toLocaleString()} 元<br>
+年度缺口：約 ${Math.round(annualGap).toLocaleString()} 元<br><br>
+提領模式所需資產：約 ${Math.round(needWithdraw).toLocaleString()} 元<br>
+被動收益模式所需資產：約 ${Math.round(needPassive).toLocaleString()} 元
+`;
+
+// 圓餅圖
+if(pieChart) pieChart.destroy();
+pieChart = new Chart(document.getElementById("pieChart"),{
+type:"pie",
+data:{
+labels:["勞保年金","退休缺口"],
+datasets:[{data:[annualPension,annualGap]}]
+}
+});
+
+// 長條圖
+if(barChart) barChart.destroy();
+barChart = new Chart(document.getElementById("barChart"),{
+type:"bar",
+data:{
+labels:["提領模式","被動收益模式"],
+datasets:[{
+label:"所需退休資產",
+data:[needWithdraw,needPassive]
+}]
+}
+});
+
+// 現金流圖
+let yearsArray=[];
+let spendArray=[];
+for(let i=0;i<retirementYears;i++){
+yearsArray.push(retireAge+i);
+spendArray.push(inflatedSpend*Math.pow(1+inflation,i));
+}
+
+if(cashflowChart) cashflowChart.destroy();
+cashflowChart = new Chart(document.getElementById("cashflowChart"),{
+type:"line",
+data:{
+labels:yearsArray,
+datasets:[{
+label:"退休期間年支出（隨通膨）",
+data:spendArray,
+fill:false
+}]
+}
+});
+}
+</script>
+
+</body>
+</html>
