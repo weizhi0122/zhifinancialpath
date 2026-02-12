@@ -1,106 +1,116 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>智 Financial Path｜財商知識平台</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="從基礎保障到資產傳承，用淺顯易懂方式建立正確財商觀念。">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f7fa;
-      color: #333;
-    }
-    header {
-      background: #0b3d91;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 36px;
-    }
-    header p {
-      margin-top: 10px;
-      font-size: 18px;
-    }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    .section {
-      margin-bottom: 50px;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-    }
-    a {
-      color: #0b3d91;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>智 Financial Path｜財商教育與顧問式規劃平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="從基礎保障到高端資產傳承，以淺顯易懂的方式建立正確財商觀念。提供風險測驗、退休分析、保單健診與學習路徑。">
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333}
+.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
+.nav-inner{max-width:1200px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:700;color:#0b3d91;font-size:18px;text-decoration:none}
+.links a{margin-left:18px;text-decoration:none;color:#333}
+.links a:hover{color:#0b3d91}
+
+.hero{max-width:1200px;margin:auto;padding:80px 20px;text-align:center}
+.hero h1{font-size:36px;margin-bottom:20px}
+.hero p{font-size:18px;color:#555;max-width:800px;margin:auto}
+.hero-buttons{margin-top:30px}
+.btn{display:inline-block;background:#0b3d91;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;margin:8px}
+.btn.ghost{background:#fff;color:#0b3d91;border:1px solid #0b3d91}
+
+.section{max-width:1200px;margin:60px auto;padding:0 20px}
+.section h2{text-align:center;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.card{background:#fff;padding:25px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.card h3{margin-top:0;color:#0b3d91}
+.card p{font-size:14px;color:#555;line-height:1.6}
+.card .btn{margin-top:12px;padding:10px 15px;font-size:14px}
+
+.philosophy{text-align:center;font-size:16px;color:#555;max-width:800px;margin:auto;line-height:1.7}
+
+.cta{background:#0b3d91;color:white;text-align:center;padding:60px 20px;margin-top:60px}
+.cta h2{margin-top:0}
+.cta a{display:inline-block;margin-top:20px;background:white;color:#0b3d91;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600}
+
+footer{text-align:center;padding:30px 10px;color:#777;font-size:13px;margin-top:40px}
+</style>
 </head>
+
 <body>
 
-<header>
-  <h1>智 Financial Path</h1>
-  <p>從基礎保障、投資入門到資產傳承，建立真正的財商思維</p>
-</header>
-
-<div class="container">
-
-  <div class="section">
-    <h2>我們的使命</h2>
-    <div class="card">
-      用淺顯易懂的方式，帶你理解金錢的邏輯，建立長期穩定的財務架構。
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./index.html">智 Financial Path</a>
+    <div class="links">
+      <a href="./path.html">學習路徑</a>
+      <a href="./library.html">知識庫</a>
+      <a href="./tools.html">工具</a>
+      <a href="./about.html">關於我們</a>
     </div>
   </div>
+</nav>
 
-  <div class="section">
-    <h2>學習路徑</h2>
+<section class="hero">
+  <h1>從基礎保障到資產傳承<br>建立真正的財商架構</h1>
+  <p>
+  我們不是銷售產品，而是幫助你理解財務決策背後的邏輯。
+  透過系統化學習與顧問式分析工具，讓你在保障、投資與退休規劃上做出理性選擇。
+  </p>
+
+  <div class="hero-buttons">
+    <a class="btn" href="./tools.html">開始財務診斷</a>
+    <a class="btn ghost" href="./path.html">查看學習路徑</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>三大核心入口</h2>
+  <div class="grid">
 
     <div class="card">
-      <h3>新手起步</h3>
-      現金流管理與緊急預備金建立
+      <h3>風險屬性測驗</h3>
+      <p>1 分鐘了解你的風險承受能力，找出適合你的資產配置學習方向。</p>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSezsGEC8TxPcXLNxXKIOCPN-eUqyeR5icGVnRV-YXr5ow1cuA/viewform?usp=header" target="_blank">開始測驗</a>
     </div>
 
     <div class="card">
-      <h3>穩健基礎</h3>
-      保險規劃與負債管理
+      <h3>專業退休規劃分析</h3>
+      <p>含勞保年金估算、通膨調整、壓力測試與退休準備度評分。</p>
+      <a class="btn" href="./tool_retirement_pro.html">開始分析</a>
     </div>
 
     <div class="card">
-      <h3>開始投資</h3>
-      資產配置與風險控制
-    </div>
-
-    <div class="card">
-      <h3>高端規劃</h3>
-      稅務安排與資產傳承
+      <h3>保單健診清單</h3>
+      <p>檢視是否重複投保、保額不足或保障結構錯置。</p>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdUhuHLCki3ZsVlxbxqmNutGDBrWwZxVWLxR4TZp1cYM2q4Bw/viewform?usp=header" target="_blank">開始健診</a>
     </div>
 
   </div>
+</section>
 
-</div>
+<section class="section">
+  <h2>我們的方法</h2>
+  <div class="philosophy">
+    先建立安全邊界，再思考成長；<br>
+    先理解現金流，再談資產配置；<br>
+    先規劃退休現金流，再追求投資報酬。
+    <br><br>
+    財商不是一夜致富，而是長期穩定的系統。
+  </div>
+</section>
+
+<section class="cta">
+  <h2>想取得更完整的個人規劃路徑？</h2>
+  加入 LINE，輸入「財務規劃」，取得專屬學習建議與進階分析。
+  <br>
+  <a href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE</a>
+</section>
 
 <footer>
-  © 2026 智 Financial Path ｜ 財商教育平台  
-  <br>
-  本站內容為教育用途，不構成投資建議。
+  © 2026 智 Financial Path ｜ 本站為教育用途，不構成投資建議
 </footer>
 
 </body>
