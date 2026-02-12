@@ -4,53 +4,156 @@
 <meta charset="UTF-8">
 <title>為什麼多數家庭保障都錯配？｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="解析三大常見保障錯配原因，並用現金流邏輯推導合理保額模型。">
+<meta name="description" content="用現金流邏輯拆解常見保障錯配，附案例、圖表與缺口試算，協助你快速找出家庭風險缺口。">
 
 <style>
-body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
-.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
-.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
-.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
-.topbar a:hover{text-decoration:underline}
+  :root{
+    --primary:#0b3d91;
+    --bg:#f6f8fb;
+    --card:#fff;
+    --text:#333;
+    --muted:#666;
+    --line:#e6e8ee;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:Arial;margin:0;background:var(--bg);color:var(--text);line-height:1.9}
 
-.container{max-width:900px;margin:auto;padding:30px 20px 70px}
-h1,h2,h3{color:#0b3d91}
-p{margin:14px 0}
-ul{margin-left:20px}
+  /* topbar */
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:999}
+  .topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .topbar a:hover{text-decoration:underline}
 
-.note{
-background:#fff;
-padding:15px;
-border-left:4px solid #0b3d91;
-margin:20px 0;
-border-radius:10px;
-box-shadow:0 6px 16px rgba(0,0,0,.04)
-}
+  .container{max-width:900px;margin:auto;padding:26px 20px 80px}
+  h1,h2,h3{color:var(--primary);line-height:1.35}
+  p{margin:14px 0}
+  ul{margin:10px 0 10px 20px}
+  small{color:var(--muted)}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{text-decoration:underline}
 
-table{
-width:100%;
-border-collapse:collapse;
-margin:20px 0;
-background:#fff;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 6px 16px rgba(0,0,0,.04)
-}
-th,td{
-border:1px solid #e6e6e6;
-padding:10px;
-font-size:14px
-}
-th{background:#eef4ff}
+  .hero{
+    background:linear-gradient(180deg,#ffffff 0%, #ffffff 60%, rgba(255,255,255,0) 100%);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px 18px;
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
+  }
+  .meta{color:var(--muted);font-size:13px;margin-top:6px}
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{display:inline-block;background:#eef4ff;color:var(--primary);padding:5px 10px;border-radius:999px;font-size:12px}
 
-hr{margin:40px 0;border:none;border-top:1px solid #ddd}
-.footer-links{text-align:center;margin-top:50px}
-.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
-.footer-links a:hover{text-decoration:underline}
+  .toc{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    margin:18px 0;
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+  }
+  .toc h3{margin:0 0 6px}
+  .toc a{display:block;padding:6px 0;border-bottom:1px dashed #eee}
+  .toc a:last-child{border-bottom:none}
+
+  .note{
+    background:var(--card);
+    padding:15px 16px;
+    border-left:4px solid var(--primary);
+    margin:18px 0;
+    border-radius:12px;
+    box-shadow:0 6px 16px rgba(0,0,0,.04);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:16px 0;
+    background:var(--card);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 16px rgba(0,0,0,.04);
+  }
+  th,td{border:1px solid #e8e8e8;padding:10px;font-size:14px;vertical-align:top}
+  th{background:#eef4ff}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+  }
+
+  .divider{margin:34px 0;border:none;border-top:1px solid #ddd}
+
+  /* bar chart */
+  .bars{margin-top:10px}
+  .barrow{display:flex;align-items:center;gap:10px;margin:10px 0}
+  .barlabel{width:130px;color:var(--muted);font-size:13px}
+  .bartrack{flex:1;background:#eef1f7;border-radius:999px;overflow:hidden;height:12px}
+  .barfill{height:12px;background:var(--primary);width:40%}
+  .barval{width:90px;text-align:right;font-size:13px;color:var(--muted)}
+
+  /* mini calculator */
+  .calc label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+  .calc input{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #dfe3ee;
+    border-radius:10px;
+    font-size:14px;
+    outline:none;
+    background:#fff;
+  }
+  .calc input:focus{border-color:#b8c8ff;box-shadow:0 0 0 3px rgba(11,61,145,.08)}
+  .calc .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{
+    display:inline-block;
+    background:var(--primary);
+    color:#fff;
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .result{
+    margin-top:12px;
+    padding:12px 12px;
+    border-radius:12px;
+    background:#f3f7ff;
+    border:1px solid #dbe7ff;
+    color:#1f2d5c;
+    font-size:14px;
+  }
+  .result strong{color:#0a2f75}
+  .warn{color:#8a2a2a;background:#fff0f0;border:1px solid #ffd2d2;padding:10px 12px;border-radius:12px;margin-top:10px}
+
+  /* footer links */
+  .footer-links{text-align:center;margin-top:44px}
+  .footer-links a{color:var(--primary);text-decoration:none;margin:0 12px}
+  .footer-links a:hover{text-decoration:underline}
+
+  /* back to top */
+  .fab{
+    position:fixed;right:18px;bottom:18px;
+    background:#0b3d91;color:#fff;
+    border:none;border-radius:999px;
+    padding:10px 12px;
+    cursor:pointer;
+    box-shadow:0 10px 24px rgba(0,0,0,.18);
+    font-size:13px;
+    opacity:.95;
+  }
+  .fab:hover{opacity:1}
 </style>
 </head>
 
-<body>
+<body id="top">
 
 <div class="topbar">
   <div class="inner">
@@ -64,144 +167,281 @@ hr{margin:40px 0;border:none;border-top:1px solid #ddd}
 
 <div class="container">
 
-<h1>為什麼多數家庭保障都錯配？</h1>
+  <div class="hero">
+    <h1 style="margin:0 0 6px;">為什麼多數家庭保障都錯配？</h1>
+    <div class="meta">用「現金流風險」而不是「商品名稱」，找出你真正需要補的保障缺口。</div>
+    <div class="pillrow">
+      <span class="pill">顧問式框架</span>
+      <span class="pill">含案例與表格</span>
+      <span class="pill">含缺口試算</span>
+      <span class="pill">可搭配工具</span>
+    </div>
+  </div>
 
-<p>
-很多家庭每年繳十幾萬保費，
-卻在真正風險來臨時發現：「錢根本不夠。」
-</p>
+  <div class="toc">
+    <h3>快速導覽</h3>
+    <a href="#sec1">1. 保障錯配的本質：現金流崩潰</a>
+    <a href="#sec2">2. 三個最常見錯配（為什麼會發生）</a>
+    <a href="#sec3">3. 用一個「風險缺口公式」快速判斷</a>
+    <a href="#sec4">4. 案例對比：看似保很多 vs 真正扛得住</a>
+    <a href="#sec5">5. 30 秒缺口試算（互動）</a>
+    <a href="#next">6. 下一步：工具盤點 + 進階詢問</a>
+  </div>
 
-<p>
-這不是因為保險不好，
-而是因為保障設計常常沒有用「現金流邏輯」來思考。
-</p>
+  <hr class="divider" id="sec1">
 
-<hr>
+  <h2>1) 保障錯配的本質：不是買錯，是「風險沒被覆蓋」</h2>
+  <p>
+    多數人談保險會問：「這張好不好？」但正確順序應該是：
+  </p>
+  <div class="note">
+    <strong>先定義風險 → 再算缺口 → 最後才挑工具（保險/存款/資產）</strong><br>
+    因為風險不是發生機率問題，而是「一旦發生，你的家庭現金流會不會斷」。
+  </div>
 
-<h2>一、常見錯誤一：把保險當儲蓄工具</h2>
+  <p>常見會造成現金流斷裂的三種衝擊：</p>
+  <ul>
+    <li><strong>醫療/照護</strong>：自費療程、看護、長期復健。</li>
+    <li><strong>收入中斷</strong>：停工、失能、照顧家人導致收入下降。</li>
+    <li><strong>固定支出壓力</strong>：房貸、教育、扶養責任，降不下來。</li>
+  </ul>
 
-<p>
-很多人優先購買儲蓄型保單，
-因為「感覺會拿回來」。
-</p>
+  <hr class="divider" id="sec2">
 
-<div class="note">
-但保險真正的功能是：轉嫁無法承擔的極端風險。
+  <h2>2) 三個最常見錯配（為什麼會發生）</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0;">錯配 A：把保險當儲蓄/投資</h3>
+      <p>
+        儲蓄型商品容易讓人安心：「至少拿得回來」。  
+        但風險來時，你需要的是<strong>足夠大的現金</strong>，而不是「未來某天拿回來」。
+      </p>
+      <div class="note" style="margin:12px 0 0;">
+        <strong>關鍵盲點：</strong>保費很高 ≠ 風險覆蓋很足。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">錯配 B：家庭支柱保障不足</h3>
+      <p>
+        家庭中最大風險點通常是<strong>收入主要來源者</strong>。  
+        一旦停工，缺口不是「醫療費」而已，而是整個家庭每月支出都還在。
+      </p>
+      <small>常見原因：保險規劃以「保費可負擔」為中心，而不是以「風險缺口」為中心。</small>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h3 style="margin-top:0;">錯配 C：低估重大醫療/照護成本</h3>
+    <p>
+      真正的大錢常常不是住院本身，而是：自費療程 + 看護 + 復健 + 收入中斷。
+    </p>
+
+    <table>
+      <tr><th>項目（示意）</th><th>費用範圍</th><th>常見低估點</th></tr>
+      <tr><td>重大手術自費材料</td><td>20–60 萬</td><td>以為健保都包</td></tr>
+      <tr><td>癌症標靶/免疫療程（半年）</td><td>50–150 萬</td><td>療程期長、費用累積</td></tr>
+      <tr><td>看護/照護（1–3 個月）</td><td>6–27 萬</td><td>以為家人可全程照顧</td></tr>
+      <tr><td>收入中斷（3–6 個月）</td><td>依收入而定</td><td>忽略「家庭固定支出」仍存在</td></tr>
+    </table>
+    <small>※ 以上為教育用途的示意區間，實際依個案差異很大。</small>
+  </div>
+
+  <hr class="divider" id="sec3">
+
+  <h2>3) 一個「風險缺口公式」快速判斷</h2>
+  <div class="note">
+    <strong>風險暴露（你可能需要的現金）</strong><br>
+    = 醫療/照護自費（估） + 收入中斷期間的家庭支出（估）
+  </div>
+
+  <p>用一個直觀例子（示意）：</p>
+
+  <table>
+    <tr><th>項目</th><th>估算</th></tr>
+    <tr><td>家庭每月必要支出</td><td>84,000</td></tr>
+    <tr><td>收入中斷月數（保守抓）</td><td>6</td></tr>
+    <tr><td>收入中斷支出小計</td><td>84,000 × 6 = 504,000</td></tr>
+    <tr><td>重大療程/照護預估</td><td>800,000</td></tr>
+    <tr><td><strong>風險暴露合計</strong></td><td><strong>約 1,304,000</strong></td></tr>
+  </table>
+
+  <p>
+    若你的「可動用現金 + 相關保障」合計只有 50–80 萬，  
+    中間就是缺口（而缺口通常會被「借款」補上）。
+  </p>
+
+  <div class="card">
+    <h3 style="margin-top:0;">視覺化：風險暴露由誰構成？</h3>
+    <div class="bars">
+      <div class="barrow">
+        <div class="barlabel">收入中斷支出</div>
+        <div class="bartrack"><div class="barfill" style="width:39%;"></div></div>
+        <div class="barval">約 50 萬</div>
+      </div>
+      <div class="barrow">
+        <div class="barlabel">醫療/照護自費</div>
+        <div class="bartrack"><div class="barfill" style="width:61%;"></div></div>
+        <div class="barval">約 80 萬</div>
+      </div>
+    </div>
+    <small>※ 以上條形圖為示意比例，目的在讓你理解「缺口從哪裡來」。</small>
+  </div>
+
+  <hr class="divider" id="sec4">
+
+  <h2>4) 案例對比：看似保很多 vs 真正扛得住</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0;">情境 1：保費高，但缺口仍大</h3>
+      <ul>
+        <li>保費每年 12–18 萬（儲蓄型比重高）</li>
+        <li>重大風險給付額度偏低</li>
+        <li>現金流緩衝不足（預備金不足）</li>
+      </ul>
+      <div class="warn">
+        風險來時常見結果：<strong>先動存款 → 借信貸 → 被迫調整生活</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">情境 2：保費合理，但覆蓋完整</h3>
+      <ul>
+        <li>先確保預備金（6–12 個月危機支出）</li>
+        <li>用保障處理「無法承擔的極端風險」</li>
+        <li>支柱風險（收入中斷）有安排</li>
+      </ul>
+      <div class="note" style="margin:12px 0 0;">
+        風險來時常見結果：<strong>可用現金 + 給付</strong> 先把療程與生活撐住，避免借款擴大。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" id="sec5">
+
+  <h2>5) 30 秒缺口試算（互動）</h2>
+  <p>把你的數字帶入，先得到一個「缺口方向」。（教育用途，非個別建議）</p>
+
+  <div class="card calc">
+    <div class="grid2">
+      <div>
+        <label>家庭每月必要支出（元）</label>
+        <input id="mCost" type="number" value="84000" min="0" step="1000">
+      </div>
+      <div>
+        <label>收入中斷月數（建議 3–6；有家庭責任可 6–12）</label>
+        <input id="months" type="number" value="6" min="0" step="1">
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <label>重大療程/照護自費預估（元）</label>
+        <input id="medical" type="number" value="800000" min="0" step="10000">
+      </div>
+      <div>
+        <label>你目前可動用資金 + 相關保障合計（元）</label>
+        <input id="coverage" type="number" value="600000" min="0" step="10000">
+      </div>
+    </div>
+
+    <div class="btnrow">
+      <button class="btn" onclick="calcGap()">計算缺口</button>
+      <button class="btn ghost" onclick="resetCalc()">重設</button>
+      <a class="btn ghost" href="./tool_insurance_checklist.html">用工具做盤點</a>
+    </div>
+
+    <div id="out" class="result" style="display:none;"></div>
+    <div id="advice" class="note" style="display:none;"></div>
+  </div>
+
+  <hr class="divider" id="next">
+
+  <h2>6) 下一步：把缺口變成可執行的行動</h2>
+  <div class="note">
+    <strong>建議順序（教育版）：</strong><br>
+    ① 先確認預備金與危機現金流 → ② 再檢查支柱風險（收入中斷） → ③ 最後才檢查醫療/重大風險缺口
+  </div>
+
+  <p>你可以先做「不需要任何個資」的初步盤點：</p>
+  <ul>
+    <li><a href="./tool_insurance_checklist.html">保單健診清單（工具）</a></li>
+    <li><a href="./chapter_protection.html">回到：第一章 家庭保障與真實風險成本（教材）</a></li>
+  </ul>
+
+  <p>
+    如果你希望把「試算結果」套用到你的家庭結構（責任、房貸、教育、照護），
+    你可以加入 LINE 並輸入：<strong>保障分析</strong>，我們用同一套模型協助你做下一步釐清。
+  </p>
+  <p>
+    <a href="https://lin.ee/yvD5Vu8" target="_blank" rel="noopener">加入 LINE（輸入：保障分析）</a>
+  </p>
+
+  <div class="footer-links">
+    <a href="./library.html">← 回知識庫</a>
+    <a href="./index.html">回主頁</a>
+  </div>
+
 </div>
 
-<p>
-當大量保費投入儲蓄型商品，
-真正需要高額保障的重大疾病或收入中斷，
-反而保障不足。
-</p>
+<button class="fab" onclick="window.location.href='#top'">↑ 回頂部</button>
 
-<hr>
+<script>
+  function fmt(n){
+    try{ return Number(n).toLocaleString('zh-Hant-TW'); }
+    catch(e){ return n; }
+  }
 
-<h2>二、常見錯誤二：家庭支柱保障不足</h2>
+  function calcGap(){
+    const mCost = Number(document.getElementById('mCost').value || 0);
+    const months = Number(document.getElementById('months').value || 0);
+    const medical = Number(document.getElementById('medical').value || 0);
+    const coverage = Number(document.getElementById('coverage').value || 0);
 
-<p>
-家庭中最重要的是誰？
-不是孩子，而是收入來源者。
-</p>
+    const incomeShock = mCost * months;
+    const exposure = incomeShock + medical;
+    const gap = exposure - coverage;
 
-<h3>試算模型（雙薪家庭）</h3>
+    const out = document.getElementById('out');
+    const advice = document.getElementById('advice');
+    out.style.display = 'block';
+    advice.style.display = 'block';
 
-<table>
-<tr><th>項目</th><th>每月金額</th></tr>
-<tr><td>房貸</td><td>30,000</td></tr>
-<tr><td>生活費</td><td>25,000</td></tr>
-<tr><td>教育費</td><td>15,000</td></tr>
-<tr><td>保費</td><td>8,000</td></tr>
-<tr><td>交通</td><td>6,000</td></tr>
-<tr><td><strong>合計</strong></td><td><strong>84,000</strong></td></tr>
-</table>
+    out.innerHTML =
+      `你的風險暴露估算：<strong>${fmt(exposure)}</strong> 元（收入中斷支出 ${fmt(incomeShock)} + 醫療/照護 ${fmt(medical)}）。<br>` +
+      `你目前可動用資金/保障：<strong>${fmt(coverage)}</strong> 元。<br>` +
+      `估算缺口：<strong>${fmt(Math.max(gap,0))}</strong> 元。`;
 
-<p>
-若主要收入者停工 6 個月：
-</p>
+    if (gap <= 0){
+      advice.innerHTML =
+        `<strong>方向解讀：</strong>目前看起來已能覆蓋這個情境的估算風險。<br>` +
+        `下一步建議：用工具確認「保障是否集中在支柱風險」與「預備金是否足夠」，並做 2–3 種不同情境（更長停工、更高醫療、或支出上升）。`;
+      return;
+    }
 
-<p><strong>84,000 × 6 = 504,000</strong></p>
+    // simple guidance tiers
+    let tier = '';
+    if (gap < mCost * 3) tier = '小缺口';
+    else if (gap < mCost * 6) tier = '中缺口';
+    else tier = '大缺口';
 
-<p>
-還不包含醫療自費。
-</p>
+    advice.innerHTML =
+      `<strong>方向解讀（${tier}）：</strong>你在此情境下可能需要額外現金來補缺口。<br>` +
+      `建議順序：先確認預備金與可動用現金（能否撐住 ${months} 個月）→ 再檢查支柱保障（收入中斷風險）→ 最後補醫療/重大風險缺口。<br>` +
+      `你也可以用「保單健診清單」把目前保障拆開看是哪一種保障真正能填缺口。`;
+  }
 
-<div class="note">
-多數家庭在這裡會出現第一個現金流斷裂。
-</div>
+  function resetCalc(){
+    document.getElementById('mCost').value = 84000;
+    document.getElementById('months').value = 6;
+    document.getElementById('medical').value = 800000;
+    document.getElementById('coverage').value = 600000;
+    document.getElementById('out').style.display = 'none';
+    document.getElementById('advice').style.display = 'none';
+  }
+</script>
 
-<hr>
-
-<h2>三、常見錯誤三：低估重大醫療成本</h2>
-
-<table>
-<tr><th>項目</th><th>費用範圍</th></tr>
-<tr><td>癌症標靶療程（半年）</td><td>50–150萬</td></tr>
-<tr><td>重大手術自費</td><td>20–60萬</td></tr>
-<tr><td>長期復健</td><td>10–30萬</td></tr>
-</table>
-
-<p>
-如果醫療 + 停工成本疊加，
-風險暴露可能超過 150–200 萬。
-</p>
-
-<hr>
-
-<h2>四、正確保障推導模型</h2>
-
-<p><strong>保障額度 ≠ 保費高低</strong></p>
-
-<p>應該用：</p>
-
-<div class="note">
-風險金額 = 醫療自費 + 停工期間家庭支出
-</div>
-
-<p>
-如果這個金額是 180 萬，
-而你的重大保障只有 50 萬，
-中間的缺口就是風險。
-</p>
-
-<hr>
-
-<h2>五、檢查自己是否錯配的三個問題</h2>
-
-<ul>
-<li>如果我半年沒有收入，家庭能撐多久？</li>
-<li>重大療程需要 100 萬，我的保障夠嗎？</li>
-<li>目前保費中，有多少是真正處理極端風險？</li>
-</ul>
-
-<hr>
-
-<h2>六、下一步可以怎麼做？</h2>
-
-<p>
-你可以先使用工具自我檢視：
-</p>
-
-<p>
-<a href="./tool_insurance_checklist.html">前往保單健診清單 →</a>
-</p>
-
-<p>
-如果希望根據家庭結構進行分析，
-加入 LINE 並輸入「保障分析」。
-</p>
-
-<p>
-<a href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE</a>
-</p>
-
-<hr>
-
-<div class="footer-links">
-<a href="./library.html">← 回知識庫</a>
-<a href="./index.html">回主頁</a>
-</div>
-
-</div>
 </body>
 </html>
