@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>退休現金流｜工具｜智 Financial Path</title>
+<meta name="description" content="退休現金流：快速缺口→現金流模擬（主工具）→專業入口（進階）。">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--text:#223;--muted:#6b7280;--line:#e6e8ee;--primary:#0b3d91;--soft:#eef4ff;--shadow:0 10px 22px rgba(16,24,40,.06);--radius:18px;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .container{max-width:1200px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 16px}
+  .head{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .pill{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+  @media (max-width:900px){.grid2{grid-template-columns:1fr}}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:18px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between}
+  .card h3{margin:0 0 8px;color:#111827;font-size:20px}
+  .desc{color:#4b5563;margin:0 0 14px}
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 14px;border-radius:14px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .btn:hover{opacity:.92}
+  .note{margin-top:14px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;color:#4b5563}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">← 回工具總入口</a>
+        <a href="./index.html">回主頁</a>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./library.html">知識庫</a>
+        <a href="./path.html">學習路徑</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="head">
+      <div>
+        <h1 style="margin:0">退休現金流（顧問式導引）</h1>
+        <div class="sub">退休不是一個數字，而是一條現金流曲線：<b>先缺口 → 再模擬 → 再壓測</b></div>
+      </div>
+      <span class="pill">主題工具頁</span>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div>
+          <h3>Step 1｜快速缺口</h3>
+          <p class="desc">先抓方向感：年度缺口大概多少、提領率敏感度多高。這一步是為了避免你一開始就迷失在細節。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_retirement_gap.html">快速缺口</a>
+          <a class="btn ghost" href="./library.html">讀架構</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 2｜現金流模擬（主工具）</h3>
+          <p class="desc">把通膨、年金、被動收益與提領補洞整合成年度現金流表，並用壓力測試看抗跌能力。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_retirement_cashflow.html">現金流模擬</a>
+          <a class="btn ghost" href="./tool_retirement_pro.html">專業入口</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>建議：</b>把「通膨」「退休支出」「收益率」各上下調一點，看看結論是否翻轉；翻轉＝你的風險敏感度很高。
+    </div>
+  </div>
+</body>
+</html>
