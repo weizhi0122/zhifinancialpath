@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>投資決策系統｜工具｜智 Financial Path</title>
+<meta name="description" content="投資決策系統：財報體質→估值安全邊際→資產配置風險，並提供風險屬性入口。">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--text:#223;--muted:#6b7280;--line:#e6e8ee;--primary:#0b3d91;--soft:#eef4ff;--shadow:0 10px 22px rgba(16,24,40,.06);--radius:18px;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .container{max-width:1200px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 16px}
+  .head{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .pill{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+  @media (max-width:1100px){.grid3{grid-template-columns:1fr 1fr}}
+  @media (max-width:720px){.grid3{grid-template-columns:1fr}}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:18px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between}
+  .tag{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#f1f6ff;color:var(--primary);font-size:13px;border:1px solid #dfeaff;width:max-content}
+  .card h3{margin:10px 0 8px;color:#111827;font-size:22px}
+  .desc{color:#4b5563;margin:0 0 14px}
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 14px;border-radius:14px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .btn:hover{opacity:.92}
+  .note{margin-top:14px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;color:#4b5563}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">← 回工具總入口</a>
+        <a href="./index.html">回主頁</a>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./library.html">知識庫</a>
+        <a href="./path.html">學習路徑</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="head">
+      <div>
+        <h1 style="margin:0">投資決策系統</h1>
+        <div class="sub">建議流程：<b>先體質</b> → <b>再估值（安全邊際）</b> → <b>回到資產配置與風險</b></div>
+      </div>
+      <span class="pill">主題工具頁</span>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <div>
+          <span class="tag">三大報表</span>
+          <h3>財報健康檢核工具</h3>
+          <p class="desc">用比率＋現金流快速掃描：先抓大方向，再決定要不要進估值。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_financial_health_check.html">開始檢核</a>
+          <a class="btn ghost" href="./library.html">補觀念</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">估值模型</span>
+          <h3>合理價值試算（含安全邊際）</h3>
+          <p class="desc">輸入 EPS、成長率與折現率，計算合理進場區間，避免「買得對卻買太貴」。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_valuation_margin.html">開始試算</a>
+          <a class="btn ghost" href="./library.html">估值觀念</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <span class="tag">資產配置</span>
+          <h3>資產配置風險模型</h3>
+          <p class="desc">模擬股債比例改變時的波動與回撤，讓你知道「配置」才是長期績效的底盤。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_asset_allocation_risk.html">開始配置</a>
+          <a class="btn ghost" href="./tool_risk_quiz.html">風險屬性入口</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>研究室用法：</b>若財報檢核沒過（紅旗太多），先不要急著估值；估值完成後，請把結論放回配置模型決定部位大小。
+    </div>
+  </div>
+</body>
+</html>
