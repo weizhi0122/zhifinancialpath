@@ -4,67 +4,195 @@
   <meta charset="UTF-8" />
   <title>專業退休規劃｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="專業退休規劃入口：以退休現金流模擬為主工具，包含通膨、年金、被動收益、提領補洞與壓力測試。" />
+  <meta name="description" content="專業退休規劃入口：從退休缺口估算到完整現金流模擬，結合通膨、年金、被動收益、提領補洞與壓力測試。" />
   <style>
-    body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
-    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
-    .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
-    .container{max-width:980px;margin:auto;padding:26px 20px 80px}
-    h1,h2{color:#0b3d91;margin:0 0 10px}
-    .muted{color:#666}
-    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05);margin-top:14px}
-    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none}
-    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-    .step{background:#f3f7ff;border:1px solid #dfeaff;border-radius:12px;padding:12px;margin-top:10px}
-    .small{font-size:13px;color:#666}
+    body{
+      margin:0;
+      font-family:Arial,"Noto Sans TC",sans-serif;
+      background:#f6f8fb;
+      color:#1f2937;
+      line-height:1.85;
+    }
+
+    .topbar{
+      background:#fff;
+      border-bottom:1px solid #e6e8ee;
+      padding:14px 22px;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    .topbar .inner{
+      max-width:1000px;
+      margin:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .topbar a{
+      text-decoration:none;
+      color:#0b3d91;
+      font-size:14px;
+    }
+
+    .container{
+      max-width:1000px;
+      margin:auto;
+      padding:28px 22px 90px;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:26px;
+      color:#0b3d91;
+    }
+
+    h2{
+      margin:0 0 12px;
+      font-size:18px;
+      color:#0f172a;
+    }
+
+    .muted{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 8px 20px rgba(0,0,0,.05);
+      margin-top:20px;
+    }
+
+    .intro{
+      font-size:15px;
+      margin-top:10px;
+      color:#374151;
+    }
+
+    .step{
+      background:#f1f5ff;
+      border:1px solid #dbe7ff;
+      border-radius:14px;
+      padding:14px 16px;
+      margin-top:14px;
+    }
+
+    .btnrow{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      background:#0b3d91;
+      color:#fff;
+      padding:10px 16px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:14px;
+    }
+
+    .btn.ghost{
+      background:#fff;
+      color:#0b3d91;
+      border:1px solid #cfe0ff;
+    }
+
+    .section-note{
+      margin-top:18px;
+      font-size:13px;
+      color:#6b7280;
+      border-top:1px solid #e6e8ee;
+      padding-top:14px;
+    }
+
   </style>
 </head>
+
 <body>
 
 <div class="topbar">
   <div class="inner">
     <a href="javascript:history.back()">← 回上頁</a>
     <div>
-      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./index.html" style="margin-right:16px;">回主頁</a>
       <a href="./tools.html">回工具</a>
     </div>
   </div>
 </div>
 
 <div class="container">
-  <h1>專業退休規劃（統一入口）</h1>
-  <p class="muted">這裡用同一套核心邏輯：<b>通膨 → 年金/收入 → 被動收益 → 缺口提領 → 壓力測試</b>，避免讀者被兩套工具搞混。</p>
+
+  <h1>專業退休規劃</h1>
+
+  <p class="intro">
+    本區採用統一決策流程：<b>通膨假設 → 年金與收入 → 被動收益 → 缺口提領 → 壓力測試</b>。
+    目標不是得到單一數字，而是理解你的退休計畫是否可持續，以及需要如何調整。
+  </p>
 
   <div class="card">
-    <h2 style="font-size:18px;">你應該怎麼用？（顧問式流程）</h2>
+
+    <h2>建議使用順序</h2>
 
     <div class="step">
-      <b>Step 1：先跑「退休現金流模擬」</b><br>
-      <span class="small">看資產是否歸零、最低點在哪、壓力測試會不會翻車。</span>
+      <b>Step 1｜退休缺口估算</b><br>
+      先判斷目前結構是否存在缺口。
+      檢視年金與被動收入是否足以覆蓋生活費，
+      並建立方向感。
       <div class="btnrow">
-        <a class="btn" href="./tool_retirement_cashflow.html">開始退休現金流模擬</a>
+        <a class="btn" href="./tool_retirement_gap.html">進入退休缺口估算</a>
       </div>
     </div>
 
     <div class="step">
-      <b>Step 2：用「快速缺口」抓方向感</b><br>
-      <span class="small">你要快速知道：缺口大概是多少、提領率敏感度多高。</span>
+      <b>Step 2｜退休現金流模擬</b><br>
+      透過完整模擬查看資產隨時間變化，
+      評估通膨、報酬率與提領策略下，
+      是否會在某個年齡出現資產歸零情形。
       <div class="btnrow">
-        <a class="btn ghost" href="./tool_retirement_gap.html">快速缺口估算</a>
+        <a class="btn ghost" href="./tool_retirement_cashflow.html">進入退休現金流模擬</a>
       </div>
     </div>
 
     <div class="step">
-      <b>Step 3：回到知識庫把模型補齊</b><br>
-      <span class="small">工具只能算，決策要靠框架：通膨、回撤、長照、醫療、退休初期 sequence risk。</span>
+      <b>Step 3｜回到知識庫強化模型理解</b><br>
+      理解通膨假設、序列風險、
+      醫療與長照風險、
+      提領率與資產配置邏輯。
+      工具只是計算器，決策仍需框架。
       <div class="btnrow">
-        <a class="btn ghost" href="./library.html#retire">去知識庫：退休架構</a>
+        <a class="btn ghost" href="./library.html#retire">前往退休知識庫</a>
       </div>
+    </div>
+
+    <div class="step">
+      <b>Step 4｜差額與壓力測試收斂</b><br>
+      將結果轉化為具體調整：
+      例如每月需增加投入多少、
+      生活費需降低多少、
+      或報酬假設需調整至何種保守水準。
+      <div class="btnrow">
+        <a class="btn ghost" href="./tool_retirement_cashflow.html#adjust">執行差額與壓力調整</a>
+      </div>
+    </div>
+
+    <div class="section-note">
+      本工具為教育用途，模擬結果僅供規劃參考。
+      退休規劃涉及通膨假設、壽命風險與市場波動，
+      建議在多種情境下進行交叉測試。
     </div>
 
   </div>
+
 </div>
 
 </body>
