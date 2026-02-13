@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>退休現金流模擬工具｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="退休現金流模擬：區分資本成長與現金殖利率、通膨/實質購買力、壓力測試、退休初期序列風險、圖表與年度明細。" />
+  <meta name="description" content="退休現金流模擬：三段期假設、資本成長與現金殖利拆解、通膨/實質購買力、壓力測試、退休初期序列風險、圖表與年度明細。" />
 
   <!-- Chart.js CDN（純前端，GitHub Pages 可用） -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -33,11 +33,12 @@
     .btn:hover{opacity:.92}
     .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
 
-    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    @media (max-width: 720px){ .kpi{grid-template-columns:1fr} }
+    .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+    @media (max-width: 900px){ .kpi{grid-template-columns:1fr 1fr} }
+    @media (max-width: 520px){ .kpi{grid-template-columns:1fr} }
     .kpi .box{background:#f3f7ff;border:1px solid #dfeaff;border-radius:12px;padding:12px}
     .kpi .box .t{font-size:12px;color:#4a5b7a}
-    .kpi .box .v{font-size:18px;font-weight:700;color:#0b3d91;margin-top:4px}
+    .kpi .box .v{font-size:18px;font-weight:800;color:#0b3d91;margin-top:4px}
 
     .charts{display:grid;grid-template-columns:1fr;gap:14px}
     canvas{background:#fff;border-radius:14px}
@@ -54,6 +55,15 @@
 
     .mini{font-size:12px;color:#7a8699;line-height:1.4;margin-top:6px}
     .hr{border:none;border-top:1px solid #eef1f6;margin:14px 0}
+
+    details{border:1px solid #e6e8ee;border-radius:12px;background:#fff;margin-top:12px}
+    summary{cursor:pointer;padding:12px 12px;font-weight:800;color:#0f172a}
+    details .inner{padding:0 12px 12px}
+    .chip{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #dbe2f0;color:#334155;background:#f8fafc;font-size:12px;margin-left:6px}
+
+    .conclusion{margin-top:12px;border:1px solid #dfeaff;background:#f7f9ff;border-radius:12px;padding:12px}
+    .conclusion b{color:#0b3d91}
+    .ul{margin:8px 0 0 18px;color:#334155}
   </style>
 </head>
 
@@ -63,15 +73,15 @@
       <a href="./tools.html">← 回工具</a>
       <div>
         <a href="./index.html" style="margin-right:14px;">🏠 回主頁</a>
-        <a href="./library.html">📚 知識庫</a>
+        <a href="./library.html#retire">📚 知識庫</a>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <h1>退休現金流模擬工具 <span class="pill">更真實：避免 double count、同時看名目/實質購買力</span></h1>
+    <h1>退休現金流模擬工具 <span class="pill">三段期</span> <span class="pill">提領策略</span> <span class="pill">名目/實質</span></h1>
     <p class="muted">
-      這個工具用「年度現金流」做模擬：把通膨、資產成長（資本利得）、現金殖利率（股利/租金/配息等）、退休支出、年金收入與必要提領整合成一張表，
+      把通膨、資產成長（資本利得）、現金殖利（股利/債息/租金/配息）、退休支出、年金收入與必要提領整合成年度現金流；
       並加入「退休初期序列風險」與「壓力測試」。
     </p>
 
@@ -118,10 +128,6 @@
 
         <div class="row">
           <div>
-            <label>通膨率（年）</label>
-            <input id="inflation" type="number" value="2.0" min="0" max="10" step="0.1">
-          </div>
-          <div>
             <label>支出調整方式</label>
             <select id="spendIndexMode">
               <option value="cpi" selected>每年隨通膨（CPI）調整</option>
@@ -129,43 +135,108 @@
               <option value="flat">不調整（名目固定）</option>
             </select>
           </div>
+          <div>
+            <label>退休後一次性大支出（萬元）</label>
+            <input id="oneOffCost" type="number" value="0" min="0" step="1">
+          </div>
         </div>
 
         <div class="hr"></div>
 
-        <h3 style="font-size:16px;margin:0 0 4px;">報酬拆解（更真實）</h3>
+        <h3 style="font-size:16px;margin:0 0 4px;">三段期假設（通膨 / 資本成長 / 現金殖利）</h3>
         <div class="mini">
-          以前版本容易「double count」：同時用總報酬率成長、又把被動收益當收入抵支出。這版改為：<br>
-          <b>資本成長率（不含現金殖利）</b>＋<b>現金殖利率（股利/租金/配息）</b>，兩者分開計。
+          用三段期提高真實度：累積期（現在→退休）、退休前期（退休後前N年）、退休後期（其後）。
+          <b>資本成長不含殖利</b>，殖利作為現金流或再投入，避免 double count。
         </div>
 
         <div class="row">
           <div>
-            <label>資本成長率（年，不含股利/租金）</label>
-            <input id="capGrowth" type="number" value="2.0" min="-10" max="15" step="0.1">
+            <label>退休前期（退休後前 N 年）</label>
+            <input id="phaseYears" type="number" value="10" min="1" max="30" step="1">
           </div>
           <div>
-            <label>現金殖利率（年，股利/租金/配息）</label>
-            <input id="cashYield" type="number" value="3.5" min="0" max="15" step="0.1">
+            <label>一鍵保守（前期）</label>
+            <select id="phaseHint">
+              <option value="keep" selected>自行設定</option>
+              <option value="auto">前期成長-1%、通膨+0.5%</option>
+            </select>
           </div>
         </div>
 
-        <div class="row">
-          <div>
-            <label>殖利是否再投入（退休前）</label>
-            <select id="reinvestBefore">
-              <option value="yes" selected>是（累積期再投入）</option>
-              <option value="no">否（累積期當作收入使用）</option>
-            </select>
+        <details open>
+          <summary>累積期（現在→退休）</summary>
+          <div class="inner">
+            <div class="row">
+              <div>
+                <label>通膨率（年%）</label>
+                <input id="inflA" type="number" value="2.0" min="0" max="10" step="0.1">
+              </div>
+              <div>
+                <label>資本成長率（年%，不含殖利）</label>
+                <input id="capA" type="number" value="2.0" min="-10" max="15" step="0.1">
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label>現金殖利率（年%）</label>
+                <input id="yldA" type="number" value="3.5" min="0" max="15" step="0.1">
+              </div>
+              <div>
+                <label>殖利是否再投入（退休前）</label>
+                <select id="reinvestBefore">
+                  <option value="yes" selected>是（累積期再投入）</option>
+                  <option value="no">否（累積期當作收入使用）</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div>
-            <label>退休後殖利作為現金流</label>
-            <select id="yieldAsCashflowAfter">
-              <option value="yes" selected>是（用來抵支出，減少提領）</option>
-              <option value="no">否（退休後也再投入，支出全靠提領）</option>
-            </select>
+        </details>
+
+        <details>
+          <summary>退休前期（退休後前 N 年）</summary>
+          <div class="inner">
+            <div class="row">
+              <div>
+                <label>通膨率（年%）</label>
+                <input id="inflB" type="number" value="2.0" min="0" max="10" step="0.1">
+              </div>
+              <div>
+                <label>資本成長率（年%，不含殖利）</label>
+                <input id="capB" type="number" value="1.0" min="-10" max="15" step="0.1">
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label>現金殖利率（年%）</label>
+                <input id="yldB" type="number" value="3.5" min="0" max="15" step="0.1">
+              </div>
+              <div class="mini">建議前期保守：用來捕捉「退休初期序列風險」。</div>
+            </div>
           </div>
-        </div>
+        </details>
+
+        <details>
+          <summary>退休後期（退休前期結束後）</summary>
+          <div class="inner">
+            <div class="row">
+              <div>
+                <label>通膨率（年%）</label>
+                <input id="inflC" type="number" value="2.0" min="0" max="10" step="0.1">
+              </div>
+              <div>
+                <label>資本成長率（年%，不含殖利）</label>
+                <input id="capC" type="number" value="2.0" min="-10" max="15" step="0.1">
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label>現金殖利率（年%）</label>
+                <input id="yldC" type="number" value="3.5" min="0" max="15" step="0.1">
+              </div>
+              <div class="mini">後期可用長期平均，但建議仍跑壓力測試。</div>
+            </div>
+          </div>
+        </details>
 
         <div class="hr"></div>
 
@@ -191,10 +262,42 @@
             </select>
           </div>
           <div>
-            <label>退休後一次性大支出（萬元）</label>
-            <input id="oneOffCost" type="number" value="0" min="0" step="1">
+            <label>退休後殖利作為現金流</label>
+            <select id="yieldAsCashflowAfter">
+              <option value="yes" selected>是（用來抵支出，減少提領）</option>
+              <option value="no">否（退休後也再投入，支出全靠提領）</option>
+            </select>
           </div>
         </div>
+
+        <div class="hr"></div>
+
+        <h3 style="font-size:16px;margin:0 0 4px;">提領策略（新增）</h3>
+        <div class="mini">
+          <b>補缺口提領</b>：支出固定（最直觀）。<br>
+          <b>固定比例提領</b>：每年按資產比例提領（更像「可持續提領率」框架）。此時要決定支出是否跟著縮放，避免模型打架。
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休後提領方式</label>
+            <select id="withdrawMode">
+              <option value="gap" selected>補缺口提領（固定支出目標）</option>
+              <option value="pct">固定比例提領（每年按資產%提領）</option>
+            </select>
+          </div>
+          <div>
+            <label>固定比例提領率（年%）</label>
+            <input id="withdrawPct" type="number" value="4.0" min="0" max="12" step="0.1">
+          </div>
+        </div>
+
+        <label>固定比例模式下「支出」處理方式</label>
+        <select id="withdrawSpendMode">
+          <option value="fixed" selected>維持原支出目標（若不足仍可能歸零）</option>
+          <option value="adaptive">支出跟著可支配現金調整（更不易歸零）</option>
+          <option value="floor">設最低支出底線（70%），不足就縮、夠就回到目標</option>
+        </select>
 
         <div class="hr"></div>
 
@@ -204,10 +307,9 @@
             <label>情境</label>
             <select id="stressMode">
               <option value="base" selected>基準情境</option>
-              <option value="lowreturn">低成長：資本成長率 -2%</option>
-              <option value="highinfl">高通膨：通膨 +2%</option>
+              <option value="lowreturn">低成長：各段資本成長率 -2%</option>
+              <option value="highinfl">高通膨：各段通膨 +2%</option>
               <option value="drawdown">退休初期回撤：退休第1年 -20%（一次性）</option>
-              <option value="bad5">序列風險：退休前5年成長率下降（-3%）</option>
             </select>
           </div>
           <div>
@@ -227,7 +329,7 @@
         <div id="msgBox"></div>
 
         <footer>
-          ※ 教育用途：屬情境試算；請務必用「多情境 + 壓力測試」判斷，而不是迷信單一數字。
+          ※ 教育用途：屬情境試算；請用「多情境 + 壓力測試」判斷，而不是迷信單一數字。
         </footer>
       </div>
 
@@ -248,8 +350,14 @@
               <div class="t">結論 / 評分</div>
               <div class="v" id="kpiScore">—</div>
             </div>
+            <div class="box">
+              <div class="t">退休第1年提領率（估）</div>
+              <div class="v" id="kpiWR1">—</div>
+            </div>
           </div>
           <p class="small" id="kpiNote" style="margin:10px 0 0;"></p>
+
+          <div class="conclusion" id="advisorBox" style="display:none;"></div>
         </div>
 
         <div class="card">
@@ -270,27 +378,58 @@
 
         <div class="card">
           <h2 style="font-size:18px;margin-bottom:6px;">年度明細</h2>
-          <div class="tablewrap">
-            <table id="tbl">
-              <thead>
-                <tr>
-                  <th>年齡</th>
-                  <th>通膨因子</th>
-                  <th>期初資產(萬)</th>
-                  <th>投入(萬)</th>
-                  <th>資本成長(萬)</th>
-                  <th>現金殖利(萬)</th>
-                  <th>退休支出(萬)</th>
-                  <th>年金/其他(萬)</th>
-                  <th>一次性支出(萬)</th>
-                  <th>提領補洞(萬)</th>
-                  <th>期末資產(萬)</th>
-                  <th>期末資產(實質,萬)</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+
+          <details open>
+            <summary>精簡欄位（建議先看） <span class="chip">不增加複雜度</span></summary>
+            <div class="inner">
+              <div class="tablewrap">
+                <table id="tblSimple">
+                  <thead>
+                    <tr>
+                      <th>年齡</th>
+                      <th>期初資產(萬)</th>
+                      <th>退休支出(含一次性)(萬)</th>
+                      <th>收入(年金/其他)(萬)</th>
+                      <th>殖利(萬)</th>
+                      <th>提領(萬)</th>
+                      <th>期末資產(萬)</th>
+                      <th>期末資產(實質,萬)</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>完整欄位（進階檢核）</summary>
+            <div class="inner">
+              <div class="tablewrap">
+                <table id="tblFull">
+                  <thead>
+                    <tr>
+                      <th>年齡</th>
+                      <th>通膨因子</th>
+                      <th>期初資產(萬)</th>
+                      <th>投入(萬)</th>
+                      <th>資本成長(萬)</th>
+                      <th>現金殖利(萬)</th>
+                      <th>退休支出(萬)</th>
+                      <th>年金/其他(萬)</th>
+                      <th>一次性支出(萬)</th>
+                      <th>提領(萬)</th>
+                      <th>期末資產(萬)</th>
+                      <th>期末資產(實質,萬)</th>
+                      <th>段落</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+
           <p class="small" style="margin-top:10px;">
             互動提醒：把「通膨」「支出」「資本成長」「殖利」各上下調一點，觀察結論是否翻轉——這就是你的脆弱點。
           </p>
@@ -312,14 +451,14 @@
 
   function buildCSV(rows){
     const header = [
-      "age","infl_factor","begin_asset_wan","save_wan","cap_growth_wan","cash_yield_wan",
+      "age","phase","infl_factor","begin_asset_wan","save_wan","cap_growth_wan","cash_yield_wan",
       "spend_wan","pension_other_wan","oneoff_wan","withdraw_wan",
       "end_asset_wan","end_asset_real_wan"
     ];
     const lines = [header.join(",")];
     rows.forEach(r=>{
       lines.push([
-        r.age, r.inflFactor, r.begin, r.save, r.capGrowth, r.cashYield,
+        r.age, r.phase, r.inflFactor, r.begin, r.save, r.capGrowth, r.cashYield,
         r.spend, r.pensionOther, r.oneoff, r.withdraw,
         r.end, r.endReal
       ].join(","));
@@ -341,7 +480,7 @@
   function indexFactor(mode, inflation){
     if (mode === "cpi") return inflation;
     if (mode === "partial") return inflation * 0.70;
-    return 0; // flat
+    return 0;
   }
   function incomeIndexFactor(mode, inflation){
     if (mode === "cpi") return inflation;
@@ -349,8 +488,13 @@
     return 0;
   }
 
+  function phaseOf(age, ageRet, phaseYears){
+    if (age < ageRet) return "A";              // 累積期
+    if (age < ageRet + phaseYears) return "B"; // 退休前期
+    return "C";                                // 退休後期
+  }
+
   function simulate(){
-    // Inputs
     const ageNow = n(document.getElementById("ageNow").value);
     const ageRet = n(document.getElementById("ageRet").value);
     const ageEnd = n(document.getElementById("ageEnd").value);
@@ -358,10 +502,6 @@
     const assetNow = n(document.getElementById("assetNow").value); // 萬元
     const monthlySave = n(document.getElementById("monthlySave").value); // 萬元/月
     const monthlySpendReal = n(document.getElementById("monthlySpendReal").value); // 萬元/月 (today purchasing power)
-
-    let inflation = n(document.getElementById("inflation").value) / 100;
-    let capGrowth = n(document.getElementById("capGrowth").value) / 100; // 資本成長（不含現金殖利）
-    let cashYield = n(document.getElementById("cashYield").value) / 100; // 現金殖利
 
     const spendIndexMode = document.getElementById("spendIndexMode").value;
     const reinvestBefore = document.getElementById("reinvestBefore").value; // yes/no
@@ -375,45 +515,78 @@
     const stressMode = document.getElementById("stressMode").value;
     const scoreRule = document.getElementById("scoreRule").value;
 
+    const phaseYears = n(document.getElementById("phaseYears").value);
+    const phaseHint = document.getElementById("phaseHint").value;
+
+    const withdrawMode = document.getElementById("withdrawMode").value; // gap / pct
+    const withdrawPct = n(document.getElementById("withdrawPct").value) / 100;
+    const withdrawSpendMode = document.getElementById("withdrawSpendMode").value; // fixed/adaptive/floor
+
+    // phase params
+    let inflA = n(document.getElementById("inflA").value) / 100;
+    let capA  = n(document.getElementById("capA").value)  / 100;
+    let yldA  = n(document.getElementById("yldA").value)  / 100;
+
+    let inflB = n(document.getElementById("inflB").value) / 100;
+    let capB  = n(document.getElementById("capB").value)  / 100;
+    let yldB  = n(document.getElementById("yldB").value)  / 100;
+
+    let inflC = n(document.getElementById("inflC").value) / 100;
+    let capC  = n(document.getElementById("capC").value)  / 100;
+    let yldC  = n(document.getElementById("yldC").value)  / 100;
+
     // Basic validation
     if (ageRet <= ageNow) return {error: "退休年齡需大於目前年齡。"};
     if (ageEnd <= ageRet) return {error: "模擬終點年齡需大於退休年齡。"};
     if (assetNow < 0) return {error: "資產不可為負。"};
+    if (phaseYears <= 0) return {error: "退休前期 N 年需大於 0。"};
+    if (!isFinite(withdrawPct) || withdrawPct < 0) return {error: "固定比例提領率需為非負數。"};
+
+    // One-key conservative (phase B)
+    if (phaseHint === "auto"){
+      capB = capB - 0.01;
+      inflB = inflB + 0.005;
+    }
 
     // Stress adjust
     let oneTimeDrawdownYear = null;
-    if (stressMode === "lowreturn") capGrowth = capGrowth - 0.02;
-    if (stressMode === "highinfl") inflation = inflation + 0.02;
+    if (stressMode === "lowreturn"){ capA -= 0.02; capB -= 0.02; capC -= 0.02; }
+    if (stressMode === "highinfl"){ inflA += 0.02; inflB += 0.02; inflC += 0.02; }
     if (stressMode === "drawdown") oneTimeDrawdownYear = ageRet; // 退休第1年期初發生
-    // 序列風險：退休前 5 年資本成長下降（更貼近“退休前遇到熊市”）
-    const bad5 = (stressMode === "bad5");
 
     // Guardrails
-    inflation = clamp(inflation, 0, 0.20);
-    cashYield = clamp(cashYield, 0, 0.30);
-    capGrowth = clamp(capGrowth, -0.50, 0.50);
+    const clampInfl = (x)=>clamp(x, 0, 0.20);
+    const clampYld  = (x)=>clamp(x, 0, 0.30);
+    const clampCap  = (x)=>clamp(x, -0.50, 0.50);
+
+    inflA = clampInfl(inflA); inflB = clampInfl(inflB); inflC = clampInfl(inflC);
+    yldA  = clampYld(yldA);   yldB  = clampYld(yldB);   yldC  = clampYld(yldC);
+    capA  = clampCap(capA);   capB  = clampCap(capB);   capC  = clampCap(capC);
 
     const rows = [];
     let asset = assetNow;
-
     let minAsset = asset;
     let assetAtRet = null;
 
     // 通膨因子（今天=1），用來把名目轉實質
     let inflFactor = 1;
 
-    // 退休後支出：以「今天購買力」為基準，再依支出調整方式推名目
-    const spendIndex = indexFactor(spendIndexMode, inflation);
-    const incomeIndex = incomeIndexFactor(incomeIndexMode, inflation);
+    // For advisor summary
+    let firstRetRow = null;
 
     for (let age = ageNow; age < ageEnd; age++){
       const isRetired = age >= ageRet;
       const begin = asset;
 
-      // 更新通膨因子（假設每年年末通膨完成）
-      // 注意：這裡用 “從現在到該年” 的累積，簡化處理
+      // decide phase
+      const phase = phaseOf(age, ageRet, phaseYears);
+      const thisInfl = (phase === "A") ? inflA : (phase === "B") ? inflB : inflC;
+      const thisCap  = (phase === "A") ? capA  : (phase === "B") ? capB  : capC;
+      const thisYld  = (phase === "A") ? yldA  : (phase === "B") ? yldB  : yldC;
+
+      // 更新通膨因子：用「當年段落通膨」推進
       if (age > ageNow){
-        inflFactor *= (1 + inflation);
+        inflFactor *= (1 + thisInfl);
       }
 
       // 一次性回撤（退休第一年期初）
@@ -425,36 +598,30 @@
       // 退休前投入
       const save = isRetired ? 0 : (monthlySave * 12);
 
-      // 資本成長率（序列風險：退休前5年下修）
-      let thisCapGrowth = capGrowth;
-      if (bad5 && !isRetired && (age >= ageRet - 5) && (age < ageRet)){
-        thisCapGrowth = capGrowth - 0.03; // 再下修
-      }
+      // 現金殖利（以期初資產計算：當期現金流）
+      const cashIncome = beginAfterShock * thisYld;
 
-      // 1) 現金殖利（以期初資產計算：更貼近股利/租金的“當期現金流”）
-      //    退休前：可選擇再投入 or 當作收入（不入資產）
-      //    退休後：若選擇作為現金流，就先用來抵支出（不 double count）
-      const cashIncome = beginAfterShock * cashYield;
-
-      // 2) 資本成長（不含現金殖利），用期初資產計算
-      const capGain = beginAfterShock * thisCapGrowth;
+      // 資本成長（不含現金殖利）
+      const capGain = beginAfterShock * thisCap;
 
       // 退休支出（名目）：以「今天購買力」乘上支出調整（CPI/部分/不調）
       let spend = 0;
       if (isRetired){
+        const spendIndex = indexFactor(spendIndexMode, thisInfl);
         const spendNominalMonthly = monthlySpendReal * Math.pow(1 + spendIndex, (age - ageNow));
         spend = spendNominalMonthly * 12;
       }
 
-      // 年金/其他收入（可選是否隨通膨調整）
+      // 年金/其他收入（可選是否隨通膨調整；用當年段落通膨）
       let pensionOther = 0;
       if (isRetired){
         const base = (monthlyPension + monthlyOtherIncome) * 12;
-        const adj = Math.pow(1 + incomeIndex, (age - ageNow));
+        const incomeIdx = incomeIndexFactor(incomeIndexMode, thisInfl);
+        const adj = Math.pow(1 + incomeIdx, (age - ageNow));
         pensionOther = base * adj;
       }
 
-      // 一次性大支出：設定為退休第 1 年發生（你也可改成多次事件）
+      // 一次性大支出：設定為退休第 1 年發生
       let oneoff = 0;
       if (isRetired && age === ageRet){
         oneoff = oneOffCost;
@@ -464,14 +631,42 @@
       const yieldAsCash = (isRetired && yieldAsCashflowAfter === "yes");
       const inflow = pensionOther + (yieldAsCash ? cashIncome : 0);
 
-      // 缺口 → 由提領補洞
+      // ===== 提領策略（完整一致性）=====
       let withdraw = 0;
+
       if (isRetired){
-        const gap = (spend + oneoff) - inflow;
-        withdraw = Math.max(0, gap);
+        if (withdrawMode === "gap"){
+          // 補缺口：固定支出目標
+          const gap = (spend + oneoff) - inflow;
+          withdraw = Math.max(0, gap);
+        }else{
+          // 固定比例：先決定當年提領額
+          withdraw = Math.max(0, beginAfterShock * withdrawPct);
+
+          // 再決定支出如何處理（避免跟固定比例打架）
+          const totalAvailableCash = inflow + withdraw;
+
+          if (withdrawSpendMode === "adaptive"){
+            // 支出跟著可支配現金（把模型變成「支出可變」）
+            spend = Math.max(0, totalAvailableCash - oneoff);
+          }else if (withdrawSpendMode === "floor"){
+            const spendFloor = spend * 0.70; // 以目標支出為基準的底線
+            const adaptiveSpend = Math.max(0, totalAvailableCash - oneoff);
+            spend = Math.max(spendFloor, adaptiveSpend);
+          }else{
+            // fixed：維持原支出目標（此時可能仍會歸零）
+          }
+
+          // 若 fixed/floor 仍超出可支配現金 → 會有額外缺口，必須再補（否則會出現現金流不守恆）
+          // 這裡用「額外補洞提領」確保現金流一致；但會增加歸零風險，正是 fixed 模式的特性。
+          const gapAfterRule = (spend + oneoff) - inflow;
+          if (gapAfterRule > withdraw){
+            withdraw = gapAfterRule; // 需要更高提領才能達到支出
+          }
+        }
       }
 
-      // 資產更新（避免 double count 的核心）：
+      // ===== 資產更新（避免 double count）=====
       // 期末 = 期初(含shock) + 投入 + 資本成長
       //      +（殖利若再投入） -（提領）
       let end = beginAfterShock + save + capGain;
@@ -479,7 +674,7 @@
       // 殖利入資產的規則：
       // - 退休前：若選再投入，殖利加入資產；若不再投入，視為拿去花，不加回
       // - 退休後：若殖利拿來當現金流抵支出（yieldAsCash=true），就不加回資產；
-      //          若退休後也再投入（yieldAsCash=false），則加回資產，支出靠提領補洞。
+      //          若退休後也再投入（yieldAsCash=false），則加回資產
       if (!isRetired){
         if (reinvestBefore === "yes") end += cashIncome;
       }else{
@@ -492,15 +687,16 @@
       // 不低於0
       if (end < 0) end = 0;
 
-      // 退休時資產（退休起始 = 退休前一年期末）
+      // 退休時資產（退休前一年期末）
       if (age === ageRet - 1){
         assetAtRet = end;
       }
 
       const endReal = end / inflFactor; // 以今天購買力
 
-      rows.push({
+      const row = {
         age,
+        phase,
         inflFactor: +inflFactor.toFixed(4),
         begin: +beginAfterShock.toFixed(2),
         save: +save.toFixed(2),
@@ -511,8 +707,13 @@
         oneoff: +oneoff.toFixed(2),
         withdraw: +withdraw.toFixed(2),
         end: +end.toFixed(2),
-        endReal: +endReal.toFixed(2)
-      });
+        endReal: +endReal.toFixed(2),
+        inflow: +inflow.toFixed(2)
+      };
+
+      rows.push(row);
+
+      if (isRetired && age === ageRet) firstRetRow = row;
 
       asset = end;
       if (asset < minAsset) minAsset = asset;
@@ -526,23 +727,85 @@
     if (scoreRule === "pass"){
       score = neverZero ? "及格 ✅" : "不及格 ⚠️";
       note = neverZero
-        ? "資產未在模擬期間歸零。下一步請切換壓力測試，特別看退休初期回撤與序列風險。"
-        : "資產會在模擬期間歸零。通常需要：降低支出、延後退休、提高投入、或提升可持續現金流（殖利/年金）。";
+        ? "資產未在模擬期間歸零。下一步請切換壓力測試，特別看退休初期回撤與高通膨。"
+        : "資產會在模擬期間歸零。通常需要：降低支出、延後退休、提高投入、或提高可持續現金流（殖利/年金）。";
     }else{
-      // buffer：最低資產 >= 3年支出（用退休第一年的支出當基準：直觀）
-      const firstRetRow = rows.find(r => r.age === ageRet);
-      const threeYearsSpend = firstRetRow ? firstRetRow.spend * 3 : 0;
+      const r = firstRetRow;
+      const threeYearsSpend = r ? (r.spend * 3) : 0;
       const okBuffer = neverZero && (minAsset >= threeYearsSpend);
 
       score = okBuffer ? "優 ✅" : (neverZero ? "及格 ✅" : "不及格 ⚠️");
       note = okBuffer
-        ? "資產不歸零且保有 3 年支出安全邊際。建議把焦點轉向：醫療/長照、房屋大修繕、與市場回撤年份的應對。"
+        ? "資產不歸零且保有 3 年支出安全邊際。建議把焦點轉向：醫療/長照、房屋大修繕、與回撤年份的應對。"
         : (neverZero
           ? "雖未歸零，但安全邊際不足（遇到回撤/大支出時容易翻車）。建議把最低資產拉到至少 3 年支出。"
           : "資產會歸零，需調整策略。");
     }
 
-    return {rows, assetAtRet, minAsset, score, note};
+    // KPI：退休第一年提領率（估）
+    let wr1 = null;
+    if (firstRetRow && assetAtRet && assetAtRet > 0){
+      wr1 = firstRetRow.withdraw / assetAtRet;
+    }
+
+    // Advisor summary inputs
+    const advisor = buildAdvisorSummary({
+      score,
+      neverZero,
+      minAsset,
+      assetAtRet,
+      firstRetRow,
+      withdrawMode,
+      withdrawSpendMode,
+      stressMode
+    });
+
+    return {rows, assetAtRet, minAsset, score, note, wr1, advisor};
+  }
+
+  function buildAdvisorSummary(x){
+    const {score, neverZero, minAsset, assetAtRet, firstRetRow, withdrawMode, withdrawSpendMode, stressMode} = x;
+
+    const lines = [];
+    const tips = [];
+
+    const modeText =
+      (withdrawMode === "gap")
+        ? "補缺口提領（支出固定目標）"
+        : `固定比例提領（支出模式：${
+            withdrawSpendMode === "adaptive" ? "跟著可支配現金調整"
+            : withdrawSpendMode === "floor" ? "有 70% 底線"
+            : "維持原支出目標"
+          }）`;
+
+    lines.push(`你目前使用：<b>${modeText}</b>；壓力測試情境：<b>${stressMode}</b>。`);
+
+    if (assetAtRet != null){
+      lines.push(`退休時資產約 <b>${fmt(assetAtRet)}</b> 萬元；模擬期間最低資產約 <b>${fmt(minAsset)}</b> 萬元。`);
+    }
+
+    if (firstRetRow){
+      const spend1 = firstRetRow.spend + firstRetRow.oneoff;
+      const income1 = firstRetRow.inflow;
+      const gap1 = Math.max(0, spend1 - income1);
+      const cover = (spend1 > 0) ? (income1 / spend1) : 0;
+
+      lines.push(`退休第1年：支出（含一次性）約 <b>${fmt(spend1)}</b> 萬/年；收入（含殖利若選現金流）約 <b>${fmt(income1)}</b> 萬/年。`);
+      lines.push(`收入覆蓋率約 <b>${(cover*100).toFixed(0)}%</b>；缺口約 <b>${fmt(gap1)}</b> 萬/年（約 ${(gap1/12).toFixed(1)} 萬/月）。`);
+
+      if (cover < 0.7) tips.push("收入覆蓋率偏低：優先處理「降低支出」或「提高可持續現金流」（年金/殖利/房租）。");
+      if (firstRetRow.oneoff > 0) tips.push("有一次性支出：建議在退休前預留專款或分攤到前幾年，避免單年抽血。");
+    }
+
+    if (!neverZero){
+      tips.push("此情境下會歸零：先嘗試延後退休 2 年或把支出下修 10%，再觀察是否翻轉。");
+      tips.push("也可把「固定比例提領」改成「adaptive / floor」，通常能顯著降低歸零風險（但支出可能波動）。");
+    }else{
+      tips.push("雖可行，仍建議切換「退休初期回撤」與「高通膨」確認抗壓性。");
+      tips.push("把三段期中的「退休前期」設更保守，是避免序列風險的關鍵。");
+    }
+
+    return { lines, tips };
   }
 
   function render(res){
@@ -561,19 +824,46 @@
     document.getElementById("kpiAssetRet").textContent = fmt(res.assetAtRet);
     document.getElementById("kpiMinAsset").textContent = fmt(res.minAsset);
     document.getElementById("kpiScore").textContent = res.score;
+    document.getElementById("kpiWR1").textContent = (res.wr1==null) ? "—" : (res.wr1*100).toFixed(1) + "%";
     document.getElementById("kpiNote").textContent = res.note;
+
+    // Advisor box
+    const adv = document.getElementById("advisorBox");
+    adv.style.display = "block";
+    adv.innerHTML = `
+      <b>顧問式結論（自動生成）</b>
+      <ul class="ul">${res.advisor.lines.map(s=>`<li>${s}</li>`).join("")}</ul>
+      <b style="display:block;margin-top:8px">下一步建議</b>
+      <ul class="ul">${res.advisor.tips.map(s=>`<li>${s}</li>`).join("")}</ul>
+    `;
 
     // message box
     msgBox.innerHTML = (res.score.includes("不及格"))
-      ? `<div class="warn"><b>提醒：</b>此情境下會出現資產歸零風險。先把「退休後支出」降低 10% 或「延後退休」2 年，再跑一次看看結論是否翻轉。</div>`
-      : `<div class="ok"><b>看起來可行：</b>此情境下可維持現金流。接著請切換壓力測試（退休初期回撤、序列風險）確認抗壓性。</div>`;
+      ? `<div class="warn"><b>提醒：</b>此情境下會出現資產歸零風險。先把「退休後支出」降低 10% 或「延後退休」2 年，或改用「固定比例提領 + adaptive/floor」再跑一次。</div>`
+      : `<div class="ok"><b>看起來可行：</b>此情境下可維持現金流。接著請切換壓力測試（退休初期回撤、高通膨、低成長）確認抗壓性。</div>`;
 
-    // Table
-    const tbody = document.querySelector("#tbl tbody");
-    tbody.innerHTML = "";
+    // Tables
+    const tbodyS = document.querySelector("#tblSimple tbody");
+    const tbodyF = document.querySelector("#tblFull tbody");
+    tbodyS.innerHTML = "";
+    tbodyF.innerHTML = "";
+
     rows.forEach(r=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
+      const trS = document.createElement("tr");
+      trS.innerHTML = `
+        <td>${r.age}</td>
+        <td>${fmt(r.begin)}</td>
+        <td>${fmt(r.spend + r.oneoff)}</td>
+        <td>${fmt(r.pensionOther)}</td>
+        <td>${fmt(r.cashYield)}</td>
+        <td>${fmt(r.withdraw)}</td>
+        <td>${fmt(r.end)}</td>
+        <td>${fmt(r.endReal)}</td>
+      `;
+      tbodyS.appendChild(trS);
+
+      const trF = document.createElement("tr");
+      trF.innerHTML = `
         <td>${r.age}</td>
         <td>${r.inflFactor}</td>
         <td>${fmt(r.begin)}</td>
@@ -586,8 +876,9 @@
         <td>${fmt(r.withdraw)}</td>
         <td>${fmt(r.end)}</td>
         <td>${fmt(r.endReal)}</td>
+        <td>${r.phase}</td>
       `;
-      tbody.appendChild(tr);
+      tbodyF.appendChild(trF);
     });
 
     // Charts
@@ -595,13 +886,12 @@
     const assetsNom = rows.map(r=>r.end);
     const assetsReal = rows.map(r=>r.endReal);
 
-    // income vs spend（退休後）
     const retRows = rows.filter(r=>r.spend > 0 || r.pensionOther > 0 || r.oneoff > 0);
     const labelsRet = retRows.map(r=>String(r.age));
     const spendRet = retRows.map(r=>r.spend + r.oneoff);
-    const incomeRet = retRows.map(r=>r.pensionOther + (document.getElementById("yieldAsCashflowAfter").value==="yes" ? r.cashYield : 0));
+    const yieldAsCash = (document.getElementById("yieldAsCashflowAfter").value==="yes");
+    const incomeRet = retRows.map(r=>r.pensionOther + (yieldAsCash ? r.cashYield : 0));
 
-    // destroy old
     if (assetChart) assetChart.destroy();
     if (flowChart) flowChart.destroy();
 
@@ -618,7 +908,7 @@
         responsive: true,
         plugins: { legend: { display: true } },
         scales: {
-          y: { ticks: { callback: (v)=> v.toLocaleString("zh-Hant") } }
+          y: { ticks: { callback: (v)=> Number(v).toLocaleString("zh-Hant") } }
         }
       }
     });
@@ -636,15 +926,13 @@
         responsive: true,
         plugins: { legend: { display: true } },
         scales: {
-          y: { ticks: { callback: (v)=> v.toLocaleString("zh-Hant") } }
+          y: { ticks: { callback: (v)=> Number(v).toLocaleString("zh-Hant") } }
         }
       }
     });
   }
 
-  document.getElementById("btnRun").addEventListener("click", ()=>{
-    render(simulate());
-  });
+  document.getElementById("btnRun").addEventListener("click", ()=> render(simulate()));
 
   document.getElementById("btnCSV").addEventListener("click", ()=>{
     if (!lastRows || lastRows.length === 0){
