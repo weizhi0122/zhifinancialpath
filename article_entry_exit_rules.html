@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>進場、加碼、停損、退出：投資決策樹｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="把投資從情緒變成規則：用估值區間、基本面與風險事件建立決策樹，定義進場、加碼、停損、退出的條件。">
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.95}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:980px;margin:auto;padding:30px 20px 90px}
+h1,h2,h3{color:#0b3d91}
+.sub{color:#555;max-width:920px}
+.card{background:#fff;padding:18px;border-radius:14px;margin:16px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:14px 16px;margin:16px 0;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+.warn{border-left-color:#d33}
+.hr{margin:28px 0;border:none;border-top:1px solid #e6e8ee}
+.small{color:#666;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-size:14px}
+.btn:hover{opacity:.92}
+.btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{margin:0 12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:15px;">回主頁</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>進場、加碼、停損、退出：投資決策樹</h1>
+  <p class="sub">
+    大多數人不是輸在選股，而是輸在「沒有規則」。<br>
+    這篇把投資變成可執行的決策樹：你只要照流程，就能避免情緒化進出場。
+  </p>
+
+  <div class="note">
+    <b>先定義四個詞（避免混亂）：</b><br>
+    ① <b>價格錯</b>：你買太貴（估值與安全邊際不滿足）<br>
+    ② <b>假設錯</b>：成長/競爭優勢的前提不成立（基本面崩）<br>
+    ③ <b>時間錯</b>：好公司遇到短期景氣/情緒回撤（可等）<br>
+    ④ <b>結構錯</b>：你槓桿/部位太大，扛不住波動（配置錯）
+  </div>
+
+  <hr class="hr">
+
+  <h2>一、進場前一定要先做的 3 件事</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>1｜先定「合理價區間」</h3>
+      <p class="small">你至少要有：合理價（基準）＋安全邊際進場價。</p>
+      <div class="btnrow">
+        <a class="btn ghost" href="./article_fair_value_range.html">回：合理價區間</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>2｜寫下「投資假設」3 句話</h3>
+      <p class="small">
+        例：<br>
+        (a) 它的競爭力是什麼？<br>
+        (b) 盈餘/現金流成長靠什麼？<br>
+        (c) 什麼事件會證明我錯？
+      </p>
+    </div>
+    <div class="card">
+      <h3>3｜定義「部位上限」</h3>
+      <p class="small">
+        你的部位大小要讓你能扛住回撤，而不是看你多看好它。<br>
+        你扛不住，最終會在低點賣掉。
+      </p>
+    </div>
+  </div>
+
+  <hr class="hr">
+
+  <h2>二、決策樹：什麼情況該「買」？</h2>
+  <div class="card">
+    <p><b>買進條件（至少同時滿足 2/3）：</b></p>
+    <ul>
+      <li><b>價格</b>：落在安全邊際進場區（而非「剛好跌了」）</li>
+      <li><b>品質</b>：現金流支持盈餘、同業位置不差</li>
+      <li><b>風險</b>：你能扛住 20%～30% 回撤，不需要槓桿</li>
+    </ul>
+    <div class="note warn">
+      <b>提醒：</b>若你「必須加槓桿」才能買到想要的報酬，通常代表你買太貴或配置錯。
+    </div>
+  </div>
+
+  <h2>三、什麼情況可以「加碼」？</h2>
+  <div class="card">
+    <p><b>加碼只做兩種：</b></p>
+    <ul>
+      <li><b>好消息加碼</b>：公司基本面被驗證（假設更強），但價格仍在合理區間</li>
+      <li><b>錯殺加碼</b>：市場情緒下跌，但你的「假設沒有被推翻」</li>
+    </ul>
+    <p class="small">
+      加碼前問自己：<br>
+      你是在「把成功的假設放大」，還是在「用加碼安撫焦慮」？
+    </p>
+  </div>
+
+  <hr class="hr">
+
+  <h2>四、停損不是「跌了就賣」：你要分兩種損</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>情緒停損（不該發生）</h3>
+      <p class="small">
+        因為波動太大睡不著而賣。<br>
+        這通常不是股票問題，是「部位/槓桿」問題。
+      </p>
+      <div class="btnrow">
+        <a class="btn ghost" href="./article_asset_allocation.html">回：資產配置</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>假設停損（應該要有）</h3>
+      <p class="small">
+        當你的核心假設被證偽，你應該離場。<br>
+        例：毛利長期下滑、現金流轉負且不可逆、競爭格局被改寫。
+      </p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>顧問式停損句型：</b><br>
+    「我不是因為跌而賣，我是因為我原本相信的前提不成立。」
+  </div>
+
+  <hr class="hr">
+
+  <h2>五、退出：兩個理由最乾淨</h2>
+  <div class="card">
+    <ul>
+      <li><b>價格回到甚至超過你估值上緣</b>（尤其是情緒溢價）</li>
+      <li><b>更好的機會出現</b>：你資金有限，應該移到報酬/風險更佳的地方</li>
+    </ul>
+    <p class="small">
+      退出不是失敗。<br>
+      你是在做資本配置，而不是談戀愛。
+    </p>
+
+    <div class="btnrow">
+      <a class="btn" href="./article_rates_fx_macro.html">下一篇：利率匯率與產業 →</a>
+      <a class="btn ghost" href="./library.html#invest">回投資分類</a>
+    </div>
+  </div>
+
+  <div class="footer-links">
+    <a href="./library.html">← 回知識庫</a>
+    <a href="./index.html">回主頁</a>
+  </div>
+</div>
+
+</body>
+</html>
