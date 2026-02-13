@@ -4,74 +4,79 @@
   <meta charset="UTF-8" />
   <title>保單健檢清單｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="保單健檢清單：把你要問業務/顧問的問題整理成可直接對話的稿，並可匯出摘要。" />
   <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:14px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
-    .container{max-width:1000px;margin:auto;padding:28px 20px}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-    h2{margin:0 0 10px}
-    .muted{font-size:13px;color:#666;line-height:1.5}
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333;line-height:1.8}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:1000px;margin:auto;padding:26px 20px 70px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+    h2{margin:0 0 10px;color:#0b3d91}
+    .muted{font-size:13px;color:#666;line-height:1.6}
     .group{margin:14px 0}
     .item{display:flex;gap:10px;align-items:flex-start;margin:10px 0}
     .item input{margin-top:3px}
-    textarea{width:100%;min-height:90px;padding:10px;border:1px solid #d7dbe6;border-radius:10px}
+    textarea{width:100%;min-height:100px;padding:10px;border:1px solid #d7dbe6;border-radius:10px}
     .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .btn{background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
     .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-    .result{margin-top:12px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91;white-space:pre-wrap}
-    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
-    a{color:#0b3d91;text-decoration:none}
+    .result{margin-top:12px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91;white-space:pre-wrap}
+    .note{margin-top:12px;background:#fff;border:1px solid #e6e8ee;border-radius:12px;padding:12px}
   </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./path.html">學習路徑</a>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>保單健檢清單</h1>
-  <p class="muted">這份清單的目標：把你「要問的問題」整理出來。不是推任何商品，教育用途。</p>
+  <h1 style="color:#0b3d91;margin:0 0 10px;">保單健檢清單</h1>
+  <p class="muted">目標：不是叫你立刻解約或加保，而是先把「你要問的問題」整理出來。這份清單會產出一份可直接複製的提問稿。</p>
 
   <div class="card">
-    <h2>1) 保障地基（先不翻車）</h2>
+    <h2 style="font-size:18px;">1) 保障地基（先不翻車）</h2>
     <div class="group" id="g1">
-      <div class="item"><input type="checkbox"><div>我知道自己最怕的風險是什麼（醫療、失能、身故、意外）。</div></div>
-      <div class="item"><input type="checkbox"><div>我有「緊急預備金」，不靠保單解約金救急。</div></div>
-      <div class="item"><input type="checkbox"><div>我能說出每張保單的用途（不是只知道「月繳多少」）。</div></div>
+      <div class="item"><input type="checkbox"><div>我知道家庭最怕的風險是什麼（醫療、失能、身故、意外、長照）。</div></div>
+      <div class="item"><input type="checkbox"><div>我有緊急預備金，不會靠解約金救急。</div></div>
+      <div class="item"><input type="checkbox"><div>我能說出每張保單「它在處理哪個風險」。</div></div>
     </div>
 
-    <h2 style="margin-top:18px;">2) 常見浪費（高機率踩雷）</h2>
+    <h2 style="font-size:18px;margin-top:18px;">2) 常見浪費（高機率踩雷）</h2>
     <div class="group" id="g2">
-      <div class="item"><input type="checkbox"><div>我確認沒有買到功能重疊的保障（例如多張類似醫療/意外）。</div></div>
-      <div class="item"><input type="checkbox"><div>我確認沒有把「投資/儲蓄型」當成主要保障來源。</div></div>
-      <div class="item"><input type="checkbox"><div>我知道哪些是主約、哪些是附約，取消會影響哪些保障。</div></div>
+      <div class="item"><input type="checkbox"><div>我確認沒有買到功能重疊的保障（多張類似醫療/意外）。</div></div>
+      <div class="item"><input type="checkbox"><div>我確認沒有把儲蓄/分紅型當成主要保障來源。</div></div>
+      <div class="item"><input type="checkbox"><div>我知道哪些是主約/附約，調整會影響哪些保障。</div></div>
     </div>
 
-    <h2 style="margin-top:18px;">3) 你要問業務/顧問的問題</h2>
-    <p class="muted">下面填完後按「生成問題清單」，你就有一份帶去問的稿。</p>
-    <label class="muted">你的家庭狀況（選填）</label>
-    <textarea id="profile" placeholder="例：已婚/有小孩、主要收入來源、房貸壓力、想守住家庭基本生活..."></textarea>
+    <h2 style="font-size:18px;margin-top:18px;">3) 你的狀況（幫你生成更精準的問題）</h2>
+    <p class="muted">把你家的「責任與壓力」寫出來，提問才會更像顧問式對話。</p>
+    <textarea id="profile" placeholder="例：已婚/2小孩、主要收入者、房貸每月6萬、希望重大風險不要讓家庭現金流斷..."></textarea>
 
     <div class="btnrow">
-      <button class="btn" onclick="gen()">生成問題清單</button>
-      <button class="btn ghost" onclick="resetAll()">清除勾選/內容</button>
+      <button class="btn" onclick="gen()">生成提問稿</button>
+      <button class="btn ghost" onclick="copyOut()">複製提問稿</button>
+      <button class="btn ghost" onclick="resetAll()">清除</button>
     </div>
 
     <div id="out" class="result" style="display:none;"></div>
-  </div>
 
-  <footer><a href="./disclaimer.html">免責聲明</a></footer>
+    <div class="note">
+      <b>只在這個工具放「閉環」：</b>
+      如果你想把保單資料結構化（更像顧問做法），下一步再去填表單。<br>
+      <div class="btnrow" style="margin-top:10px;">
+        <a class="btn" href="./tool_insurance_form.html">進入保單健診表單入口</a>
+        <a class="btn ghost" href="./tool_emergency_fund.html">先做預備金</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -81,20 +86,20 @@ function gen(){
   const profile = document.getElementById('profile').value.trim();
 
   const lines = [];
-  lines.push('【保單健檢提問清單】');
+  lines.push('【保單健檢提問稿】');
   if(profile) lines.push('我的狀況：' + profile);
   lines.push('');
-  lines.push('A. 保障結構');
-  lines.push('- 我目前醫療/意外/失能/壽險各自的目的與保額是多少？是否符合家庭責任？');
-  lines.push('- 如果發生重大事件（住院/失能/身故），家裡「每月現金流」可以撐多久？缺口是多少？');
+  lines.push('A. 保障結構（先談風險，不談商品）');
+  lines.push('- 我目前醫療/意外/失能/壽險各自「在處理哪個風險」？保額是否對應家庭責任？');
+  lines.push('- 若發生重大事件（住院/失能/身故），家裡每月現金流能撐多久？缺口是多少？');
   lines.push('');
-  lines.push('B. 重複與浪費');
-  lines.push('- 我是否有保障功能重疊？哪些可以調整以降低保費、提高有效保額？');
-  lines.push('- 哪些保單是投資/儲蓄性質？我是否不小心把它當保障？');
+  lines.push('B. 重複與浪費（把保費變有效保額）');
+  lines.push('- 哪些保障功能重疊？哪些可調整以降低保費、把資源集中到重大風險？');
+  lines.push('- 哪些保單偏儲蓄/分紅？我是否不小心把它當保障？');
   lines.push('');
-  lines.push('C. 取消/調整影響');
-  lines.push('- 哪些是主約/附約？如果調整/停繳，會影響哪些保障？');
-  lines.push('- 有沒有更簡單、透明的方式達成同等保障？（例如把保障與投資分開）');
+  lines.push('C. 調整影響（避免亂動翻車）');
+  lines.push('- 哪些是主約/附約？若停繳/調整，會影響哪些保障？');
+  lines.push('- 有沒有更透明的方式達成同等保障？（例如保障與投資分離）');
   lines.push('');
   lines.push('（我的自評）');
   lines.push('- 保障地基完成度：' + checked1 + '/3');
@@ -105,6 +110,12 @@ function gen(){
   out.textContent = lines.join('\n');
 }
 
+function copyOut(){
+  const out = document.getElementById('out');
+  if(out.style.display==='none'){ alert('請先生成提問稿'); return; }
+  navigator.clipboard.writeText(out.textContent).then(()=>alert('已複製到剪貼簿'));
+}
+
 function resetAll(){
   document.querySelectorAll('input[type=checkbox]').forEach(x=>x.checked=false);
   document.getElementById('profile').value = '';
@@ -113,4 +124,3 @@ function resetAll(){
 </script>
 </body>
 </html>
-
