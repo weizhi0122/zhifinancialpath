@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>決策工具中心｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="從風險保障、現金流、負債控制、資產配置、退休規劃到傳承架構的完整決策工具中心。">
+  <meta charset="UTF-8">
+  <title>工具｜智 Financial Path</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="財商工具：風險屬性測驗、緊急預備金、負債排序、保單健檢與健診表單、退休缺口與退休現金流模擬、遺產稅/贈與稅/繼承比例試算。">
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
+    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0;z-index:10}
+    .nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
+    .links{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    .links a{color:#333;text-decoration:none;padding:6px 8px;border-radius:10px}
+    .links a:hover{color:#0b3d91;background:#f3f6ff}
 
-<style>
-body{font-family:Arial,sans-serif;margin:0;background:#f6f8fb;color:#333}
-.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0;z-index:999}
-.nav-inner{max-width:1200px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:700;color:#0b3d91;text-decoration:none}
-.links a{margin-left:18px;color:#333;text-decoration:none}
-.links a:hover{color:#0b3d91}
+    .container{max-width:1100px;margin:auto;padding:34px 20px}
+    h1{margin:0 0 10px}
+    .sub{color:#666;margin:0 0 22px;line-height:1.6}
 
-.container{max-width:1200px;margin:auto;padding:36px 20px}
-h1{margin:0 0 10px}
-.section-title{margin-top:45px;margin-bottom:15px;color:#0b3d91}
-.sub{color:#666;margin-bottom:25px}
+    .section-title{margin:26px 0 10px;color:#0b3d91;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .pill{display:inline-block;background:#eef4ff;color:#0b3d91;padding:4px 10px;border-radius:999px;font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
-.card{background:#fff;border-radius:14px;padding:22px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
-.tag{display:inline-block;background:#eef4ff;color:#0b3d91;padding:5px 11px;border-radius:999px;font-size:12px;margin-bottom:12px}
-.muted{font-size:14px;color:#555;line-height:1.6}
-.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 15px;border-radius:10px;text-decoration:none;font-size:14px}
-.btn:hover{opacity:.92}
-.btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+    .tag{display:inline-block;background:#eef4ff;color:#0b3d91;padding:4px 10px;border-radius:999px;font-size:12px;margin-bottom:10px}
+    .muted{font-size:13px;color:#666;line-height:1.6}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-size:14px}
+    .btn:hover{opacity:.92}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
 
-.highlight{background:#f0f4ff;border-left:4px solid #0b3d91;padding:12px;border-radius:12px;margin-bottom:30px}
+    .flow{background:#fff;border:1px solid #e6e8ee;border-radius:14px;padding:16px;margin-top:16px}
+    .flow h3{margin:0 0 10px;color:#0b3d91}
+    .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .step{background:#f7f9ff;border:1px solid #dfeaff;border-radius:12px;padding:12px}
+    .step b{color:#0b3d91}
+    .step .small{font-size:13px;color:#666;line-height:1.55;margin-top:6px}
+    .step .links{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+    .step .links a{font-size:13px;padding:8px 10px;border-radius:10px;text-decoration:none}
+    .step .links a.primary{background:#0b3d91;color:#fff}
+    .step .links a.secondary{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
 
-footer{margin-top:50px;padding:25px;text-align:center;color:#777}
-a{color:#0b3d91;text-decoration:none}
-a:hover{text-decoration:underline}
-</style>
+    footer{margin-top:26px;padding:18px;text-align:center;color:#777;font-size:13px}
+    a{color:#0b3d91;text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
 </head>
-
 <body>
 
 <nav class="nav">
@@ -44,7 +54,7 @@ a:hover{text-decoration:underline}
     <div class="links">
       <a href="./path.html">學習路徑</a>
       <a href="./library.html">知識庫</a>
-      <a href="./tools.html">決策工具</a>
+      <a href="./tools.html">工具</a>
       <a href="./cases.html">案例</a>
       <a href="./about.html">關於我們</a>
     </div>
@@ -52,124 +62,249 @@ a:hover{text-decoration:underline}
 </nav>
 
 <div class="container">
-  <h1>決策工具中心</h1>
-  <p class="sub">從「安全邊界」到「資產傳承」的完整實作工具，全部可在網站內完成。</p>
+  <h1>工具</h1>
+  <p class="sub">
+    把觀念變成可執行的行動：測驗、清單、計算器、模擬工具。<br>
+    所有試算皆為教育用途；真正的價值在於「你能不能用它做決策」。
+  </p>
 
-  <div class="highlight">
-  工具不是用來給你答案，而是讓你看清風險、現金流與決策影響。
+  <!-- 顧問式導引：安全邊界 -->
+  <div class="flow">
+    <h3>顧問式導引：先做安全邊界，再做成長 <span class="pill">建議順序</span></h3>
+    <div class="steps">
+      <div class="step">
+        <b>Step 1｜預備金</b>
+        <div class="small">先確保「突發事件不翻車」。你要的是可撐住現金流的月份，而不是一個漂亮數字。</div>
+        <div class="links">
+          <a class="primary" href="./tool_emergency_fund.html">預備金計算</a>
+          <a class="secondary" href="./library.html">讀觀念</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 2｜負債排序</b>
+        <div class="small">先止血（高利/違約風險）再減壓（月付壓力），最後才談效率（低利長期負債）。</div>
+        <div class="links">
+          <a class="primary" href="./tool_debt_priority.html">負債優先順序</a>
+          <a class="secondary" href="./library.html">讀觀念</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 3｜保單結構</b>
+        <div class="small">把資源從「低效浪費」移到「極端風險」。先用清單整理問題，再用表單把資料結構化。</div>
+        <div class="links">
+          <a class="primary" href="./tool_insurance_checklist.html">清單健檢</a>
+          <a class="secondary" href="./tool_insurance_form.html">填表單閉環</a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- 一、安全邊界 -->
-  <h2 class="section-title">一、安全邊界：保障與風險架構</h2>
+  <!-- 顧問式導引：退休 -->
+  <div class="flow">
+    <h3>顧問式導引：退休不是一個數字，而是一條現金流曲線 <span class="pill">退休模型</span></h3>
+    <div class="steps">
+      <div class="step">
+        <b>Step 1｜快速缺口</b>
+        <div class="small">先抓方向感：年度缺口大概多少、提領率敏感度多高。</div>
+        <div class="links">
+          <a class="primary" href="./tool_retirement_gap.html">快速缺口</a>
+          <a class="secondary" href="./library.html#retire">讀架構</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 2｜現金流模擬（主工具）</b>
+        <div class="small">把通膨、年金、被動收益與提領補洞放進同一張表，並做壓力測試。</div>
+        <div class="links">
+          <a class="primary" href="./tool_retirement_cashflow.html">現金流模擬</a>
+          <a class="secondary" href="./tool_retirement_pro.html">專業入口</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- 顧問式導引：資產傳承 -->
+  <div class="flow">
+    <h3>顧問式導引：資產傳承先治理、再公平、最後才節稅 <span class="pill">傳承系統</span></h3>
+    <div class="steps">
+      <div class="step">
+        <b>Step 1｜先盤點（資訊風險）</b>
+        <div class="small">很多家庭不是缺工具，是缺資料。先把資產/負債/文件集中，避免未來爭議。</div>
+        <div class="links">
+          <a class="primary" href="./tool_asset_inventory.html">資產盤點</a>
+          <a class="secondary" href="./library.html#inherit">讀傳承</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 2｜繼承比例（應繼分/特留分）</b>
+        <div class="small">先算「法律底線」，你才知道遺囑能做到哪裡、哪些安排會踩到特留分。</div>
+        <div class="links">
+          <a class="primary" href="./tool_inheritance_ratio.html">繼承比例試算</a>
+          <a class="secondary" href="./library.html#inherit">讀比例邏輯</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 3｜估稅：遺產稅</b>
+        <div class="small">先用架構算出稅負大概落點，再決定要不要做更進階的工具配置。</div>
+        <div class="links">
+          <a class="primary" href="./tool_estate_tax.html">遺產稅試算</a>
+          <a class="secondary" href="./library.html#inherit">讀稅務架構</a>
+        </div>
+      </div>
+      <div class="step">
+        <b>Step 4｜分年策略：贈與稅</b>
+        <div class="small">贈與不是只有節稅，還包含控制權、婚姻債務風險與你自己的退休安全。</div>
+        <div class="links">
+          <a class="primary" href="./tool_gift_tax.html">贈與稅試算</a>
+          <a class="secondary" href="./library.html#inherit">讀贈與策略</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具總覽：診斷入口 -->
+  <div class="section-title">
+    <h2 style="margin:0;">診斷入口</h2>
+    <span class="pill">快速開始</span>
+  </div>
   <div class="grid">
     <div class="card">
-      <div class="tag">保障盤點</div>
-      <h3>保單健檢清單</h3>
-      <p class="muted">檢查是否重複投保、保額不足、儲蓄型錯置資金。</p>
+      <div class="tag">入口</div>
+      <h3>風險屬性測驗</h3>
+      <p class="muted">用 1 分鐘建立你能承受的回撤範圍。後續配置與紀律才有基準。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_insurance_checklist.html">開始健檢</a>
+        <a class="btn" href="./tool_risk_quiz.html">開始測驗</a>
+        <a class="btn ghost" href="./path.html">去學習路徑</a>
       </div>
     </div>
 
     <div class="card">
-      <div class="tag">預備金模型</div>
+      <div class="tag">重點工具</div>
+      <h3>保單健診表單（含閉環）</h3>
+      <p class="muted">填表把資訊結構化 → 回到 LINE 取得解析動線（適用需要個人化推演的情境）。</p>
+      <div class="btnrow">
+        <a class="btn" href="./tool_insurance_form.html">進入表單入口</a>
+        <a class="btn ghost" href="./tool_insurance_checklist.html">先做清單</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tag">主工具</div>
+      <h3>退休現金流模擬（圖表＋明細）</h3>
+      <p class="muted">把通膨、年金、被動收益與提領補洞整合，做壓力測試並輸出明細。</p>
+      <div class="btnrow">
+        <a class="btn" href="./tool_retirement_cashflow.html">開始模擬</a>
+        <a class="btn ghost" href="./tool_retirement_gap.html">快速缺口</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具總覽：安全邊界與現金流 -->
+  <div class="section-title">
+    <h2 style="margin:0;">安全邊界與現金流</h2>
+    <span class="pill">先穩再成長</span>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="tag">工具</div>
       <h3>緊急預備金計算器</h3>
-      <p class="muted">依家庭責任與收入風險，計算建議安全現金池。</p>
+      <p class="muted">必要支出 × 建議月份，再依收入穩定度與家庭責任調整。</p>
       <div class="btnrow">
         <a class="btn" href="./tool_emergency_fund.html">開始計算</a>
+        <a class="btn ghost" href="./library.html">讀觀念</a>
       </div>
     </div>
-  </div>
 
-  <!-- 二、現金流與負債 -->
-  <h2 class="section-title">二、現金流與負債管理</h2>
-
-  <div class="grid">
     <div class="card">
-      <div class="tag">負債排序</div>
+      <div class="tag">工具</div>
       <h3>負債優先順序判斷</h3>
-      <p class="muted">結合利率、心理壓力與現金流衝擊判斷先還誰。</p>
+      <p class="muted">用利率、月付壓力、違約/信用風險排序，避免「越還越窮」。</p>
       <div class="btnrow">
         <a class="btn" href="./tool_debt_priority.html">開始判斷</a>
+        <a class="btn ghost" href="./library.html">讀觀念</a>
       </div>
     </div>
 
     <div class="card">
-      <div class="tag">現金流壓力測試</div>
-      <h3>家庭現金流壓力模擬</h3>
-      <p class="muted">若失業 6 個月、利率上升 1%、支出增加 10%，會發生什麼？</p>
+      <div class="tag">工具</div>
+      <h3>保單健檢清單（可匯出摘要）</h3>
+      <p class="muted">把你要問的問題整理成提問稿，先談結構，不談商品。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_cashflow_stress.html">模擬壓力</a>
+        <a class="btn" href="./tool_insurance_checklist.html">開始健檢</a>
+        <a class="btn ghost" href="./tool_insurance_form.html">填表單閉環</a>
       </div>
     </div>
   </div>
 
-  <!-- 三、投資決策 -->
-  <h2 class="section-title">三、投資決策系統</h2>
-
+  <!-- 工具總覽：資產與退休 -->
+  <div class="section-title">
+    <h2 style="margin:0;">資產與退休</h2>
+    <span class="pill">用現金流說話</span>
+  </div>
   <div class="grid">
     <div class="card">
-      <div class="tag">估值模型</div>
-      <h3>合理價值試算（含安全邊際）</h3>
-      <p class="muted">輸入 EPS、成長率與折現率，計算合理進場區間。</p>
+      <div class="tag">工具</div>
+      <h3>家庭資產盤點表（可匯出文字）</h3>
+      <p class="muted">集中帳戶、投資、保單、不動產、負債、重要文件，降低「資訊風險」。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_intrinsic_value.html">開始試算</a>
+        <a class="btn" href="./tool_asset_inventory.html">開始整理</a>
+        <a class="btn ghost" href="./library.html#inherit">回傳承</a>
       </div>
     </div>
 
     <div class="card">
-      <div class="tag">資產配置</div>
-      <h3>資產配置風險模型</h3>
-      <p class="muted">模擬股債比例改變時的波動與回撤風險。</p>
+      <div class="tag">工具</div>
+      <h3>退休缺口估算（快速版）</h3>
+      <p class="muted">用年度缺口 ÷ 提領率反推退休資產需求，先抓方向感。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_asset_allocation.html">開始配置</a>
+        <a class="btn" href="./tool_retirement_gap.html">開始試算</a>
+        <a class="btn ghost" href="./tool_retirement_cashflow.html">進階模擬</a>
       </div>
     </div>
 
     <div class="card">
-      <div class="tag">三大報表</div>
-      <h3>財報健康檢核工具</h3>
-      <p class="muted">輸入營收、淨利、負債比、流動比，快速生成評級。</p>
+      <div class="tag">整合</div>
+      <h3>專業退休規劃（入口）</h3>
+      <p class="muted">統一用「退休現金流模擬」為主工具，避免兩套工具互相矛盾。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_financial_ratio.html">開始檢核</a>
+        <a class="btn" href="./tool_retirement_pro.html">進入</a>
+        <a class="btn ghost" href="./library.html#retire">讀架構</a>
       </div>
     </div>
   </div>
 
-  <!-- 四、退休規劃 -->
-  <h2 class="section-title">四、退休現金流規劃</h2>
-
-  <div class="grid">
-    <div class="card">
-      <div class="tag">完整模型</div>
-      <h3>專業退休規劃分析</h3>
-      <p class="muted">含通膨調整、壓力測試、資產耗盡時間、準備度評分。</p>
-      <div class="btnrow">
-        <a class="btn" href="./tool_retirement_cashflow.html">開始分析</a>
-      </div>
-    </div>
+  <!-- 工具總覽：資產傳承 -->
+  <div class="section-title">
+    <h2 style="margin:0;">資產傳承</h2>
+    <span class="pill">治理 × 稅務 × 公平</span>
   </div>
-
-  <!-- 五、資產傳承 -->
-  <h2 class="section-title">五、資產傳承與稅務架構</h2>
-
   <div class="grid">
     <div class="card">
-      <div class="tag">應繼分/特留分</div>
-      <h3>繼承比例試算</h3>
-      <p class="muted">模擬不同繼承人組合下，法律保障比例。</p>
+      <div class="tag">工具</div>
+      <h3>繼承比例試算（應繼分 / 特留分）</h3>
+      <p class="muted">先算法律底線，你才知道遺囑能做到哪裡、哪些安排會踩到特留分。</p>
       <div class="btnrow">
-        <a class="btn" href="./tool_inheritance_share.html">開始試算</a>
+        <a class="btn" href="./tool_inheritance_ratio.html">開始試算</a>
+        <a class="btn ghost" href="./library.html#inherit">讀解析</a>
       </div>
     </div>
 
     <div class="card">
-      <div class="tag">遺產/贈與稅</div>
-      <h3>遺產與贈與稅試算</h3>
-      <p class="muted">依 115 年最新免稅額與級距試算應納稅額。</p>
+      <div class="tag">115年</div>
+      <h3>遺產稅試算工具</h3>
+      <p class="muted">含免稅額、扣除額與級距，估算稅負落點，再決定工具策略。</p>
       <div class="btnrow">
         <a class="btn" href="./tool_estate_tax.html">開始試算</a>
+        <a class="btn ghost" href="./library.html#inherit">讀架構</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tag">115年</div>
+      <h3>贈與稅試算工具</h3>
+      <p class="muted">用分年節奏降低失誤成本，並把控制權與家庭風險一起納入。</p>
+      <div class="btnrow">
+        <a class="btn" href="./tool_gift_tax.html">開始試算</a>
+        <a class="btn ghost" href="./library.html#inherit">讀策略</a>
       </div>
     </div>
   </div>
@@ -177,7 +312,7 @@ a:hover{text-decoration:underline}
   <footer>
     <a href="./disclaimer.html">免責聲明</a>
   </footer>
-
 </div>
+
 </body>
 </html>
