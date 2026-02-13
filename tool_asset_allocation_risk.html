@@ -3,149 +3,327 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>資產配置風險模型｜智 Financial Path</title>
-<meta name="description" content="模擬股債現金配置比例改變時的波動、回撤與壓力測試，並視覺化風險-報酬。">
+<title>資產配置風險模型（進階）｜智 Financial Path</title>
+<meta name="description" content="含再平衡、投入/提領、蒙地卡羅路徑與壓力測試：讓配置決策更接近真實人生。">
+
+<!-- Chart.js CDN（純前端，GitHub Pages 可用） -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
 <style>
-  body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
-  .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
-  .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
-  .container{max-width:980px;margin:auto;padding:26px 20px 90px}
-  h1,h2{color:#0b3d91;margin:0 0 10px}
-  .sub{color:#555;margin:0 0 18px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-  .card{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
-  label{display:block;font-size:13px;color:#555;margin:10px 0 6px}
-  input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#223; --muted:#6b7280;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --shadow:0 10px 22px rgba(16,24,40,.06); --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#333;line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1120px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .topbar a:hover{text-decoration:underline}
+
+  .container{max-width:1120px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:420px 1fr;gap:14px;align-items:start}
+  @media(max-width:980px){ .grid{grid-template-columns:1fr} }
+
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px}
+  label{display:block;font-size:13px;color:#475569;margin:10px 0 6px}
+  input,select{width:100%;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  input:focus,select:focus{outline:2px solid #cfe0ff;border-color:#cfe0ff}
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:520px){ .row2,.row3{grid-template-columns:1fr} }
+
   .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  button{border:0;border-radius:12px;padding:10px 14px;background:#0b3d91;color:#fff;cursor:pointer;font-size:14px}
-  button.secondary{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+  .btn{border:0;border-radius:12px;padding:10px 14px;background:var(--primary);color:#fff;cursor:pointer;font-size:14px}
+  .btn.secondary{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .btn:hover{opacity:.92}
+
   .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
   .kpi .box{background:#f7f9ff;border:1px solid #dfeaff;border-radius:14px;padding:12px}
-  .kpi .box b{color:#0b3d91}
+  .kpi .box b{color:var(--primary)}
   .small{font-size:13px;color:#666}
-  canvas{width:100%;height:320px;background:#fff;border-radius:14px;border:1px solid #e6e8ee}
-  .note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(0,0,0,.04);margin-top:12px}
-  .footer-links{text-align:center;margin-top:26px}
-  .footer-links a{margin:0 10px}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+  .note{background:#fff;border-left:4px solid var(--primary);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-top:12px}
+  .warn{background:#fff4f4;border-left:4px solid #d92c2c;border-radius:14px;padding:12px 14px;margin-top:12px}
+  .ok{background:#f1fff5;border-left:4px solid #15a34a;border-radius:14px;padding:12px 14px;margin-top:12px}
+
+  canvas{background:#fff;border-radius:14px;border:1px solid var(--line)}
+  .charts{display:grid;grid-template-columns:1fr;gap:14px}
+
+  .tablewrap{overflow:auto;border-radius:14px;border:1px solid var(--line)}
+  table{border-collapse:collapse;width:100%;min-width:980px;background:#fff}
+  th,td{padding:10px 10px;border-bottom:1px solid #eef1f6;text-align:right;font-size:13px;white-space:nowrap}
+  th{text-align:right;background:#f7f9fd;color:var(--primary);position:sticky;top:0}
+  td:first-child, th:first-child{text-align:left}
+
+  details{background:#fff;border:1px solid #edf0f6;border-radius:14px;padding:10px 12px;margin-top:12px}
+  summary{cursor:pointer;color:#111827;font-weight:700}
+  .help ul{margin:8px 0 0 18px}
 </style>
 </head>
+
 <body>
   <div class="topbar">
     <div class="inner">
       <a href="javascript:history.back()">← 回上頁</a>
-      <div>
-        <a href="./index.html" style="margin-right:12px;">回主頁</a>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">回工具</a>
+        <a href="./index.html">回主頁</a>
         <a href="./library.html">知識庫</a>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <h1>資產配置風險模型</h1>
-    <p class="sub">你不是在追求最高報酬，而是在設計一個<strong>遇到壞情境也不會崩潰</strong>的配置。</p>
+    <h1>資產配置風險模型（進階）</h1>
+    <p class="sub">
+      這版把「現實會發生的事」加進來：<b>再平衡</b>、<b>投入/提領</b>、<b>壓力測試</b>、<b>蒙地卡羅路徑</b>。
+      你會看到：同一組配置，在不同壞情境下會不會崩。
+    </p>
 
     <div class="grid">
+      <!-- LEFT: Inputs -->
       <div class="card">
-        <h2 style="margin-top:0">配置比例（%）</h2>
-        <div class="row3">
-          <div>
-            <label>股票</label>
-            <input id="wE" type="number" step="1" value="60">
-          </div>
-          <div>
-            <label>債券</label>
-            <input id="wB" type="number" step="1" value="35">
-          </div>
-          <div>
-            <label>現金</label>
-            <input id="wC" type="number" step="1" value="5">
+        <h2 style="margin-top:0">輸入</h2>
+
+        <div class="note help">
+          <span class="badge">如何找資料填入？（必看）</span>
+          <ul>
+            <li><b>預期報酬（%）</b>：用長期年化「合理區間」即可，別用今年/單一年。</li>
+            <li><b>波動（%）</b>：用指數/ETF 的長期年化波動區間（常見：股 15~20%、債 4~8%、現金 ~0）。</li>
+            <li><b>相關係數</b>：股債長期多在 -0.2~+0.3 之間（危機時可能變正、保守可填 +0.2）。</li>
+            <li><b>資料去哪找？</b>
+              <ul>
+                <li>股票：用大盤（如 S&P 500 或全球股市 ETF）看長期年化報酬/波動。</li>
+                <li>債券：用中長天期公債/綜合債 ETF（注意：利率急升年會很差）。</li>
+                <li>現金：可用「無風險利率」或定存/貨幣市場基金的合理區間。</li>
+              </ul>
+            </li>
+            <li><b>你不知道就怎麼填？</b>：先用預設值跑，再用「壓力測試」看最壞情境是否能承受。</li>
+          </ul>
+          <div class="small" style="margin-top:8px">
+            提醒：這是教育用途模型。你越保守填，決策越穩健。
           </div>
         </div>
 
-        <h2 style="margin-top:16px">假設（年化）</h2>
+        <h3 style="margin-top:14px">A. 配置比例（%）</h3>
         <div class="row3">
-          <div>
-            <label>股票預期報酬（%）</label>
-            <input id="rE" type="number" step="0.1" value="8">
-          </div>
-          <div>
-            <label>債券預期報酬（%）</label>
-            <input id="rB" type="number" step="0.1" value="3">
-          </div>
-          <div>
-            <label>現金報酬（%）</label>
-            <input id="rC" type="number" step="0.1" value="1.5">
-          </div>
+          <div><label>股票</label><input id="wE" type="number" step="1" value="60" min="0"></div>
+          <div><label>債券</label><input id="wB" type="number" step="1" value="35" min="0"></div>
+          <div><label>現金</label><input id="wC" type="number" step="1" value="5" min="0"></div>
+        </div>
+        <div class="small" id="normHint" style="margin-top:8px;">—</div>
+
+        <h3 style="margin-top:14px">B. 報酬 / 風險假設（年化）</h3>
+        <div class="row3">
+          <div><label>股票預期報酬（%）</label><input id="rE" type="number" step="0.1" value="8"></div>
+          <div><label>債券預期報酬（%）</label><input id="rB" type="number" step="0.1" value="3"></div>
+          <div><label>現金報酬（%）</label><input id="rC" type="number" step="0.1" value="1.5"></div>
         </div>
 
         <div class="row3">
+          <div><label>股票波動（%）</label><input id="sE" type="number" step="0.1" value="18" min="0"></div>
+          <div><label>債券波動（%）</label><input id="sB" type="number" step="0.1" value="6" min="0"></div>
+          <div><label>股債相關係數（-1~1）</label><input id="rho" type="number" step="0.05" value="0.2" min="-1" max="1"></div>
+        </div>
+
+        <div class="row2">
+          <div><label>無風險利率（%）（用來算 Sharpe）</label><input id="rf" type="number" step="0.1" value="1.5"></div>
+          <div><label>通膨（%）（用於提領/投入是否成長）</label><input id="infl" type="number" step="0.1" value="2.0"></div>
+        </div>
+
+        <h3 style="margin-top:14px">C. 人生流程（投入 / 提領 / 再平衡）</h3>
+        <div class="row2">
+          <div><label>目前年齡</label><input id="ageNow" type="number" step="1" value="35" min="18" max="80"></div>
+          <div><label>退休年齡</label><input id="ageRet" type="number" step="1" value="60" min="30" max="90"></div>
+        </div>
+        <div class="row2">
+          <div><label>模擬到幾歲（壽命假設）</label><input id="ageEnd" type="number" step="1" value="90" min="60" max="110"></div>
+          <div><label>初始資產（萬元）</label><input id="asset0" type="number" step="1" value="800" min="0"></div>
+        </div>
+
+        <div class="row2">
           <div>
-            <label>股票波動（%）</label>
-            <input id="sE" type="number" step="0.1" value="18">
+            <label>退休前每月投入（萬元）</label>
+            <input id="saveM" type="number" step="0.1" value="3" min="0">
+            <div class="small">可設 0，代表不再投入。</div>
           </div>
           <div>
-            <label>債券波動（%）</label>
-            <input id="sB" type="number" step="0.1" value="6">
+            <label>退休後每月提領（萬元）</label>
+            <input id="withM" type="number" step="0.1" value="6" min="0">
+            <div class="small">這裡只模擬「從資產提領」，不含年金收入（可在退休工具做整合）。</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>投入是否隨通膨成長？</label>
+            <select id="saveInfl">
+              <option value="no" selected>否（固定金額）</option>
+              <option value="yes">是（每年隨通膨調整）</option>
+            </select>
           </div>
           <div>
-            <label>股債相關係數（-1~1）</label>
-            <input id="rho" type="number" step="0.05" value="0.2">
+            <label>提領是否隨通膨成長？</label>
+            <select id="withInfl">
+              <option value="yes" selected>是（退休後支出會被通膨推高）</option>
+              <option value="no">否（固定金額）</option>
+            </select>
           </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>再平衡頻率</label>
+            <select id="rebalance">
+              <option value="monthly">每月</option>
+              <option value="quarterly">每季</option>
+              <option value="yearly" selected>每年</option>
+              <option value="none">不再平衡</option>
+            </select>
+          </div>
+          <div>
+            <label>蒙地卡羅路徑數（越多越慢）</label>
+            <input id="paths" type="number" step="50" value="500" min="100" max="5000">
+          </div>
+        </div>
+
+        <h3 style="margin-top:14px">D. 壓力測試（一次性重挫）</h3>
+        <div class="row2">
+          <div>
+            <label>情境</label>
+            <select id="shockCase">
+              <option value="none" selected>不啟用（只跑隨機路徑）</option>
+              <option value="classic">經典：股-30% / 債+2% / 現0%</option>
+              <option value="crisis2008">類2008：股-45% / 債+6% / 現+1%</option>
+              <option value="covid2020">類2020：股-35% / 債+3% / 現+0.5%</option>
+              <option value="rateShock">利率急升：股-25% / 債-10% / 現+2%</option>
+              <option value="custom">自訂（下方填）</option>
+            </select>
+          </div>
+          <div>
+            <label>第幾年發生？（例如 1 = 第一年期初）</label>
+            <input id="shockYear" type="number" step="1" value="1" min="1" max="60">
+          </div>
+        </div>
+
+        <div id="customShockBox" class="row3" style="display:none">
+          <div><label>自訂：股票（%）</label><input id="shE" type="number" step="1" value="-30"></div>
+          <div><label>自訂：債券（%）</label><input id="shB" type="number" step="1" value="2"></div>
+          <div><label>自訂：現金（%）</label><input id="shC" type="number" step="1" value="0"></div>
         </div>
 
         <div class="btnrow">
-          <button onclick="run()">開始配置</button>
-          <button class="secondary" onclick="resetAll()">重設</button>
+          <button class="btn" id="btnRun">立即模擬</button>
+          <button class="btn secondary" id="btnReset">重設</button>
+          <button class="btn secondary" id="btnCSV">下載年度明細 CSV（中位數路徑）</button>
         </div>
 
-        <p class="small" style="margin-top:10px;">
-          建議先用保守假設跑：你會更清楚自己「能承受的回撤」在哪裡。<br>
-          這裡的回撤/風險都是模型估計，不是承諾，但足夠用來做決策邊界。
-        </p>
+        <div id="msg"></div>
+
+        <details class="help">
+          <summary>我到底要怎麼「找資料」填報酬/波動/相關？（更具體）</summary>
+          <ul>
+            <li><b>最省事做法（建議）</b>：直接用「常見區間」：
+              <ul>
+                <li>股票：報酬 6~9%，波動 15~20%</li>
+                <li>債券：報酬 2~4%，波動 4~8%</li>
+                <li>股債相關：-0.2~+0.3（保守可用 +0.2）</li>
+              </ul>
+            </li>
+            <li><b>你想更嚴謹</b>：找你實際會買的 ETF：
+              <ul>
+                <li>到券商/ETF 官網/公開資料看「近 3/5/10 年年化報酬」與「年化波動」</li>
+                <li>如果網站沒有波動：用月報酬自己算（Excel：STDEV.P(月報酬)*SQRT(12)）</li>
+                <li>相關係數：用 Excel CORREL(股月報酬, 債月報酬)</li>
+              </ul>
+            </li>
+            <li><b>保守輸入技巧</b>：報酬填低一點、波動填高一點、相關填偏正（例如 +0.2）→ 你會得到更安全的結論。</li>
+          </ul>
+        </details>
       </div>
 
-      <div class="card">
-        <h2 style="margin-top:0">結果與圖表</h2>
-
-        <div class="kpi">
-          <div class="box">
-            <b>預期年化報酬</b>
-            <div id="outRet" style="margin-top:6px;">—</div>
-            <div class="small">均值，不代表每年都會拿到。</div>
+      <!-- RIGHT: Outputs -->
+      <div class="charts">
+        <div class="card">
+          <h2 style="margin-top:0">結果摘要</h2>
+          <div class="kpi">
+            <div class="box">
+              <b>成功率（資產不歸零）</b>
+              <div id="kpiSurvive" style="margin-top:6px;">—</div>
+              <div class="small">在投入/提領與壓力情境下，仍不破產的比例。</div>
+            </div>
+            <div class="box">
+              <b>退休時資產（中位數，萬元）</b>
+              <div id="kpiAtRet" style="margin-top:6px;">—</div>
+              <div class="small">代表性路徑，不是保證。</div>
+            </div>
+            <div class="box">
+              <b>最痛回撤（中位數 MDD）</b>
+              <div id="kpiMDD" style="margin-top:6px;">—</div>
+              <div class="small">回撤越深，越容易在錯的時候賣出。</div>
+            </div>
+            <div class="box">
+              <b>Sharpe（近似）</b>
+              <div id="kpiSharpe" style="margin-top:6px;">—</div>
+              <div class="small">用你輸入的無風險利率估算。</div>
+            </div>
           </div>
-          <div class="box">
-            <b>年化波動（風險）</b>
-            <div id="outVol" style="margin-top:6px;">—</div>
-            <div class="small">波動越高，你越容易在壞時間做錯事。</div>
-          </div>
-          <div class="box">
-            <b>1 年 VaR（95%）</b>
-            <div id="outVar" style="margin-top:6px;">—</div>
-            <div class="small">簡化常態估計，用來抓「心理與資金承受線」。</div>
-          </div>
-          <div class="box">
-            <b>壓力測試</b>
-            <div id="outStress" style="margin-top:6px;">—</div>
-            <div class="small">更貼近真實：市場急跌時你會看到多痛。</div>
+          <div class="note">
+            <b>解讀方式：</b><br>
+            你要找的不是「最高報酬」，而是「在壞情境下仍能活下來」的配置。<br>
+            所以請先看成功率與回撤，再談報酬。
           </div>
         </div>
 
-        <div style="margin-top:12px;">
-          <canvas id="chart" width="940" height="320"></canvas>
+        <div class="card">
+          <h2 style="margin-top:0">資產曲線（中位數 / 10% / 90%）</h2>
+          <canvas id="chartWealth" height="130"></canvas>
+          <p class="small" style="margin:10px 0 0">
+            10%：較差情境（但不是最差）｜90%：較好情境。你要問：<b>我能不能接受 10% 的路徑？</b>
+          </p>
         </div>
 
-        <div class="note">
-          <b>顧問式提問：</b><br>
-          ① 若資產跌 20%，你會不會被迫賣出？（房貸/家庭支出/收入穩定度）<br>
-          ② 你的目標是「退休現金流」還是「資產增值」？容錯率不同。<br>
-          ③ 你是否把「通膨」與「利率反轉」放進情境？
+        <div class="card">
+          <h2 style="margin-top:0">分布：退休後破產年齡（若發生）</h2>
+          <canvas id="chartRuin" height="120"></canvas>
+          <p class="small" style="margin:10px 0 0">
+            若很多路徑會破產，表示你的提領/配置需要調整（減支出、延後退休、提高債/現金緩衝、或提高投入）。
+          </p>
+        </div>
+
+        <div class="card">
+          <h2 style="margin-top:0">年度明細（中位數路徑）</h2>
+          <div class="tablewrap">
+            <table id="tbl">
+              <thead>
+                <tr>
+                  <th>年齡</th>
+                  <th>期初資產(萬)</th>
+                  <th>投入/提領(萬)</th>
+                  <th>當年報酬(%)</th>
+                  <th>期末資產(萬)</th>
+                  <th>年內最大回撤(%)</th>
+                  <th>股票比重(%)</th>
+                  <th>債券比重(%)</th>
+                  <th>現金比重(%)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="small" style="margin-top:10px">
+            提醒：如果你選「不再平衡」，股票比重可能在大漲後越來越高，回撤也會跟著變深。
+          </p>
         </div>
       </div>
     </div>
 
-    <div class="footer-links">
+    <div class="footer-links" style="text-align:center;margin-top:24px">
       <a href="./chapter_investing.html">← 回投資決策系統</a>
       <a href="./tools.html">回工具</a>
       <a href="./index.html">回主頁</a>
@@ -153,161 +331,582 @@
   </div>
 
 <script>
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-  function fmtPct(x){ return (x*100).toFixed(2) + '%'; }
-
-  function normalizeWeights(){
-    let wE = Number(document.getElementById('wE').value||0);
-    let wB = Number(document.getElementById('wB').value||0);
-    let wC = Number(document.getElementById('wC').value||0);
-    let sum = wE + wB + wC;
-    if(sum <= 0){ wE=60; wB=35; wC=5; sum=100; }
-    wE = wE/sum; wB=wB/sum; wC=wC/sum;
-    return {wE,wB,wC};
+  // =========================
+  // Utilities
+  // =========================
+  function n(v){ return Number(v||0); }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+  function fmtWan(x){
+    if(!isFinite(x)) return "—";
+    return Math.round(x).toLocaleString("zh-Hant");
   }
-
-  function portfolioStats(p){
-    const {wE,wB,wC, rE,rB,rC, sE,sB, rho} = p;
-    const mu = wE*rE + wB*rB + wC*rC;
-    const varP = (wE*wE*sE*sE) + (wB*wB*sB*sB) + 2*wE*wB*rho*sE*sB;
-    const vol = Math.sqrt(Math.max(0, varP));
-    return {mu, vol};
+  function fmtPct(x){
+    if(!isFinite(x)) return "—";
+    return (x*100).toFixed(2) + "%";
   }
-
-  function run(){
-    const {wE,wB,wC} = normalizeWeights();
-    const rE = Number(document.getElementById('rE').value||0)/100;
-    const rB = Number(document.getElementById('rB').value||0)/100;
-    const rC = Number(document.getElementById('rC').value||0)/100;
-    const sE = Math.max(0, Number(document.getElementById('sE').value||0)/100);
-    const sB = Math.max(0, Number(document.getElementById('sB').value||0)/100);
-    const rho = clamp(Number(document.getElementById('rho').value||0), -1, 1);
-
-    const {mu, vol} = portfolioStats({wE,wB,wC,rE,rB,rC,sE,sB,rho});
-
-    // 1Y VaR 95%：mu - 1.65*vol（簡化常態）
-    const var95 = mu - 1.65*vol;
-
-    // 壓力測試：股 -30%、-40%，債券 +2%（保守可改 0），現金 0
-    const stress30 = wE*(-0.30) + wB*(0.02) + wC*(0.00);
-    const stress40 = wE*(-0.40) + wB*(0.02) + wC*(0.00);
-
-    document.getElementById('outRet').innerHTML = fmtPct(mu);
-    document.getElementById('outVol').innerHTML = fmtPct(vol);
-    document.getElementById('outVar').innerHTML = fmtPct(var95) + '（一年可能跌到的界線附近）';
-    document.getElementById('outStress').innerHTML =
-      `股 -30%：約 ${fmtPct(stress30)} ｜股 -40%：約 ${fmtPct(stress40)}`;
-
-    drawFrontier({rE,rB,rC,sE,sB,rho}, {wE,wB,wC, mu, vol});
+  function quantile(arr, q){
+    const a = arr.slice().sort((x,y)=>x-y);
+    if(a.length===0) return NaN;
+    const pos = (a.length-1)*q;
+    const base = Math.floor(pos);
+    const rest = pos-base;
+    if(a[base+1]===undefined) return a[base];
+    return a[base] + rest*(a[base+1]-a[base]);
   }
-
-  function drawFrontier(assume, point){
-    const c = document.getElementById('chart');
-    const ctx = c.getContext('2d');
-    ctx.clearRect(0,0,c.width,c.height);
-
-    const padL=56, padR=18, padT=18, padB=52;
-    const W=c.width-padL-padR, H=c.height-padT-padB;
-
-    const cash = point.wC;
-    const pts=[];
-    for(let we=0; we<=1-cash+1e-9; we+=0.02){
-      const wb=(1-cash)-we;
-      const {mu,vol} = portfolioStats({
-        wE:we, wB:wb, wC:cash,
-        rE:assume.rE, rB:assume.rB, rC:assume.rC,
-        sE:assume.sE, sB:assume.sB, rho:assume.rho
-      });
-      pts.push({we,wb,mu,vol});
-    }
-
-    const minVol = Math.min(...pts.map(p=>p.vol))*0.9;
-    const maxVol = Math.max(...pts.map(p=>p.vol))*1.1;
-    const minMu = Math.min(...pts.map(p=>p.mu))*0.9;
-    const maxMu = Math.max(...pts.map(p=>p.mu))*1.1;
-
-    const X = v => padL + ((v-minVol)/(maxVol-minVol))*W;
-    const Y = v => padT + (1-((v-minMu)/(maxMu-minMu)))*H;
-
-    // axes
-    ctx.strokeStyle='#d7deea'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,padT+H); ctx.lineTo(padL+W,padT+H); ctx.stroke();
-
-    // labels
-    ctx.fillStyle='#555'; ctx.font='12px Arial';
-    ctx.fillText('風險（年化波動）→', padL+W-120, padT+H+36);
-    ctx.save();
-    ctx.translate(18, padT+H-10);
-    ctx.rotate(-Math.PI/2);
-    ctx.fillText('預期報酬（年化）→', 0, 0);
-    ctx.restore();
-
-    // frontier polyline
-    ctx.strokeStyle='#0b3d91'; ctx.lineWidth=3;
-    ctx.beginPath();
-    pts.forEach((p,i)=>{
-      const x=X(p.vol), y=Y(p.mu);
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  function buildCSV(rows){
+    const header = ["age","begin_wan","flow_wan","return_pct","end_wan","mdd_pct","wE_pct","wB_pct","wC_pct"];
+    const lines=[header.join(",")];
+    rows.forEach(r=>{
+      lines.push([
+        r.age, r.begin, r.flow, (r.ret*100).toFixed(4), r.end, (r.mdd*100).toFixed(4),
+        (r.wE*100).toFixed(2),(r.wB*100).toFixed(2),(r.wC*100).toFixed(2)
+      ].join(","));
     });
-    ctx.stroke();
-
-    // current point
-    const px = X(point.vol), py=Y(point.mu);
-    ctx.fillStyle='#0b3d91';
-    ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
-
-    ctx.fillStyle='#333'; ctx.font='13px Arial';
-    ctx.fillText('你目前配置', px+10, py-10);
-
-    // tick helpers
-    function tickX(v){
-      const x=X(v);
-      ctx.strokeStyle='#c9d3e5'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.moveTo(x,padT+H); ctx.lineTo(x,padT+H+6); ctx.stroke();
-      ctx.fillStyle='#666'; ctx.font='12px Arial';
-      ctx.fillText((v*100).toFixed(1)+'%', x-16, padT+H+22);
-    }
-    function tickY(v){
-      const y=Y(v);
-      ctx.strokeStyle='#c9d3e5'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.moveTo(padL-6,y); ctx.lineTo(padL,y); ctx.stroke();
-      ctx.fillStyle='#666'; ctx.font='12px Arial';
-      ctx.fillText((v*100).toFixed(1)+'%', 6, y+4);
-    }
-
-    // few ticks
-    for(let i=0;i<4;i++){
-      const vx = minVol + (maxVol-minVol)*(i/3);
-      tickX(vx);
-      const vy = minMu + (maxMu-minMu)*(i/3);
-      tickY(vy);
-    }
-
-    // header text
-    ctx.fillStyle='#666'; ctx.font='13px Arial';
-    ctx.fillText(`掃描股債比（現金固定 ${(cash*100).toFixed(0)}%），看風險-報酬曲線`, padL, 18);
+    return lines.join("\n");
+  }
+  function downloadText(filename, text){
+    const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href=url; a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
-  function resetAll(){
-    document.getElementById('wE').value=60;
-    document.getElementById('wB').value=35;
-    document.getElementById('wC').value=5;
-    document.getElementById('rE').value=8;
-    document.getElementById('rB').value=3;
-    document.getElementById('rC').value=1.5;
-    document.getElementById('sE').value=18;
-    document.getElementById('sB').value=6;
-    document.getElementById('rho').value=0.2;
-    document.getElementById('outRet').innerHTML='—';
-    document.getElementById('outVol').innerHTML='—';
-    document.getElementById('outVar').innerHTML='—';
-    document.getElementById('outStress').innerHTML='—';
-    const c=document.getElementById('chart');
-    c.getContext('2d').clearRect(0,0,c.width,c.height);
-    run();
+  // Normal random via Box-Muller
+  function randn(){
+    let u=0,v=0;
+    while(u===0) u=Math.random();
+    while(v===0) v=Math.random();
+    return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
   }
 
-  run();
+  // Cholesky for 2x2 correlation matrix
+  // cov = [[1, rho],[rho,1]] -> L = [[1,0],[rho, sqrt(1-rho^2)]]
+  function correlatedNormals(rho){
+    rho = clamp(rho, -0.999, 0.999);
+    const z1 = randn();
+    const z2 = randn();
+    const e = z1;
+    const b = rho*z1 + Math.sqrt(1-rho*rho)*z2;
+    return {e,b}; // correlated N(0,1)
+  }
+
+  // =========================
+  // Inputs / Normalization
+  // =========================
+  function normalizeWeights(){
+    let wE=n(document.getElementById("wE").value);
+    let wB=n(document.getElementById("wB").value);
+    let wC=n(document.getElementById("wC").value);
+    wE=Math.max(0,wE); wB=Math.max(0,wB); wC=Math.max(0,wC);
+    let sum=wE+wB+wC;
+    if(sum<=0){ wE=60; wB=35; wC=5; sum=100; }
+    const ne=wE/sum, nb=wB/sum, nc=wC/sum;
+    document.getElementById("normHint").innerHTML =
+      `輸入加總：<b>${sum.toFixed(1)}%</b> → 正規化後：股票 <b>${(ne*100).toFixed(1)}%</b>，債券 <b>${(nb*100).toFixed(1)}%</b>，現金 <b>${(nc*100).toFixed(1)}%</b>`;
+    return {wE:ne,wB:nb,wC:nc};
+  }
+
+  function getShock(){
+    const mode=document.getElementById("shockCase").value;
+    if(mode==="none") return {enabled:false};
+
+    if(mode==="custom"){
+      return {
+        enabled:true,
+        shE:n(document.getElementById("shE").value)/100,
+        shB:n(document.getElementById("shB").value)/100,
+        shC:n(document.getElementById("shC").value)/100,
+        name:"自訂"
+      };
+    }
+    if(mode==="crisis2008") return {enabled:true, shE:-0.45, shB:+0.06, shC:+0.01, name:"類2008"};
+    if(mode==="covid2020")  return {enabled:true, shE:-0.35, shB:+0.03, shC:+0.005, name:"類2020"};
+    if(mode==="rateShock")  return {enabled:true, shE:-0.25, shB:-0.10, shC:+0.02, name:"利率急升"};
+    return {enabled:true, shE:-0.30, shB:+0.02, shC:0.00, name:"經典"};
+  }
+
+  function rebalanceIfNeeded(stepIndex, freq){
+    // stepIndex: 0..months-1 (month based)
+    if(freq==="none") return false;
+    if(freq==="monthly") return true;
+    if(freq==="quarterly") return ((stepIndex+1)%3===0);
+    if(freq==="yearly") return ((stepIndex+1)%12===0);
+    return false;
+  }
+
+  // =========================
+  // Core Simulation
+  // =========================
+  function simulateOnce(params, recordPath=false){
+    const {
+      ageNow, ageRet, ageEnd,
+      asset0, saveM, withM,
+      saveInfl, withInfl,
+      infl,
+      w0, // target weights
+      muE, muB, muC,
+      sigE, sigB,
+      rho,
+      rebalance,
+      shock, shockYear,
+    } = params;
+
+    const months = (ageEnd - ageNow) * 12;
+    const retMonth = (ageRet - ageNow) * 12;
+
+    // start holdings by target weights
+    let total = asset0;
+    let hE = total * w0.wE;
+    let hB = total * w0.wB;
+    let hC = total * w0.wC;
+
+    // tracking
+    let peak = total;
+    let mdd = 0;        // most negative drawdown
+    let ruined = false;
+    let ruinAge = null;
+
+    const yearlyRows = [];
+    let yearBeginTotal = total;
+    let yearPeak = total;
+    let yearMDD = 0;
+
+    for(let m=0; m<months; m++){
+      const isRetired = (m >= retMonth);
+
+      // one-time shock at the beginning of shockYear (1-based year)
+      if(shock.enabled){
+        const shockMonth = (shockYear-1)*12; // month index at start of that year
+        if(m === shockMonth){
+          hE *= (1 + shock.shE);
+          hB *= (1 + shock.shB);
+          hC *= (1 + shock.shC);
+        }
+      }
+
+      // monthly cashflow (in 万元)
+      let flow = 0; // + contribution, - withdrawal
+      const yearsFromNow = m/12;
+
+      if(!isRetired){
+        let c = saveM;
+        if(saveInfl==="yes") c = saveM * Math.pow(1+infl, yearsFromNow);
+        flow = +c;
+      }else{
+        let w = withM;
+        if(withInfl==="yes") w = withM * Math.pow(1+infl, yearsFromNow);
+        flow = -w;
+      }
+
+      // apply flow into cash first (realistic: contribution as cash, withdrawal from cash then sell)
+      hC += flow;
+
+      // if cash negative -> sell bond then equity to cover (simple rule)
+      if(hC < 0){
+        let need = -hC;
+        const sellB = Math.min(hB, need);
+        hB -= sellB; need -= sellB;
+        const sellE = Math.min(hE, need);
+        hE -= sellE; need -= sellE;
+        hC = 0;
+        if(need > 1e-9){
+          // can't cover -> ruin
+          ruined = true;
+        }
+      }
+
+      // returns (monthly)
+      const {e, b} = correlatedNormals(rho);
+      const rEm = (muE/12) + (sigE/Math.sqrt(12))*e;
+      const rBm = (muB/12) + (sigB/Math.sqrt(12))*b;
+      const rCm = (muC/12); // cash assumed stable
+
+      hE *= (1 + rEm);
+      hB *= (1 + rBm);
+      hC *= (1 + rCm);
+
+      total = hE + hB + hC;
+
+      // track drawdown
+      if(total > peak) peak = total;
+      const dd = (total/peak) - 1;
+      if(dd < mdd) mdd = dd;
+
+      if(total > yearPeak) yearPeak = total;
+      const ydd = (total/yearPeak) - 1;
+      if(ydd < yearMDD) yearMDD = ydd;
+
+      // rebalance
+      if(rebalanceIfNeeded(m, rebalance) && total > 0){
+        hE = total * w0.wE;
+        hB = total * w0.wB;
+        hC = total * w0.wC;
+      }
+
+      // ruin check
+      if(!ruined && total <= 0.0001){
+        ruined = true;
+      }
+      if(ruined && ruinAge===null){
+        ruinAge = ageNow + Math.floor(m/12);
+      }
+
+      // year end record
+      const isYearEnd = ((m+1)%12===0);
+      if(isYearEnd && recordPath){
+        const age = ageNow + Math.floor(m/12);
+        const yearEndTotal = total;
+
+        // compute realized yearly return approx: (end - begin - sum(flow in year))/begin
+        // we didn't store all flows; for UI we approximate using end/begin -1 (still useful)
+        const approxYearRet = (yearBeginTotal>0) ? (yearEndTotal/yearBeginTotal - 1) : 0;
+
+        yearlyRows.push({
+          age,
+          begin: +yearBeginTotal.toFixed(2),
+          flow: 0,                 // optional detail not tracked monthly in this simplified yearly row
+          ret: +approxYearRet.toFixed(6),
+          end: +yearEndTotal.toFixed(2),
+          mdd: +yearMDD.toFixed(6),
+          wE: total>0 ? (hE/total) : 0,
+          wB: total>0 ? (hB/total) : 0,
+          wC: total>0 ? (hC/total) : 0,
+        });
+
+        yearBeginTotal = yearEndTotal;
+        yearPeak = yearEndTotal;
+        yearMDD = 0;
+      }
+    }
+
+    return {final: total, mdd, ruined, ruinAge, yearlyRows};
+  }
+
+  function runSimulation(){
+    const msg = document.getElementById("msg");
+    msg.innerHTML = "";
+
+    const w0 = normalizeWeights();
+
+    // assumptions
+    const muE = n(document.getElementById("rE").value)/100;
+    const muB = n(document.getElementById("rB").value)/100;
+    const muC = n(document.getElementById("rC").value)/100;
+    const sigE = Math.max(0, n(document.getElementById("sE").value)/100);
+    const sigB = Math.max(0, n(document.getElementById("sB").value)/100);
+    const rho  = clamp(n(document.getElementById("rho").value), -1, 1);
+
+    const rf   = n(document.getElementById("rf").value)/100;
+    const infl = n(document.getElementById("infl").value)/100;
+
+    const ageNow = n(document.getElementById("ageNow").value);
+    const ageRet = n(document.getElementById("ageRet").value);
+    const ageEnd = n(document.getElementById("ageEnd").value);
+
+    const asset0 = n(document.getElementById("asset0").value);
+    const saveM  = n(document.getElementById("saveM").value);
+    const withM  = n(document.getElementById("withM").value);
+    const saveInfl = document.getElementById("saveInfl").value;
+    const withInfl = document.getElementById("withInfl").value;
+
+    const rebalance = document.getElementById("rebalance").value;
+    const paths = clamp(n(document.getElementById("paths").value), 100, 5000);
+
+    const shock = getShock();
+    const shockYear = clamp(n(document.getElementById("shockYear").value), 1, 60);
+
+    // validation
+    if(ageRet <= ageNow){
+      msg.innerHTML = `<div class="warn"><b>輸入錯誤：</b>退休年齡需大於目前年齡。</div>`;
+      return;
+    }
+    if(ageEnd <= ageRet){
+      msg.innerHTML = `<div class="warn"><b>輸入錯誤：</b>模擬終點年齡需大於退休年齡。</div>`;
+      return;
+    }
+    if(asset0 < 0){
+      msg.innerHTML = `<div class="warn"><b>輸入錯誤：</b>初始資產不可為負。</div>`;
+      return;
+    }
+
+    const sharpeApprox = (sigE===0 && sigB===0) ? NaN : ((w0.wE*muE + w0.wB*muB + w0.wC*muC - rf) /
+      Math.sqrt(Math.max(1e-9, (w0.wE*w0.wE*sigE*sigE + w0.wB*w0.wB*sigB*sigB + 2*w0.wE*w0.wB*rho*sigE*sigB))));
+
+    // run MC
+    const finals = [];
+    const mdds = [];
+    const ruinAges = []; // only if ruined
+
+    // For quantile wealth curves (yearly), we need store yearly totals for each path
+    const years = (ageEnd - ageNow);
+    const wealthByPath = []; // [path][t] yearly end wealth
+
+    // also pick a representative "median-like" path later
+    for(let i=0;i<paths;i++){
+      const res = simulateOnce({
+        ageNow, ageRet, ageEnd,
+        asset0, saveM, withM,
+        saveInfl, withInfl,
+        infl,
+        w0,
+        muE, muB, muC,
+        sigE, sigB,
+        rho,
+        rebalance,
+        shock, shockYear
+      }, false);
+
+      finals.push(res.final);
+      mdds.push(res.mdd);
+      if(res.ruined && res.ruinAge!==null) ruinAges.push(res.ruinAge);
+
+      // To build curves without yearlyRows, we can re-run for each path with yearly record (costly).
+      // Instead: run one more lightweight yearly tracker by rerunning at a lower path count? (we want 10/50/90 curves)
+      // We'll do a compromise: store yearly curve for first N paths up to 800 to keep speed.
+      if(i < Math.min(paths, 800)){
+        const r2 = simulateOnce({
+          ageNow, ageRet, ageEnd,
+          asset0, saveM, withM,
+          saveInfl, withInfl,
+          infl,
+          w0,
+          muE, muB, muC,
+          sigE, sigB,
+          rho,
+          rebalance,
+          shock, shockYear
+        }, true);
+        const yr = r2.yearlyRows.map(x=>x.end);
+        // ensure length == years (ages ageNow..ageEnd-1 year end)
+        while(yr.length < years) yr.push(yr.length? yr[yr.length-1] : asset0);
+        wealthByPath.push(yr.slice(0, years));
+      }
+    }
+
+    const survive = finals.filter(x=>x>0.0001).length / finals.length;
+
+    // retirement-time wealth distribution: approximate by running yearly record once more for median selection
+    // We'll use wealthByPath (subset) and pick median by final wealth within that subset.
+    let medianPathRows = [];
+    if(wealthByPath.length>0){
+      const subsetFinals = wealthByPath.map(arr=>arr[arr.length-1]);
+      const med = quantile(subsetFinals, 0.5);
+      let bestIdx=0, bestDist=Infinity;
+      subsetFinals.forEach((v,idx)=>{
+        const d=Math.abs(v-med);
+        if(d<bestDist){bestDist=d; bestIdx=idx;}
+      });
+
+      // rebuild the chosen path with detailed yearly rows
+      const chosen = simulateOnce({
+        ageNow, ageRet, ageEnd,
+        asset0, saveM, withM,
+        saveInfl, withInfl,
+        infl,
+        w0,
+        muE, muB, muC,
+        sigE, sigB,
+        rho,
+        rebalance,
+        shock, shockYear
+      }, true);
+      medianPathRows = chosen.yearlyRows;
+    }
+
+    // build quantile curves (10/50/90) from wealthByPath subset
+    const ages = Array.from({length: years}, (_,k)=> String(ageNow + k));
+    const q10=[], q50=[], q90=[];
+    if(wealthByPath.length>0){
+      for(let t=0;t<years;t++){
+        const col = wealthByPath.map(p=>p[t]);
+        q10.push(quantile(col,0.10));
+        q50.push(quantile(col,0.50));
+        q90.push(quantile(col,0.90));
+      }
+    }
+
+    // retirement wealth at ageRet (year end of ageRet-?):
+    // We'll approximate by using q50 at index (ageRet-ageNow-1) year end.
+    const idxRet = Math.max(0, Math.min(years-1, (ageRet - ageNow - 1)));
+    const wealthAtRetMed = (q50.length ? q50[idxRet] : NaN);
+
+    // median MDD
+    const mddMed = quantile(mdds, 0.5);
+
+    // render KPI
+    document.getElementById("kpiSurvive").textContent = (survive*100).toFixed(1) + "%";
+    document.getElementById("kpiAtRet").textContent = isFinite(wealthAtRetMed) ? fmtWan(wealthAtRetMed) : "—";
+    document.getElementById("kpiMDD").textContent = isFinite(mddMed) ? fmtPct(mddMed) : "—";
+    document.getElementById("kpiSharpe").textContent = isFinite(sharpeApprox) ? sharpeApprox.toFixed(2) : "—";
+
+    // message
+    if(survive < 0.8){
+      msg.innerHTML = `<div class="warn"><b>提醒：</b>成功率偏低（${(survive*100).toFixed(1)}%）。通常要先調「提領/退休年齡/現金債券比例」。</div>`;
+    }else{
+      msg.innerHTML = `<div class="ok"><b>狀態：</b>成功率 ${ (survive*100).toFixed(1) }%。下一步請切換壓力測試（尤其是利率急升 / 類2008），看結論會不會翻轉。</div>`;
+    }
+
+    // render charts + table
+    renderWealthChart(ages, q10, q50, q90);
+    renderRuinChart(ruinAges, ageRet, ageEnd);
+    renderTable(medianPathRows);
+
+    // cache for csv
+    window.__medianRows = medianPathRows;
+  }
+
+  // =========================
+  // Rendering
+  // =========================
+  let chartWealth, chartRuin;
+
+  function renderWealthChart(labels, q10, q50, q90){
+    if(chartWealth) chartWealth.destroy();
+    chartWealth = new Chart(document.getElementById("chartWealth"), {
+      type:"line",
+      data:{
+        labels,
+        datasets:[
+          {label:"10%（較差）", data:q10, tension:0.25},
+          {label:"50%（中位數）", data:q50, tension:0.25},
+          {label:"90%（較好）", data:q90, tension:0.25},
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true}},
+        scales:{
+          y:{ticks:{callback:(v)=>Number(v).toLocaleString("zh-Hant")}}
+        }
+      }
+    });
+  }
+
+  function renderRuinChart(ruinAges, ageRet, ageEnd){
+    if(chartRuin) chartRuin.destroy();
+
+    // histogram by age bins
+    const bins = {};
+    ruinAges.forEach(a=>{
+      const k = String(a);
+      bins[k] = (bins[k]||0)+1;
+    });
+
+    const labels = [];
+    for(let a=ageRet; a<=ageEnd; a++){
+      labels.push(String(a));
+    }
+    const data = labels.map(k=>bins[k]||0);
+
+    chartRuin = new Chart(document.getElementById("chartRuin"), {
+      type:"bar",
+      data:{ labels, datasets:[{label:"破產次數（路徑數）", data}]},
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true}},
+        scales:{
+          y:{beginAtZero:true, ticks:{precision:0}}
+        }
+      }
+    });
+  }
+
+  function renderTable(rows){
+    const tbody = document.querySelector("#tbl tbody");
+    tbody.innerHTML = "";
+    if(!rows || rows.length===0){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="9" style="text-align:left;color:#666">（無資料）請先按「立即模擬」。</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+    rows.forEach(r=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.age}</td>
+        <td>${fmtWan(r.begin)}</td>
+        <td>${fmtWan(r.flow)}</td>
+        <td>${(r.ret*100).toFixed(2)}%</td>
+        <td>${fmtWan(r.end)}</td>
+        <td>${(r.mdd*100).toFixed(2)}%</td>
+        <td>${(r.wE*100).toFixed(1)}%</td>
+        <td>${(r.wB*100).toFixed(1)}%</td>
+        <td>${(r.wC*100).toFixed(1)}%</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // =========================
+  // UI Events
+  // =========================
+  document.getElementById("btnRun").addEventListener("click", runSimulation);
+  document.getElementById("btnReset").addEventListener("click", ()=>{
+    // weights
+    document.getElementById("wE").value=60;
+    document.getElementById("wB").value=35;
+    document.getElementById("wC").value=5;
+
+    // assumptions
+    document.getElementById("rE").value=8;
+    document.getElementById("rB").value=3;
+    document.getElementById("rC").value=1.5;
+    document.getElementById("sE").value=18;
+    document.getElementById("sB").value=6;
+    document.getElementById("rho").value=0.2;
+    document.getElementById("rf").value=1.5;
+    document.getElementById("infl").value=2.0;
+
+    // life
+    document.getElementById("ageNow").value=35;
+    document.getElementById("ageRet").value=60;
+    document.getElementById("ageEnd").value=90;
+    document.getElementById("asset0").value=800;
+    document.getElementById("saveM").value=3;
+    document.getElementById("withM").value=6;
+    document.getElementById("saveInfl").value="no";
+    document.getElementById("withInfl").value="yes";
+    document.getElementById("rebalance").value="yearly";
+    document.getElementById("paths").value=500;
+
+    // shock
+    document.getElementById("shockCase").value="none";
+    document.getElementById("shockYear").value=1;
+    document.getElementById("customShockBox").style.display="none";
+    document.getElementById("shE").value=-30;
+    document.getElementById("shB").value=2;
+    document.getElementById("shC").value=0;
+
+    normalizeWeights();
+    runSimulation();
+  });
+
+  document.getElementById("btnCSV").addEventListener("click", ()=>{
+    const rows = window.__medianRows || [];
+    if(!rows.length){
+      document.getElementById("msg").innerHTML = `<div class="warn"><b>提醒：</b>請先按「立即模擬」，有年度明細後才能下載。</div>`;
+      return;
+    }
+    const csv = buildCSV(rows);
+    downloadText("asset_allocation_mc_median_detail.csv", csv);
+  });
+
+  document.getElementById("shockCase").addEventListener("change", (e)=>{
+    const isCustom = e.target.value==="custom";
+    document.getElementById("customShockBox").style.display = isCustom ? "grid" : "none";
+  });
+
+  ["wE","wB","wC"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", normalizeWeights);
+  });
+
+  // init
+  normalizeWeights();
+  runSimulation();
 </script>
 </body>
 </html>
