@@ -1,64 +1,406 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>繼承比例試算工具｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="應繼分/特留分試算：支援配偶、子女、父母、兄弟姊妹、祖父母（台灣法定繼承）" />
+
 <style>
-body{font-family:Arial;margin:0;background:#f6f8fb}
-.container{max-width:900px;margin:auto;padding:30px}
-.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
-label{display:block;margin-top:12px}
-input{width:100%;padding:8px;margin-top:4px;border:1px solid #ddd;border-radius:8px}
-button{margin-top:15px;padding:10px;background:#0b3d91;color:#fff;border:0;border-radius:8px}
-.result{margin-top:15px;padding:12px;background:#eef4ff;border-radius:12px}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --warnbg:#fff4e5; --warn:#8a5300;
+  }
+  body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text)}
+  .container{max-width:1050px;margin:auto;padding:26px 18px}
+  h1{margin:0 0 12px;color:var(--primary);font-size:26px}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:980px){ .grid{grid-template-columns:1.15fr 0.85fr} }
+  .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .card h2{margin:0 0 10px;font-size:16px;color:#0f172a}
+  label{display:block;margin-top:10px;font-size:14px;color:#0f172a}
+  input,select,button{
+    width:100%;padding:10px 10px;margin-top:6px;border:1px solid #d7dbe6;border-radius:10px;
+    box-sizing:border-box;background:#fff;font-size:14px;
+  }
+  .row{display:flex;gap:10px}
+  .row > *{flex:1}
+  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:700}
+  button.secondary{background:#334155}
+  .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);color:var(--primary);display:none}
+  .warn{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5;font-size:13px;line-height:1.4}
+  .small{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:10px}
+  .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
+  .table{width:100%;border-collapse:collapse;margin-top:10px}
+  .table th,.table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px}
+  .table th{text-align:left;color:#0f172a}
+  .table td:last-child,.table th:last-child{text-align:right}
+  .muted{color:var(--muted)}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1 style="color:#0b3d91">應繼分 / 特留分試算</h1>
+  <h1>應繼分 / 特留分試算 <span class="pill">支援完整法定繼承組合</span></h1>
 
-<div class="card">
-<label>配偶人數（0或1）</label>
-<input id="spouse" type="number" value="1">
+  <div class="grid">
+    <!-- 左：輸入 -->
+    <div class="card">
+      <h2>1) 家庭/繼承人設定</h2>
 
-<label>子女人數</label>
-<input id="children" type="number" value="2">
+      <label>快速選擇（Presets）</label>
+      <select id="preset" onchange="applyPreset()">
+        <option value="custom">自訂（我自己填）</option>
+        <option value="spouse_only">配偶（只有配偶）</option>
+        <option value="spouse_desc">配偶 + 直系卑親屬（子女/代位孫子女）</option>
+        <option value="spouse_parents">配偶 + 父母</option>
+        <option value="spouse_siblings">配偶 + 兄弟姊妹</option>
+        <option value="spouse_grandparents">配偶 + 祖父母</option>
+        <option value="desc_only">無配偶 + 直系卑親屬</option>
+        <option value="parents_only">無配偶 + 父母</option>
+        <option value="siblings_only">無配偶 + 兄弟姊妹</option>
+        <option value="grandparents_only">無配偶 + 祖父母</option>
+      </select>
 
-<button onclick="calc()">計算比例</button>
+      <div class="warn" id="warnBox"></div>
 
-<div id="output" class="result" style="display:none;"></div>
-</div>
+      <label>是否有配偶</label>
+      <select id="hasSpouse" onchange="enforceOrder()">
+        <option value="1">有</option>
+        <option value="0">無</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label>直系卑親屬人數（子女/代位）</label>
+          <input id="desc" type="number" min="0" step="1" value="2" oninput="enforceOrder()" />
+        </div>
+        <div>
+          <label>父母人數</label>
+          <input id="parents" type="number" min="0" step="1" value="0" oninput="enforceOrder()" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>兄弟姊妹人數</label>
+          <input id="siblings" type="number" min="0" step="1" value="0" oninput="enforceOrder()" />
+        </div>
+        <div>
+          <label>祖父母人數</label>
+          <input id="grandparents" type="number" min="0" step="1" value="0" oninput="enforceOrder()" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button onclick="calc()">計算比例</button>
+        <button class="secondary" onclick="resetDefaults()">重設</button>
+      </div>
+
+      <p class="small">
+        規則提醒：除配偶外，法定繼承人依序為「卑親屬→父母→兄弟姊妹→祖父母」，前順位存在時後順位不會同時繼承。 :contentReference[oaicite:3]{index=3}
+      </p>
+    </div>
+
+    <!-- 右：輸出 -->
+    <div class="card">
+      <h2>結果</h2>
+      <div id="output" class="result"></div>
+      <div class="small muted" style="margin-top:10px">
+        特留分倍率：配偶/卑親屬/父母 = 應繼分×1/2；兄弟姊妹/祖父母 = 應繼分×1/3。 :contentReference[oaicite:4]{index=4}
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
+function $(id){ return document.getElementById(id); }
+
+function clampInt(v){
+  if(!Number.isFinite(v)) return NaN;
+  return Math.max(0, Math.floor(v));
+}
+
+function showWarn(msg){
+  const w = $("warnBox");
+  if(!msg){ w.style.display="none"; w.textContent=""; return; }
+  w.style.display="block";
+  w.textContent = msg;
+}
+
+function hideOutput(){
+  $("output").style.display="none";
+  $("output").innerHTML="";
+}
+
+function resetDefaults(){
+  $("preset").value = "custom";
+  $("hasSpouse").value = "1";
+  $("desc").value = 2;
+  $("parents").value = 0;
+  $("siblings").value = 0;
+  $("grandparents").value = 0;
+  showWarn("");
+  hideOutput();
+}
+
+/**
+ * 強制繼承順位（除配偶外僅能存在一個順位）
+ * 有卑親屬 -> 清父母/兄弟姊妹/祖父母
+ * 有父母 -> 清兄弟姊妹/祖父母
+ * 有兄弟姊妹 -> 清祖父母
+ */
+function enforceOrder(){
+  const desc = clampInt(Number($("desc").value));
+  const parents = clampInt(Number($("parents").value));
+  const siblings = clampInt(Number($("siblings").value));
+  const gps = clampInt(Number($("grandparents").value));
+
+  if([desc, parents, siblings, gps].some(v => !Number.isFinite(v))){
+    showWarn("人數欄位請輸入 0 或正整數。");
+    return;
+  }
+
+  let changed = false;
+  showWarn("");
+
+  if(desc > 0){
+    if(parents>0){ $("parents").value=0; changed=true; }
+    if(siblings>0){ $("siblings").value=0; changed=true; }
+    if(gps>0){ $("grandparents").value=0; changed=true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；有卑親屬時，父母/兄弟姊妹/祖父母不會同時繼承，已自動清零後順位。");
+  }else if(parents > 0){
+    if(siblings>0){ $("siblings").value=0; changed=true; }
+    if(gps>0){ $("grandparents").value=0; changed=true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；有父母時，兄弟姊妹/祖父母不會同時繼承，已自動清零後順位。");
+  }else if(siblings > 0){
+    if(gps>0){ $("grandparents").value=0; changed=true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；有兄弟姊妹時，祖父母不會同時繼承，已自動清零後順位。");
+  }
+
+  hideOutput();
+}
+
+function applyPreset(){
+  const p = $("preset").value;
+
+  // 先清空
+  $("desc").value = 0;
+  $("parents").value = 0;
+  $("siblings").value = 0;
+  $("grandparents").value = 0;
+
+  switch(p){
+    case "spouse_only":
+      $("hasSpouse").value = "1";
+      break;
+    case "spouse_desc":
+      $("hasSpouse").value = "1";
+      $("desc").value = 2;
+      break;
+    case "spouse_parents":
+      $("hasSpouse").value = "1";
+      $("parents").value = 2;
+      break;
+    case "spouse_siblings":
+      $("hasSpouse").value = "1";
+      $("siblings").value = 2;
+      break;
+    case "spouse_grandparents":
+      $("hasSpouse").value = "1";
+      $("grandparents").value = 2;
+      break;
+
+    case "desc_only":
+      $("hasSpouse").value = "0";
+      $("desc").value = 2;
+      break;
+    case "parents_only":
+      $("hasSpouse").value = "0";
+      $("parents").value = 2;
+      break;
+    case "siblings_only":
+      $("hasSpouse").value = "0";
+      $("siblings").value = 2;
+      break;
+    case "grandparents_only":
+      $("hasSpouse").value = "0";
+      $("grandparents").value = 2;
+      break;
+
+    default:
+      // custom 不動
+      break;
+  }
+  enforceOrder();
+}
+
+function pct(x){
+  return (x*100).toFixed(2) + "%";
+}
+
+function frac(numer, denom){
+  // 簡單分數顯示（不做約分也行，但我們做一下約分更好看）
+  const g = gcd(numer, denom);
+  return `${numer/g}/${denom/g}`;
+}
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+
+/**
+ * 特留分倍率（民法第1223條）
+ * - 配偶 / 直系卑親屬 / 父母：應繼分 * 1/2
+ * - 兄弟姊妹 / 祖父母：應繼分 * 1/3
+ */
+function reserveMultiplier(role){
+  if(role==="spouse" || role==="desc" || role==="parents") return 1/2;
+  if(role==="siblings" || role==="grandparents") return 1/3;
+  return 0;
+}
+
 function calc(){
-let spouse = Number(document.getElementById('spouse').value);
-let children = Number(document.getElementById('children').value);
+  const hasSpouse = Number($("hasSpouse").value) === 1;
+  const desc = clampInt(Number($("desc").value));
+  const parents = clampInt(Number($("parents").value));
+  const siblings = clampInt(Number($("siblings").value));
+  const gps = clampInt(Number($("grandparents").value));
 
-let text="";
+  if([desc, parents, siblings, gps].some(v => !Number.isFinite(v))){
+    alert("人數欄位請輸入 0 或正整數");
+    return;
+  }
 
-if(spouse==1 && children>0){
- let total = children + 1;
- let each = (1/total*100).toFixed(2);
- text+="應繼分：<br>";
- text+="配偶："+each+"%<br>";
- text+="每位子女："+each+"%<br><br>";
- text+="特留分：<br>";
- text+="配偶："+(each/2).toFixed(2)+"%<br>";
- text+="每位子女："+(each/2).toFixed(2)+"%";
-}else if(spouse==0 && children>0){
- let each=(100/children).toFixed(2);
- text+="應繼分：每位子女 "+each+"%<br>";
- text+="特留分：每位子女 "+(each/2).toFixed(2)+"%";
-}else{
- text="目前版本僅計算配偶與子女情境（可再擴充父母與兄弟姐妹）。";
+  enforceOrder(); // 確保不矛盾
+
+  // 決定「除配偶外」採用哪一順位
+  const order = (desc>0) ? "desc" : (parents>0) ? "parents" : (siblings>0) ? "siblings" : (gps>0) ? "grandparents" : "none";
+
+  const rows = [];
+
+  // 應繼分：以整體遺產 = 1 來分配
+  if(hasSpouse){
+    if(order === "desc"){
+      // 配偶與卑親屬平均（每人同額）
+      const totalPeople = 1 + desc;
+      const each = 1 / totalPeople;
+      rows.push({ who:"配偶", count:1, entitledEach:each, entitledTotal:each, reserveEach: each*reserveMultiplier("spouse") });
+      rows.push({ who:"每位卑親屬", count:desc, entitledEach:each, entitledTotal:each*desc, reserveEach: each*reserveMultiplier("desc") });
+    }else if(order === "parents"){
+      // 配偶 1/2，父母合計 1/2 平分
+      const spouseShare = 1/2;
+      const eachParent = (parents>0) ? (1/2)/parents : 0;
+      rows.push({ who:"配偶", count:1, entitledEach:spouseShare, entitledTotal:spouseShare, reserveEach: spouseShare*reserveMultiplier("spouse") });
+      rows.push({ who:"每位父母", count:parents, entitledEach:eachParent, entitledTotal:eachParent*parents, reserveEach: eachParent*reserveMultiplier("parents") });
+    }else if(order === "siblings"){
+      // 配偶 1/2，兄弟姊妹合計 1/2 平分
+      const spouseShare = 1/2;
+      const each = (siblings>0) ? (1/2)/siblings : 0;
+      rows.push({ who:"配偶", count:1, entitledEach:spouseShare, entitledTotal:spouseShare, reserveEach: spouseShare*reserveMultiplier("spouse") });
+      rows.push({ who:"每位兄弟姊妹", count:siblings, entitledEach:each, entitledTotal:each*siblings, reserveEach: each*reserveMultiplier("siblings") });
+    }else if(order === "grandparents"){
+      // 配偶 2/3，祖父母合計 1/3 平分
+      const spouseShare = 2/3;
+      const each = (gps>0) ? (1/3)/gps : 0;
+      rows.push({ who:"配偶", count:1, entitledEach:spouseShare, entitledTotal:spouseShare, reserveEach: spouseShare*reserveMultiplier("spouse") });
+      rows.push({ who:"每位祖父母", count:gps, entitledEach:each, entitledTotal:each*gps, reserveEach: each*reserveMultiplier("grandparents") });
+    }else{
+      // 只有配偶
+      const spouseShare = 1;
+      rows.push({ who:"配偶", count:1, entitledEach:spouseShare, entitledTotal:spouseShare, reserveEach: spouseShare*reserveMultiplier("spouse") });
+    }
+  }else{
+    // 無配偶：由最前順位繼承人均分全部
+    if(order === "desc"){
+      const each = 1/desc;
+      rows.push({ who:"每位卑親屬", count:desc, entitledEach:each, entitledTotal:1, reserveEach: each*reserveMultiplier("desc") });
+    }else if(order === "parents"){
+      const each = 1/parents;
+      rows.push({ who:"每位父母", count:parents, entitledEach:each, entitledTotal:1, reserveEach: each*reserveMultiplier("parents") });
+    }else if(order === "siblings"){
+      const each = 1/siblings;
+      rows.push({ who:"每位兄弟姊妹", count:siblings, entitledEach:each, entitledTotal:1, reserveEach: each*reserveMultiplier("siblings") });
+    }else if(order === "grandparents"){
+      const each = 1/gps;
+      rows.push({ who:"每位祖父母", count:gps, entitledEach:each, entitledTotal:1, reserveEach: each*reserveMultiplier("grandparents") });
+    }else{
+      rows.push({ who:"（無法定繼承人）", count:0, entitledEach:0, entitledTotal:0, reserveEach:0 });
+    }
+  }
+
+  // 輸出
+  const out = $("output");
+  out.style.display = "block";
+
+  const legalNote = `
+    <div class="small muted" style="margin-top:8px">
+      應繼分（配偶比例）依民法第1144條：與卑親屬平均；與父母/兄弟姊妹為1/2；與祖父母為2/3；無其他繼承人則為全部。 :contentReference[oaicite:5]{index=5}
+    </div>
+  `;
+
+  const table = `
+    <table class="table">
+      <tr>
+        <th class="muted">繼承人</th>
+        <th class="muted">人數</th>
+        <th class="muted">應繼分（每人）</th>
+        <th class="muted">特留分（每人）</th>
+      </tr>
+      ${rows.map(r=>{
+        const each = r.entitledEach;
+        const res = r.reserveEach;
+        // 分數顯示：對常見的 1/2、2/3、1/(n) 顯示分數更直覺
+        // 這裡只在分母<=50時顯示分數（避免太醜）
+        let eachFrac = "";
+        let resFrac = "";
+        // 嘗試把 each 轉成分數（以 600 為基底近似）
+        eachFrac = approxFraction(each);
+        resFrac = approxFraction(res);
+
+        return `
+          <tr>
+            <td>${r.who}</td>
+            <td>${r.count}</td>
+            <td>${pct(each)} <span class="muted">(${eachFrac})</span></td>
+            <td>${pct(res)} <span class="muted">(${resFrac})</span></td>
+          </tr>
+        `;
+      }).join("")}
+    </table>
+  `;
+
+  out.innerHTML = `
+    <div style="font-weight:800;font-size:16px;margin-bottom:6px">計算完成</div>
+    ${table}
+    ${legalNote}
+  `;
 }
 
-document.getElementById('output').style.display="block";
-document.getElementById('output').innerHTML=text;
+// 近似分數：把小數轉成分數（基底限制，避免顯示太亂）
+function approxFraction(x){
+  if(x === 0) return "0";
+  if(x === 1) return "1";
+  const maxDen = 60;
+  let bestN=1, bestD=1, bestErr=Math.abs(x-1);
+  for(let d=1; d<=maxDen; d++){
+    const n = Math.round(x*d);
+    const err = Math.abs(x - (n/d));
+    if(err < bestErr){
+      bestErr = err; bestN = n; bestD = d;
+      if(err < 1e-10) break;
+    }
+  }
+  const g = gcd(bestN, bestD);
+  return `${bestN/g}/${bestD/g}`;
 }
+
+(function init(){
+  resetDefaults();
+  // 任何輸入變更就先隱藏結果，避免誤讀
+  ["hasSpouse","desc","parents","siblings","grandparents","preset"].forEach(id=>{
+    $(id).addEventListener("input", hideOutput);
+    $(id).addEventListener("change", hideOutput);
+  });
+})();
 </script>
 </body>
 </html>
