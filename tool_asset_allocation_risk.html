@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>資產配置風險模型｜智 Financial Path</title>
+<meta name="description" content="模擬股債現金配置比例改變時的波動、回撤與壓力測試，並視覺化風險-報酬。">
+<style>
+  body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+  .container{max-width:980px;margin:auto;padding:26px 20px 90px}
+  h1,h2{color:#0b3d91;margin:0 0 10px}
+  .sub{color:#555;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .card{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
+  label{display:block;font-size:13px;color:#555;margin:10px 0 6px}
+  input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button{border:0;border-radius:12px;padding:10px 14px;background:#0b3d91;color:#fff;cursor:pointer;font-size:14px}
+  button.secondary{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  .kpi .box{background:#f7f9ff;border:1px solid #dfeaff;border-radius:14px;padding:12px}
+  .kpi .box b{color:#0b3d91}
+  .small{font-size:13px;color:#666}
+  canvas{width:100%;height:320px;background:#fff;border-radius:14px;border:1px solid #e6e8ee}
+  .note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(0,0,0,.04);margin-top:12px}
+  .footer-links{text-align:center;margin-top:26px}
+  .footer-links a{margin:0 10px}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <a href="javascript:history.back()">← 回上頁</a>
+      <div>
+        <a href="./index.html" style="margin-right:12px;">回主頁</a>
+        <a href="./library.html">知識庫</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>資產配置風險模型</h1>
+    <p class="sub">你不是在追求最高報酬，而是在設計一個<strong>遇到壞情境也不會崩潰</strong>的配置。</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2 style="margin-top:0">配置比例（%）</h2>
+        <div class="row3">
+          <div>
+            <label>股票</label>
+            <input id="wE" type="number" step="1" value="60">
+          </div>
+          <div>
+            <label>債券</label>
+            <input id="wB" type="number" step="1" value="35">
+          </div>
+          <div>
+            <label>現金</label>
+            <input id="wC" type="number" step="1" value="5">
+          </div>
+        </div>
+
+        <h2 style="margin-top:16px">假設（年化）</h2>
+        <div class="row3">
+          <div>
+            <label>股票預期報酬（%）</label>
+            <input id="rE" type="number" step="0.1" value="8">
+          </div>
+          <div>
+            <label>債券預期報酬（%）</label>
+            <input id="rB" type="number" step="0.1" value="3">
+          </div>
+          <div>
+            <label>現金報酬（%）</label>
+            <input id="rC" type="number" step="0.1" value="1.5">
+          </div>
+        </div>
+
+        <div class="row3">
+          <div>
+            <label>股票波動（%）</label>
+            <input id="sE" type="number" step="0.1" value="18">
+          </div>
+          <div>
+            <label>債券波動（%）</label>
+            <input id="sB" type="number" step="0.1" value="6">
+          </div>
+          <div>
+            <label>股債相關係數（-1~1）</label>
+            <input id="rho" type="number" step="0.05" value="0.2">
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button onclick="run()">開始配置</button>
+          <button class="secondary" onclick="resetAll()">重設</button>
+        </div>
+
+        <p class="small" style="margin-top:10px;">
+          建議先用保守假設跑：你會更清楚自己「能承受的回撤」在哪裡。<br>
+          這裡的回撤/風險都是模型估計，不是承諾，但足夠用來做決策邊界。
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0">結果與圖表</h2>
+
+        <div class="kpi">
+          <div class="box">
+            <b>預期年化報酬</b>
+            <div id="outRet" style="margin-top:6px;">—</div>
+            <div class="small">均值，不代表每年都會拿到。</div>
+          </div>
+          <div class="box">
+            <b>年化波動（風險）</b>
+            <div id="outVol" style="margin-top:6px;">—</div>
+            <div class="small">波動越高，你越容易在壞時間做錯事。</div>
+          </div>
+          <div class="box">
+            <b>1 年 VaR（95%）</b>
+            <div id="outVar" style="margin-top:6px;">—</div>
+            <div class="small">簡化常態估計，用來抓「心理與資金承受線」。</div>
+          </div>
+          <div class="box">
+            <b>壓力測試</b>
+            <div id="outStress" style="margin-top:6px;">—</div>
+            <div class="small">更貼近真實：市場急跌時你會看到多痛。</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <canvas id="chart" width="940" height="320"></canvas>
+        </div>
+
+        <div class="note">
+          <b>顧問式提問：</b><br>
+          ① 若資產跌 20%，你會不會被迫賣出？（房貸/家庭支出/收入穩定度）<br>
+          ② 你的目標是「退休現金流」還是「資產增值」？容錯率不同。<br>
+          ③ 你是否把「通膨」與「利率反轉」放進情境？
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <a href="./chapter_investing.html">← 回投資決策系統</a>
+      <a href="./tools.html">回工具</a>
+      <a href="./index.html">回主頁</a>
+    </div>
+  </div>
+
+<script>
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+  function fmtPct(x){ return (x*100).toFixed(2) + '%'; }
+
+  function normalizeWeights(){
+    let wE = Number(document.getElementById('wE').value||0);
+    let wB = Number(document.getElementById('wB').value||0);
+    let wC = Number(document.getElementById('wC').value||0);
+    let sum = wE + wB + wC;
+    if(sum <= 0){ wE=60; wB=35; wC=5; sum=100; }
+    wE = wE/sum; wB=wB/sum; wC=wC/sum;
+    return {wE,wB,wC};
+  }
+
+  function portfolioStats(p){
+    const {wE,wB,wC, rE,rB,rC, sE,sB, rho} = p;
+    const mu = wE*rE + wB*rB + wC*rC;
+    const varP = (wE*wE*sE*sE) + (wB*wB*sB*sB) + 2*wE*wB*rho*sE*sB;
+    const vol = Math.sqrt(Math.max(0, varP));
+    return {mu, vol};
+  }
+
+  function run(){
+    const {wE,wB,wC} = normalizeWeights();
+    const rE = Number(document.getElementById('rE').value||0)/100;
+    const rB = Number(document.getElementById('rB').value||0)/100;
+    const rC = Number(document.getElementById('rC').value||0)/100;
+    const sE = Math.max(0, Number(document.getElementById('sE').value||0)/100);
+    const sB = Math.max(0, Number(document.getElementById('sB').value||0)/100);
+    const rho = clamp(Number(document.getElementById('rho').value||0), -1, 1);
+
+    const {mu, vol} = portfolioStats({wE,wB,wC,rE,rB,rC,sE,sB,rho});
+
+    // 1Y VaR 95%：mu - 1.65*vol（簡化常態）
+    const var95 = mu - 1.65*vol;
+
+    // 壓力測試：股 -30%、-40%，債券 +2%（保守可改 0），現金 0
+    const stress30 = wE*(-0.30) + wB*(0.02) + wC*(0.00);
+    const stress40 = wE*(-0.40) + wB*(0.02) + wC*(0.00);
+
+    document.getElementById('outRet').innerHTML = fmtPct(mu);
+    document.getElementById('outVol').innerHTML = fmtPct(vol);
+    document.getElementById('outVar').innerHTML = fmtPct(var95) + '（一年可能跌到的界線附近）';
+    document.getElementById('outStress').innerHTML =
+      `股 -30%：約 ${fmtPct(stress30)} ｜股 -40%：約 ${fmtPct(stress40)}`;
+
+    drawFrontier({rE,rB,rC,sE,sB,rho}, {wE,wB,wC, mu, vol});
+  }
+
+  function drawFrontier(assume, point){
+    const c = document.getElementById('chart');
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+
+    const padL=56, padR=18, padT=18, padB=52;
+    const W=c.width-padL-padR, H=c.height-padT-padB;
+
+    const cash = point.wC;
+    const pts=[];
+    for(let we=0; we<=1-cash+1e-9; we+=0.02){
+      const wb=(1-cash)-we;
+      const {mu,vol} = portfolioStats({
+        wE:we, wB:wb, wC:cash,
+        rE:assume.rE, rB:assume.rB, rC:assume.rC,
+        sE:assume.sE, sB:assume.sB, rho:assume.rho
+      });
+      pts.push({we,wb,mu,vol});
+    }
+
+    const minVol = Math.min(...pts.map(p=>p.vol))*0.9;
+    const maxVol = Math.max(...pts.map(p=>p.vol))*1.1;
+    const minMu = Math.min(...pts.map(p=>p.mu))*0.9;
+    const maxMu = Math.max(...pts.map(p=>p.mu))*1.1;
+
+    const X = v => padL + ((v-minVol)/(maxVol-minVol))*W;
+    const Y = v => padT + (1-((v-minMu)/(maxMu-minMu)))*H;
+
+    // axes
+    ctx.strokeStyle='#d7deea'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,padT+H); ctx.lineTo(padL+W,padT+H); ctx.stroke();
+
+    // labels
+    ctx.fillStyle='#555'; ctx.font='12px Arial';
+    ctx.fillText('風險（年化波動）→', padL+W-120, padT+H+36);
+    ctx.save();
+    ctx.translate(18, padT+H-10);
+    ctx.rotate(-Math.PI/2);
+    ctx.fillText('預期報酬（年化）→', 0, 0);
+    ctx.restore();
+
+    // frontier polyline
+    ctx.strokeStyle='#0b3d91'; ctx.lineWidth=3;
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const x=X(p.vol), y=Y(p.mu);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // current point
+    const px = X(point.vol), py=Y(point.mu);
+    ctx.fillStyle='#0b3d91';
+    ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
+
+    ctx.fillStyle='#333'; ctx.font='13px Arial';
+    ctx.fillText('你目前配置', px+10, py-10);
+
+    // tick helpers
+    function tickX(v){
+      const x=X(v);
+      ctx.strokeStyle='#c9d3e5'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(x,padT+H); ctx.lineTo(x,padT+H+6); ctx.stroke();
+      ctx.fillStyle='#666'; ctx.font='12px Arial';
+      ctx.fillText((v*100).toFixed(1)+'%', x-16, padT+H+22);
+    }
+    function tickY(v){
+      const y=Y(v);
+      ctx.strokeStyle='#c9d3e5'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(padL-6,y); ctx.lineTo(padL,y); ctx.stroke();
+      ctx.fillStyle='#666'; ctx.font='12px Arial';
+      ctx.fillText((v*100).toFixed(1)+'%', 6, y+4);
+    }
+
+    // few ticks
+    for(let i=0;i<4;i++){
+      const vx = minVol + (maxVol-minVol)*(i/3);
+      tickX(vx);
+      const vy = minMu + (maxMu-minMu)*(i/3);
+      tickY(vy);
+    }
+
+    // header text
+    ctx.fillStyle='#666'; ctx.font='13px Arial';
+    ctx.fillText(`掃描股債比（現金固定 ${(cash*100).toFixed(0)}%），看風險-報酬曲線`, padL, 18);
+  }
+
+  function resetAll(){
+    document.getElementById('wE').value=60;
+    document.getElementById('wB').value=35;
+    document.getElementById('wC').value=5;
+    document.getElementById('rE').value=8;
+    document.getElementById('rB').value=3;
+    document.getElementById('rC').value=1.5;
+    document.getElementById('sE').value=18;
+    document.getElementById('sB').value=6;
+    document.getElementById('rho').value=0.2;
+    document.getElementById('outRet').innerHTML='—';
+    document.getElementById('outVol').innerHTML='—';
+    document.getElementById('outVar').innerHTML='—';
+    document.getElementById('outStress').innerHTML='—';
+    const c=document.getElementById('chart');
+    c.getContext('2d').clearRect(0,0,c.width,c.height);
+    run();
+  }
+
+  run();
+</script>
+</body>
+</html>
