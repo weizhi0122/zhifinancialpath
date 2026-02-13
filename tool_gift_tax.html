@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>贈與稅試算工具｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333}
+.container{max-width:900px;margin:auto;padding:30px 20px}
+.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+label{display:block;margin-top:12px}
+input{width:100%;padding:8px;margin-top:4px;border:1px solid #d7dbe6;border-radius:8px}
+button{margin-top:15px;padding:10px 14px;background:#0b3d91;color:#fff;border:0;border-radius:8px}
+.result{margin-top:15px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1 style="color:#0b3d91">贈與稅試算（115年）</h1>
+
+<div class="card">
+<label>本年度贈與總額（NT$）</label>
+<input id="gift" type="number" placeholder="例：5000000">
+
+<button onclick="calc()">試算</button>
+
+<div id="output" class="result" style="display:none;"></div>
+</div>
+</div>
+
+<script>
+function calc(){
+let gift = Number(document.getElementById('gift').value);
+let exempt = 2440000;
+let taxable = gift - exempt;
+if(taxable<0) taxable = 0;
+
+let tax=0;
+if(taxable<=25000000){
+ tax = taxable*0.10;
+}else if(taxable<=50000000){
+ tax = 25000000*0.10 + (taxable-25000000)*0.15;
+}else{
+ tax = 25000000*0.10 + 25000000*0.15 + (taxable-50000000)*0.20;
+}
+
+document.getElementById('output').style.display="block";
+document.getElementById('output').innerHTML =
+"課稅贈與淨額：約 NT$ "+taxable.toLocaleString()+
+"<br>預估贈與稅：約 NT$ "+Math.round(tax).toLocaleString();
+}
+</script>
+</body>
+</html>
