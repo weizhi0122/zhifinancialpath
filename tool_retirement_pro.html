@@ -1,217 +1,71 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>專業退休規劃分析｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between}
-.brand{font-weight:bold;color:#0b3d91;text-decoration:none}
-.links a{margin-left:15px;text-decoration:none;color:#333}
-.container{max-width:1100px;margin:auto;padding:30px 20px}
-.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 4px 10px rgba(0,0,0,.05);margin-bottom:20px}
-label{display:block;margin-top:10px;font-size:14px}
-input{width:100%;padding:8px;border-radius:8px;border:1px solid #ccc}
-button{margin-top:15px;background:#0b3d91;color:white;padding:10px 15px;border:none;border-radius:8px;cursor:pointer}
-.result{margin-top:15px;background:#eef4ff;padding:15px;border-radius:10px}
-canvas{margin-top:20px}
-footer{text-align:center;margin-top:20px;color:#777;font-size:13px}
-</style>
+  <meta charset="UTF-8" />
+  <title>專業退休規劃｜智 Financial Path</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="專業退休規劃入口：以退休現金流模擬為主工具，包含通膨、年金、被動收益、提領補洞與壓力測試。" />
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:980px;margin:auto;padding:26px 20px 80px}
+    h1,h2{color:#0b3d91;margin:0 0 10px}
+    .muted{color:#666}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05);margin-top:14px}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    .step{background:#f3f7ff;border:1px solid #dfeaff;border-radius:12px;padding:12px;margin-top:10px}
+    .small{font-size:13px;color:#666}
+  </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
+  <h1>專業退休規劃（統一入口）</h1>
+  <p class="muted">這裡用同一套核心邏輯：<b>通膨 → 年金/收入 → 被動收益 → 缺口提領 → 壓力測試</b>，避免讀者被兩套工具搞混。</p>
 
-<h1>專業退休規劃分析工具</h1>
+  <div class="card">
+    <h2 style="font-size:18px;">你應該怎麼用？（顧問式流程）</h2>
 
-<div class="card">
-<h3>基本資料</h3>
+    <div class="step">
+      <b>Step 1：先跑「退休現金流模擬」</b><br>
+      <span class="small">看資產是否歸零、最低點在哪、壓力測試會不會翻車。</span>
+      <div class="btnrow">
+        <a class="btn" href="./tool_retirement_cashflow.html">開始退休現金流模擬</a>
+      </div>
+    </div>
 
-<label>退休後每年生活支出（今天幣值）</label>
-<input type="number" id="annualSpend" placeholder="例：1800000">
+    <div class="step">
+      <b>Step 2：用「快速缺口」抓方向感</b><br>
+      <span class="small">你要快速知道：缺口大概是多少、提領率敏感度多高。</span>
+      <div class="btnrow">
+        <a class="btn ghost" href="./tool_retirement_gap.html">快速缺口估算</a>
+      </div>
+    </div>
 
-<label>目前年齡</label>
-<input type="number" id="currentAge" placeholder="例：40">
+    <div class="step">
+      <b>Step 3：回到知識庫把模型補齊</b><br>
+      <span class="small">工具只能算，決策要靠框架：通膨、回撤、長照、醫療、退休初期 sequence risk。</span>
+      <div class="btnrow">
+        <a class="btn ghost" href="./library.html#retire">去知識庫：退休架構</a>
+      </div>
+    </div>
 
-<label>預計退休年齡</label>
-<input type="number" id="retireAge" placeholder="例：65">
-
-<label>預期壽命</label>
-<input type="number" id="lifeAge" placeholder="例：90">
-
-<label>通膨率（%）</label>
-<input type="number" id="inflation" value="2">
-
-<h3>勞保年金估算（簡化教育版）</h3>
-
-<label>平均投保薪資（月）</label>
-<input type="number" id="salary" placeholder="例：45800">
-
-<label>投保年資（年）</label>
-<input type="number" id="years" placeholder="例：35">
-
-<label>延後請領加成（%）</label>
-<input type="number" id="delay" value="0">
-
-<h3>資產模式</h3>
-
-<label>安全提領率（%）</label>
-<input type="number" id="withdrawRate" value="3.5">
-
-<label>被動收益率（%）</label>
-<input type="number" id="passiveRate" value="3.5">
-
-<label>目前已準備退休資產</label>
-<input type="number" id="currentAsset" placeholder="例：12000000">
-
-<button onclick="calculate()">開始分析</button>
-
-<div id="output" class="result" style="display:none"></div>
-
+  </div>
 </div>
-
-<canvas id="pieChart"></canvas>
-<canvas id="barChart"></canvas>
-<canvas id="cashflowChart"></canvas>
-
-<footer>
-本工具為教育用途，公式為簡化估算，不構成投資建議。
-</footer>
-
-</div>
-
-<script>
-let pieChart, barChart, cashflowChart;
-
-function calculate(){
-
-const annualSpend = Number(document.getElementById("annualSpend").value);
-const currentAge = Number(document.getElementById("currentAge").value);
-const retireAge = Number(document.getElementById("retireAge").value);
-const lifeAge = Number(document.getElementById("lifeAge").value);
-const inflation = Number(document.getElementById("inflation").value)/100;
-
-const salary = Number(document.getElementById("salary").value);
-const years = Number(document.getElementById("years").value);
-const delay = Number(document.getElementById("delay").value)/100;
-
-const withdrawRate = Number(document.getElementById("withdrawRate").value)/100;
-const passiveRate = Number(document.getElementById("passiveRate").value)/100;
-const currentAsset = Number(document.getElementById("currentAsset").value);
-
-const yearsToRetire = retireAge - currentAge;
-const retirementYears = lifeAge - retireAge;
-
-// 勞保簡化公式
-let pension1 = salary * years * 0.0155;
-let pension2 = salary * years * 0.013 + 3000;
-let monthlyPension = Math.max(pension1, pension2);
-monthlyPension = monthlyPension * (1 + delay);
-let annualPension = monthlyPension * 12;
-
-// 通膨後退休支出
-let inflatedSpend = annualSpend * Math.pow(1+inflation, yearsToRetire);
-
-// 年缺口
-let annualGap = Math.max(0, inflatedSpend - annualPension);
-
-// 資產需求
-let needWithdraw = annualGap / withdrawRate;
-let needPassive = annualGap / passiveRate;
-
-// 壓力測試（-20%）
-let stressAsset = currentAsset * 0.8;
-let yearsSupport = stressAsset / annualGap;
-
-// ----------- 評分系統 -----------
-let score = 0;
-
-// 勞保占比
-let pensionRatio = annualPension / inflatedSpend;
-if(pensionRatio >= 0.3) score += 20;
-
-// 缺口比例
-let gapRatio = annualGap / inflatedSpend;
-if(gapRatio <= 0.4) score += 20;
-
-// 生產力優勢
-if(needPassive < needWithdraw * 0.9) score += 20;
-
-// 壓力測試安全
-if(yearsSupport >= retirementYears) score += 20;
-
-// 資產達標度
-if(currentAsset >= needWithdraw*0.7) score += 20;
-
-if(score>100) score=100;
-
-// 評級顏色
-let level, color;
-if(score>=75){level="穩健"; color="green";}
-else if(score>=50){level="可改善"; color="orange";}
-else{level="風險偏高"; color="red";}
-
-// 顧問式解讀
-let advice="";
-if(gapRatio>0.5){
-advice+="目前退休缺口比例偏高，建議優先優化資產生產能力或延後退休年齡。<br>";
-}
-if(pensionRatio<0.2){
-advice+="勞保佔比偏低，可評估是否延後請領以提升保障。<br>";
-}
-if(needWithdraw>needPassive*1.2){
-advice+="單純提領模式壓力較大，提高被動收益能力將顯著改善退休結構。<br>";
-}
-if(yearsSupport<retirementYears){
-advice+="壓力測試顯示市場波動可能影響退休穩定度，需保留安全緩衝。<br>";
-}
-
-let output = document.getElementById("output");
-output.style.display="block";
-output.innerHTML = `
-<h3>📊 退休診斷報告</h3>
-退休時年支出（通膨後）：${Math.round(inflatedSpend).toLocaleString()}<br>
-勞保年金：${Math.round(annualPension).toLocaleString()}<br>
-年度缺口：${Math.round(annualGap).toLocaleString()}<br><br>
-
-提領模式需求資產：${Math.round(needWithdraw).toLocaleString()}<br>
-被動收益模式需求資產：${Math.round(needPassive).toLocaleString()}<br><br>
-
-壓力測試（-20%）：可支撐 ${Math.floor(yearsSupport)} 年<br><br>
-
-<h3>退休準備度：${score}/100</h3>
-<div style="background:#eee;border-radius:8px;width:100%;height:18px;">
-<div style="width:${score}%;background:${color};height:18px;border-radius:8px;"></div>
-</div>
-<strong style="color:${color}">${level}</strong><br><br>
-
-<h4>顧問建議</h4>
-${advice}
-
-<hr>
-👉 想取得完整個人化分析路徑？<br>
-請加入 LINE 並輸入「退休分析」<br>
-<a href="https://lin.ee/yvD5Vu8" target="_blank">加入 LINE</a>
-`;
-
-}
-</script>
-
 
 </body>
 </html>
