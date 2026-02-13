@@ -4,66 +4,92 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>財報健康檢核工具（研究室版）｜智 Financial Path</title>
-<meta name="description" content="比率＋現金流＋同業比較（分位數）＋紅旗檢核：快速決定要不要進估值。">
+<meta name="description" content="比率＋現金流＋同業比較（分位）＋紅旗檢核：快速決定要不要進估值。">
+
 <style>
   :root{
-    --bg:#f6f8fb; --card:#fff; --text:#333; --muted:#666;
+    --bg:#f6f8fb; --card:#fff; --text:#333; --muted:#667085;
     --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
-    --danger:#d92c2c; --warnbg:#fff4f4; --ok:#15a34a; --okbg:#f1fff5;
+    --danger:#d92c2c; --warnbg:#fff4f4; --ok:#16a34a; --okbg:#f1fff5;
+    --shadow:0 10px 22px rgba(16,24,40,.06); --radius:18px;
   }
+  *{box-sizing:border-box}
   body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
   .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
-  .topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar .inner{max-width:1120px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
   .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
-  .container{max-width:1100px;margin:auto;padding:26px 20px 90px}
+  .topbar a:hover{text-decoration:underline}
+
+  .container{max-width:1120px;margin:auto;padding:26px 20px 90px}
   h1,h2,h3{color:var(--primary);margin:0 0 10px}
-  .sub{color:#555;margin:0 0 18px}
-  .grid{display:grid;grid-template-columns:420px 1fr;gap:14px;align-items:start}
+  .sub{color:#4b5563;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:440px 1fr;gap:14px;align-items:start}
   @media (max-width:980px){ .grid{grid-template-columns:1fr} }
-  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
-  label{display:block;font-size:13px;color:#555;margin:10px 0 6px}
-  input,select{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px}
+  label{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;font-size:13px;color:#475569;margin:10px 0 6px}
+  label span.smalltag{font-size:12px;color:#64748b;background:#f7f9ff;border:1px solid #dfeaff;border-radius:999px;padding:2px 8px}
+  input,select{width:100%;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
   input:focus,select:focus{outline:2px solid #cfe0ff;border-color:#cfe0ff}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
   @media (max-width:520px){ .row2,.row3{grid-template-columns:1fr} }
+
   .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
   button{border:0;border-radius:12px;padding:10px 14px;background:var(--primary);color:#fff;cursor:pointer;font-size:14px}
   button.secondary{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  button:hover{opacity:.92}
+
   .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
   .kpi .box{background:#f7f9ff;border:1px solid #dfeaff;border-radius:14px;padding:12px}
   .kpi .box b{color:var(--primary)}
   .small{font-size:13px;color:var(--muted)}
   .hr{border:none;border-top:1px solid #eef1f6;margin:12px 0}
   .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#f7f9ff;border:1px solid #dfeaff;color:#334155;font-size:12px}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+
   .msg{border-radius:14px;padding:12px 14px;margin-top:12px}
   .msg.warn{background:var(--warnbg);border-left:4px solid var(--danger)}
   .msg.ok{background:var(--okbg);border-left:4px solid var(--ok)}
-  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px}
+  .msg.neu{background:#fff;border-left:4px solid #94a3b8}
+
+  details.help{background:#fff;border:1px solid #edf0f6;border-radius:14px;padding:10px 12px;margin-top:10px}
+  details.help summary{cursor:pointer;color:#111827;font-weight:700}
+  details.help ul{margin:8px 0 0 18px}
+  details.help li{margin:4px 0}
+  .hint{font-size:12px;color:#64748b;margin-top:6px;line-height:1.55}
 
   /* Radar */
   .radarWrap{border-radius:14px;border:1px solid var(--line);background:#fff;padding:12px}
   canvas{width:100%;height:320px;display:block}
 
-  /* Percent bar */
+  /* Percent bars */
   .pctWrap{margin-top:10px}
-  .pctRow{display:grid;grid-template-columns:130px 1fr 70px;gap:10px;align-items:center;margin:10px 0}
+  .pctRow{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;margin:10px 0}
   .pctRow .k{font-size:13px;color:#334155}
   .bar{height:10px;border-radius:999px;background:#eef1f6;position:relative;overflow:hidden}
-  .bar > span{position:absolute;left:0;top:0;bottom:0;background:rgba(11,61,145,.25)}
+  .bar > span{position:absolute;left:0;top:0;bottom:0;background:rgba(11,61,145,.22)}
   .dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--primary)}
-  .pctRow .v{font-size:12px;color:#0b3d91;text-align:right}
-  .help{font-size:12px;color:#7a8699;margin-top:6px;line-height:1.45}
+  .pctRow .v{font-size:12px;color:var(--primary);text-align:right}
+
+  .toggleRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .toggle{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid #dfeaff;border-radius:14px;background:#fff}
+  .toggle input{width:auto}
+  .quickBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .quickBtns button{padding:8px 12px;font-size:13px}
+
   .footlinks{text-align:center;margin-top:20px}
   .footlinks a{margin:0 10px;color:var(--primary);text-decoration:none}
+  .footlinks a:hover{text-decoration:underline}
 </style>
 </head>
+
 <body>
   <div class="topbar">
     <div class="inner">
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
         <a href="./tools.html">← 回工具</a>
-        <span class="pill">研究室版：同業比較 + 分位數 + 紅旗門檻</span>
+        <span class="pill">研究室版：同業比較 + 分位 + 紅旗門檻</span>
       </div>
       <div>
         <a href="./index.html" style="margin-right:12px;">🏠 回主頁</a>
@@ -74,82 +100,173 @@
 
   <div class="container">
     <h1>財報健康檢核工具（研究室版）</h1>
-    <p class="sub">先判斷「體質是否值得估值」：分數要看、紅旗更要看；同業比較可以避免你用錯產業天花板。</p>
+    <p class="sub">
+      目標只有一個：<b>先判斷「值不值得做估值」</b>。<br>
+      <span class="small">你會得到：總評（A~D）＋紅旗（先看）＋下一步要去哪張報表找證據。</span>
+    </p>
 
     <div class="grid">
       <!-- LEFT -->
       <div class="card">
+        <div class="toggleRow">
+          <div class="toggle">
+            <input id="modeQuick" type="checkbox" />
+            <label for="modeQuick" style="margin:0;font-size:13px;color:#334155;display:inline">快速模式（新手先用：只填必填）</label>
+          </div>
+          <span class="small">快速模式會先隱藏「同業比較」與部分進階項目。</span>
+        </div>
+
+        <div class="quickBtns">
+          <button type="button" class="secondary" onclick="preset('tech')">一鍵範例：科技/平台型</button>
+          <button type="button" class="secondary" onclick="preset('mfg')">一鍵範例：製造業</button>
+          <button type="button" class="secondary" onclick="preset('cyc')">一鍵範例：循環股</button>
+        </div>
+
+        <details class="help">
+          <summary>我不知道數字去哪找？（最簡單版本：照這個找就夠）</summary>
+          <ul>
+            <li><b>營收年增率</b>：損益表（Income Statement）→ 營收（Revenue）→ 看「今年 vs 去年」或「近一季 YoY」。</li>
+            <li><b>毛利率 / 營業利益率 / 淨利率</b>：損益表通常直接給；沒有就用：
+              <ul>
+                <li>毛利率 = 毛利 / 營收</li>
+                <li>營業利益率 = 營業利益 / 營收</li>
+                <li>淨利率 = 淨利 / 營收</li>
+              </ul>
+            </li>
+            <li><b>ROE</b>：常見財務比率區直接有；沒有就用 ROE = 淨利 / 股東權益。</li>
+            <li><b>負債比</b>：資產負債表（Balance Sheet）→ 總負債 / 總資產。</li>
+            <li><b>流動比 / 速動比</b>：比率區通常直接有；沒有就用：
+              <ul>
+                <li>流動比率 = 流動資產 / 流動負債</li>
+                <li>速動比率 =（流動資產 - 存貨）/ 流動負債</li>
+              </ul>
+            </li>
+            <li><b>CFO/淨利</b>：現金流量表（Cash Flow）→ 營運現金流（CFO）/ 淨利。</li>
+            <li><b>FCF 為正？</b>：自由現金流 FCF = CFO - 資本支出（CapEx）。為正代表有「多的現金」可還債/分紅/回購。</li>
+            <li><b>利息保障倍數</b>：常見比率區有；沒有就用（營業利益 / 利息費用）。</li>
+          </ul>
+          <div class="hint">建議：新手先用「年報/年資料」；有能力再看「近四季TTM」。</div>
+        </details>
+
+        <div class="hr"></div>
+
         <h2 style="margin-top:0">輸入：公司數字</h2>
+        <div class="small">小提醒：<b>% 就直接填數字</b>（例如 15% → 填 15）。</div>
 
         <div class="row3">
-          <div><label>營收年增率（%）</label><input id="revG" type="number" step="0.1" value="8"></div>
-          <div><label>毛利率（%）</label><input id="gm" type="number" step="0.1" value="35"></div>
-          <div><label>營業利益率（%）</label><input id="om" type="number" step="0.1" value="15"></div>
-        </div>
-
-        <div class="row3">
-          <div><label>淨利率（%）</label><input id="nm" type="number" step="0.1" value="10"></div>
-          <div><label>ROE（%）</label><input id="roe" type="number" step="0.1" value="15"></div>
-          <div><label>負債比（%）</label><input id="debt" type="number" step="0.1" value="45"></div>
-        </div>
-
-        <div class="row2">
-          <div><label>流動比率（倍）</label><input id="cr" type="number" step="0.01" value="1.8"></div>
-          <div><label>速動比率（倍）</label><input id="qr" type="number" step="0.01" value="1.2"></div>
-        </div>
-
-        <div class="row2">
           <div>
-            <label>營運現金流 / 淨利（倍）</label>
-            <input id="cfoNI" type="number" step="0.01" value="1.1">
+            <label>營收年增率（%） <span class="smalltag">損益表</span></label>
+            <input id="revG" type="number" step="0.1" value="8" />
+            <div class="hint">哪裡找：損益表 → Revenue YoY（或自己算：今年營收/去年營收-1）。</div>
           </div>
           <div>
-            <label>自由現金流（FCF）為正？</label>
+            <label>毛利率（%） <span class="smalltag">損益表</span></label>
+            <input id="gm" type="number" step="0.1" value="35" />
+            <div class="hint">哪裡找：Gross Margin；沒有就算：毛利/營收。</div>
+          </div>
+          <div>
+            <label>營業利益率（%） <span class="smalltag">損益表</span></label>
+            <input id="om" type="number" step="0.1" value="15" />
+            <div class="hint">哪裡找：Operating Margin；沒有就算：營業利益/營收。</div>
+          </div>
+        </div>
+
+        <div class="row3">
+          <div>
+            <label>淨利率（%） <span class="smalltag">損益表</span></label>
+            <input id="nm" type="number" step="0.1" value="10" />
+            <div class="hint">哪裡找：Net Margin；沒有就算：淨利/營收。</div>
+          </div>
+          <div>
+            <label>ROE（%） <span class="smalltag">比率區</span></label>
+            <input id="roe" type="number" step="0.1" value="15" />
+            <div class="hint">哪裡找：ROE；注意：ROE 高也可能是槓桿拉出來的。</div>
+          </div>
+          <div>
+            <label>負債比（%） <span class="smalltag">資產負債表</span></label>
+            <input id="debt" type="number" step="0.1" value="45" />
+            <div class="hint">哪裡找：Total Liabilities / Total Assets。</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>流動比率（倍） <span class="smalltag">比率區</span></label>
+            <input id="cr" type="number" step="0.01" value="1.8" />
+            <div class="hint">哪裡找：Current Ratio；1 代表剛好，越高越有緩衝。</div>
+          </div>
+          <div>
+            <label>速動比率（倍） <span class="smalltag">比率區</span></label>
+            <input id="qr" type="number" step="0.01" value="1.2" />
+            <div class="hint">哪裡找：Quick Ratio；把「存貨」排除後的安全度。</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>CFO / 淨利（倍） <span class="smalltag">現金流量表</span></label>
+            <input id="cfoNI" type="number" step="0.01" value="1.1" />
+            <div class="hint">怎麼看：<b>≥1</b> 通常代表「淨利有變現」。<b>&lt;1</b> 要追：應收、存貨、一次性收益。</div>
+          </div>
+          <div>
+            <label>自由現金流（FCF）為正？ <span class="smalltag">現金流量表</span></label>
             <select id="fcfPos">
-              <option value="1" selected>是</option>
-              <option value="0">否</option>
+              <option value="1" selected>是（FCF ≥ 0）</option>
+              <option value="0">否（FCF &lt; 0）</option>
             </select>
+            <div class="hint">FCF = CFO - CapEx。<b>FCF 長期為負</b>要問：擴張？燒錢？或週期低谷？</div>
           </div>
         </div>
 
         <div class="row2">
-          <div><label>利息保障倍數（倍）</label><input id="icr" type="number" step="0.1" value="8"></div>
           <div>
-            <label>應收帳款週轉是否惡化？</label>
+            <label>利息保障倍數（倍） <span class="smalltag">比率/附註</span></label>
+            <input id="icr" type="number" step="0.1" value="8" />
+            <div class="hint">怎麼看：<b>&lt;2</b> 高風險；<b>5~10</b>較舒服；景氣反轉時更重要。</div>
+          </div>
+          <div>
+            <label>應收週轉是否惡化？ <span class="smalltag">應收/附註</span></label>
             <select id="arBad">
               <option value="0" selected>否</option>
               <option value="1">是</option>
             </select>
+            <div class="hint">哪裡看：應收帳款週轉天數（DSO）變長、或應收增幅 > 營收增幅。</div>
           </div>
         </div>
 
-        <div class="hr"></div>
-
-        <h3 style="margin:0 0 6px">同業參考（可選填）</h3>
-        <div class="small">若你有同業平均/中位數，可以填進來，工具會算「相對位置（分位數）」。</div>
-
-        <div class="row2">
-          <div>
-            <label>同業 ROE 中位數（%）</label>
-            <input id="peer_roe" type="number" step="0.1" value="12">
+        <div id="advancedBlock">
+          <div class="hr"></div>
+          <h3 style="margin:0 0 6px">同業參考（可選填）</h3>
+          <div class="small">
+            你只要填「同業中位數」就行。工具會用「你 vs 同業中位數」算相對位置（簡化分位）。<br>
+            <span class="small">沒有資料也沒關係：這區不影響基本評分。</span>
           </div>
-          <div>
-            <label>同業 負債比 中位數（%）</label>
-            <input id="peer_debt" type="number" step="0.1" value="50">
+
+          <div class="row2">
+            <div>
+              <label>同業 ROE 中位數（%）</label>
+              <input id="peer_roe" type="number" step="0.1" value="12" />
+              <div class="hint">去哪找：同產業 5~10 家公司 ROE 取中位數（或直接用產業資料網站的 median）。</div>
+            </div>
+            <div>
+              <label>同業 負債比 中位數（%）</label>
+              <input id="peer_debt" type="number" step="0.1" value="50" />
+              <div class="hint">負債比產業差很大：金融/建設/航運不要拿科技業去比。</div>
+            </div>
           </div>
+
+          <div class="row2">
+            <div>
+              <label>同業 CFO/淨利 中位數（倍）</label>
+              <input id="peer_cfoNI" type="number" step="0.01" value="1.0" />
+            </div>
+            <div>
+              <label>同業 毛利率 中位數（%）</label>
+              <input id="peer_gm" type="number" step="0.1" value="30" />
+            </div>
+          </div>
+          <div class="hint">建議：同業數字以「近四季TTM」最接近現況；沒有就用最近一年。</div>
         </div>
-
-        <div class="row2">
-          <div>
-            <label>同業 CFO/NI 中位數（倍）</label>
-            <input id="peer_cfoNI" type="number" step="0.01" value="1.0">
-          </div>
-          <div>
-            <label>同業 毛利率 中位數（%）</label>
-            <input id="peer_gm" type="number" step="0.1" value="30">
-          </div>
-        </div>
-        <div class="help">沒有資料也沒關係：同業分位數就顯示「—」，不影響基本評分。</div>
 
         <div class="btnrow">
           <button type="button" onclick="check()">開始檢核</button>
@@ -170,12 +287,12 @@
             <div class="small">A：體質佳｜B：可研究｜C：需謹慎｜D：高風險</div>
           </div>
           <div class="box">
-            <b>紅旗門檻（先看這個）</b>
+            <b>紅旗（先看這個）</b>
             <div id="redflags" style="margin-top:6px;">—</div>
             <div class="small">紅旗越多，估值越容易變成自我安慰。</div>
           </div>
           <div class="box">
-            <b>估值前置檢核</b>
+            <b>是否進估值？（Gate）</b>
             <div id="gate" style="margin-top:6px;">—</div>
             <div class="small">通過才進「估值＋安全邊際」。</div>
           </div>
@@ -183,12 +300,13 @@
 
         <div class="hr"></div>
 
-        <h3 style="margin:0 0 6px">同業相對位置（分位數）</h3>
-        <div class="small">用「你 vs 同業中位數」估算相對位置（簡化版）。</div>
-
-        <div class="pctWrap" id="pctWrap"></div>
-
-        <div class="hr"></div>
+        <div id="peerBlock">
+          <h3 style="margin:0 0 6px">同業相對位置（好懂版）</h3>
+          <div class="small">用「你 vs 同業中位數」推估：越右邊表示越優（簡化）。</div>
+          <div class="pctWrap" id="pctWrap"></div>
+          <div class="hint">注意：這是「相對同業」不是絕對好壞；有些產業本來毛利就低。</div>
+          <div class="hr"></div>
+        </div>
 
         <div class="radarWrap">
           <canvas id="radar" width="940" height="320"></canvas>
@@ -197,8 +315,8 @@
           </div>
         </div>
 
-        <div class="note" style="margin-top:12px">
-          <span class="badge">下一步你要做什麼？</span><br>
+        <div class="msg neu" style="margin-top:12px">
+          <span class="badge">下一步（我帶你去找證據）</span><br>
           <div id="next" style="margin-top:8px">—</div>
         </div>
       </div>
@@ -216,7 +334,7 @@
   function $(id){ return document.getElementById(id); }
   function num(id){ return Number($(id).value || 0); }
 
-  // 基本評分規則（同你原本邏輯，集中管理）
+  // 評分規則（原邏輯保留）
   const RULES = {
     growth: [{min:-999,max:0,score:30},{min:0,max:5,score:55},{min:5,max:15,score:75},{min:15,max:999,score:90}],
     gm:     [{min:-999,max:20,score:35},{min:20,max:35,score:65},{min:35,max:50,score:80},{min:50,max:999,score:90}],
@@ -236,22 +354,13 @@
     return 0;
   }
 
-  // 分位數（簡化版）：用你 vs 同業中位數，做一個 S 型近似轉換
-  // > 中位數很多：>50%；遠大於中位數：接近 90%；遠小：接近 10%
+  // 分位（簡化）：你 vs 同業中位數
   function approxPercentile(value, median, direction){
-    // direction: "higherBetter" or "lowerBetter"
     if(!isFinite(value) || !isFinite(median) || median===0) return null;
-
-    // 把「越大越好」轉成同向比較
     let ratio = (direction==="higherBetter") ? (value/median) : (median/value);
-
-    // 避免爆炸
     ratio = clamp(ratio, 0.2, 5);
-
-    // logistic-ish map: ratio=1 -> 50
-    // ratio=0.5 -> ~20-30 ; ratio=2 -> ~70-80
-    const x = Math.log(ratio); // -..+
-    const pct = 100 * (1 / (1 + Math.exp(-1.4 * x))); // slope
+    const x = Math.log(ratio);
+    const pct = 100 * (1 / (1 + Math.exp(-1.4 * x)));
     return clamp(pct, 1, 99);
   }
 
@@ -259,7 +368,6 @@
     const safe = (pct===null) ? "—" : `${pct.toFixed(0)}%`;
     const w = (pct===null) ? 0 : pct;
     const dotLeft = (pct===null) ? 0 : pct;
-
     return `
       <div class="pctRow">
         <div class="k">${label}</div>
@@ -272,20 +380,48 @@
     `;
   }
 
+  // 合理性檢查（新手常填錯的）
+  function validateInputs(){
+    const errs=[];
+    const debt=num('debt'), cr=num('cr'), qr=num('qr'), roe=num('roe');
+    const revG=num('revG'), gm=num('gm'), om=num('om'), nm=num('nm');
+    const cfoNI=num('cfoNI'), icr=num('icr');
+
+    if(debt<0 || debt>120) errs.push("負債比通常在 0~100%（金融股可能更高）。請確認是否填錯。");
+    if(cr<0 || cr>20) errs.push("流動比率通常不會太誇張（例如 >20 多半是填錯）。");
+    if(qr<0 || qr>20) errs.push("速動比率通常不會太誇張（例如 >20 多半是填錯）。");
+    if(roe<-50 || roe>80) errs.push("ROE 極端值（<-50 或 >80）請確認是年度/TTM，或是否有一次性因素。");
+    if(gm<-50 || gm>95) errs.push("毛利率看起來不合理，請確認是否填錯。");
+    if(om<-80 || om>60) errs.push("營業利益率看起來不合理，請確認是否填錯。");
+    if(nm<-80 || nm>60) errs.push("淨利率看起來不合理，請確認是否填錯。");
+    if(cfoNI<-5 || cfoNI>10) errs.push("CFO/淨利倍數極端，請確認是否填錯或有一次性因素。");
+    if(icr<0) errs.push("利息保障倍數不應為負，請確認輸入。");
+    if(revG<-80 || revG>200) errs.push("營收年增率極端，請確認是否是小基期或填錯。");
+
+    return errs;
+  }
+
   function check(){
+    const errs = validateInputs();
+    const msgBox=$('msgBox');
+    msgBox.style.display="block";
+
+    if(errs.length){
+      msgBox.className="msg warn";
+      msgBox.innerHTML = `<b>先確認輸入：</b><ul>${errs.map(e=>`<li>${e}</li>`).join("")}</ul>`;
+    }else{
+      msgBox.className="msg neu";
+      msgBox.innerHTML = `<b>輸入看起來合理。</b>接下來請看「紅旗」與「Gate」。`;
+    }
+
     const revG = num('revG'), gm=num('gm'), om=num('om'), nm=num('nm'), roe=num('roe');
     const debt = num('debt'), cr=num('cr'), qr=num('qr'), cfoNI=num('cfoNI');
     const fcfPos = Number($('fcfPos').value||0);
     const icr = num('icr');
     const arBad = Number($('arBad').value||0);
 
-    // 基本分數
     const S_growth = clamp(scoreRange(revG, RULES.growth),0,100);
-    const S_profit = clamp(
-      scoreRange(gm, RULES.gm)*0.40 +
-      scoreRange(om, RULES.om)*0.35 +
-      scoreRange(nm, RULES.nm)*0.25
-    ,0,100);
+    const S_profit = clamp(scoreRange(gm, RULES.gm)*0.40 + scoreRange(om, RULES.om)*0.35 + scoreRange(nm, RULES.nm)*0.25,0,100);
     const S_quality = clamp(scoreRange(roe, RULES.roe)*0.60 + ((arBad>=1)?30:85)*0.40,0,100);
     const S_leverage = clamp(scoreRange(debt, RULES.debt),0,100);
     const S_liquidity = clamp(scoreRange(cr, RULES.cr)*0.55 + scoreRange(qr, RULES.qr)*0.45,0,100);
@@ -304,26 +440,28 @@
 
     $('grade').innerHTML = `<b style="font-size:22px;color:#0b3d91">${gradeTxt}</b><div class="small">總分：${overall.toFixed(1)} / 100</div>`;
 
-    // 紅旗（可擴充）
+    // 紅旗：更好懂＋更像投資人的提問
     const red = [];
-    if(icr < 2) red.push("利息保障 < 2（債務壓力高）");
-    if(cfoNI < 0.8) red.push("CFO/淨利 < 0.8（盈餘品質偏弱）");
-    if(debt > 65) red.push("負債比 > 65%（槓桿偏高）");
-    if(fcfPos === 0) red.push("FCF 為負（需確認資本支出/燒錢）");
-    if(arBad === 1) red.push("應收週轉惡化（回款風險）");
+    if(icr < 2) red.push("利息保障 < 2：一旦景氣下行，容易撐不住（先看負債到期與再融資）。");
+    if(cfoNI < 0.8) red.push("CFO/淨利 < 0.8：淨利可能「沒有變成現金」（先追應收/存貨）。");
+    if(debt > 65) red.push("負債比 > 65%：槓桿偏高（先看短債比例與利率敏感度）。");
+    if(fcfPos === 0) red.push("FCF 為負：需判斷是「擴張投資」還是「持續燒錢」。");
+    if(arBad === 1) red.push("應收週轉惡化：回款變慢（先看客戶集中度與呆帳政策）。");
 
-    $('redflags').innerHTML = red.length ? `<ul>${red.map(x=>`<li>${x}</li>`).join("")}</ul>` : `<b>目前未看到明顯紅旗</b><div class="small">仍建議看附註確認一次性因素。</div>`;
+    $('redflags').innerHTML = red.length
+      ? `<ul>${red.map(x=>`<li>${x}</li>`).join("")}</ul>`
+      : `<b>目前未看到明顯紅旗</b><div class="small">仍建議快速翻附註：一次性收益、會計政策、重大訴訟。</div>`;
 
-    // 估值前置檢核（Gate）
-    let gate = "✅ 通過：可進估值";
-    let gateHint = "下一步建議：做同業比較（毛利/費用率/ROE/現金流）＋再進估值（安全邊際）。";
+    // Gate：更直覺
+    let gate = "✅ 通過：可以進估值（第二關）";
+    let gateHint = "下一步：做同業比較 → 再進估值（安全邊際）。";
     if(red.length>=2 || overall<58){
-      gate = "⚠️ 暫緩：先補證據再估值";
-      gateHint = "紅旗偏多或總分偏低：先回答『短期週期 vs 結構性問題』，不要急著用估值安慰自己。";
+      gate = "⚠️ 先暫緩：先補證據再估值";
+      gateHint = "紅旗偏多或總分偏低：先釐清問題是否結構性（不可逆）再談估值。";
     }
     $('gate').innerHTML = `<b>${gate}</b><div class="small">${gateHint}</div>`;
 
-    // 同業分位（簡化）
+    // 同業分位
     const peer_roe = num('peer_roe');
     const peer_debt= num('peer_debt');
     const peer_cfoNI= num('peer_cfoNI');
@@ -335,35 +473,27 @@
     const p4 = approxPercentile(gm, peer_gm, "higherBetter");
 
     $('pctWrap').innerHTML =
-      pctRow("ROE（越高越好）", p1) +
-      pctRow("負債比（越低越好）", p2) +
-      pctRow("CFO/淨利（越高越好）", p3) +
-      pctRow("毛利率（越高越好）", p4);
+      pctRow("ROE（高於同業更好）", p1) +
+      pctRow("負債比（低於同業更好）", p2) +
+      pctRow("CFO/淨利（高於同業更好）", p3) +
+      pctRow("毛利率（高於同業更好）", p4);
 
-    // next steps（更像研究流程）
-    const nextList = [];
+    // Next steps：更具體告訴去哪裡找
+    const next = [];
     if(red.length){
-      nextList.push(`<li><b>先處理紅旗：</b>把紅旗每一項都找到「附註/明細」證據，判斷可逆/不可逆。</li>`);
-    }else{
-      nextList.push(`<li><b>體質大致過關：</b>做同業比較，確認不是產業天花板限制。</li>`);
+      next.push(`<li><b>先處理紅旗：</b>逐條回到「附註/明細」找證據（不要只看比率）。</li>`);
+      next.push(`<li><b>你要找的證據：</b><br>
+        ① 應收/存貨是否異常？（營運資金變動）<br>
+        ② 短期借款/一年內到期長借款比例？（到期壓力）<br>
+        ③ 是否有一次性收益/處分利益撐住淨利？</li>`);
+    } else {
+      next.push(`<li><b>體質大致過關：</b>進第二關前，先用同業比較確認「不是產業天花板」。</li>`);
     }
-    nextList.push(`<li><b>再做估值：</b>使用你的估值工具（EPS/FCF/折現/安全邊際），並用保守情境重算。</li>`);
-    nextList.push(`<li><b>最後放回配置：</b>依風險與把握度決定部位大小，而不是只看便宜。</li>`);
-    $('next').innerHTML = `<ul>${nextList.join("")}</ul>`;
+    next.push(`<li><b>進估值工具：</b>用保守情境（成長降一級、毛利略降、折現率略升）重算安全邊際。</li>`);
+    next.push(`<li><b>放回資產配置：</b>估值只是「可買/不可買」，部位大小要回到風險與回撤承受度。</li>`);
+    $('next').innerHTML = `<ul>${next.join("")}</ul>`;
 
-    // Radar
     drawRadar([S_growth,S_profit,S_quality,S_leverage,S_liquidity,S_cashflow,S_interest]);
-
-    // Message
-    const msgBox = $('msgBox');
-    msgBox.style.display="block";
-    if(red.length>=2 || overall<58){
-      msgBox.className="msg warn";
-      msgBox.innerHTML = `<b>提醒：</b>先別急著估值。你現在最重要的是「把風險變成可驗證的問題」。`;
-    }else{
-      msgBox.className="msg ok";
-      msgBox.innerHTML = `<b>提示：</b>可以進第二關（估值＋安全邊際）了，但仍要用壞情境重算一次。`;
-    }
   }
 
   function drawRadar(vals){
@@ -440,7 +570,36 @@
     check();
   }
 
+  function preset(type){
+    if(type==="tech"){
+      $('revG').value=15; $('gm').value=55; $('om').value=25; $('nm').value=18;
+      $('roe').value=22; $('debt').value=25; $('cr').value=2.4; $('qr').value=2.0;
+      $('cfoNI').value=1.3; $('fcfPos').value=1; $('icr').value=20; $('arBad').value=0;
+      $('peer_roe').value=18; $('peer_debt').value=30; $('peer_cfoNI').value=1.1; $('peer_gm').value=50;
+    }else if(type==="mfg"){
+      $('revG').value=6; $('gm').value=28; $('om').value=9; $('nm').value=6;
+      $('roe').value=14; $('debt').value=48; $('cr').value=1.6; $('qr').value=1.0;
+      $('cfoNI').value=1.0; $('fcfPos').value=1; $('icr').value=7; $('arBad').value=0;
+      $('peer_roe').value=12; $('peer_debt').value=50; $('peer_cfoNI').value=0.95; $('peer_gm').value=25;
+    }else{ // cyc
+      $('revG').value=10; $('gm').value=22; $('om').value=6; $('nm').value=3;
+      $('roe').value=10; $('debt').value=60; $('cr').value=1.3; $('qr').value=0.9;
+      $('cfoNI').value=0.7; $('fcfPos').value=0; $('icr').value=3; $('arBad').value=1;
+      $('peer_roe').value=10; $('peer_debt').value=55; $('peer_cfoNI').value=0.9; $('peer_gm').value=20;
+    }
+    check();
+  }
+
+  // 快速模式：隱藏同業區 + 右邊分位
+  function setMode(){
+    const quick = $('modeQuick').checked;
+    $('advancedBlock').style.display = quick ? "none" : "block";
+    $('peerBlock').style.display = quick ? "none" : "block";
+  }
+  $('modeQuick').addEventListener("change", ()=>{ setMode(); check(); });
+
   check();
+  setMode();
 </script>
 </body>
 </html>
