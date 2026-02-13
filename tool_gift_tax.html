@@ -1,55 +1,407 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>贈與稅試算工具｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>贈與稅策略工具｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="贈與稅策略工具：單次試算＋分年規劃，含免稅額與級距（教育用途）。" />
 <style>
-body{font-family:Arial;margin:0;background:#f6f8fb;color:#333}
-.container{max-width:900px;margin:auto;padding:30px 20px}
-.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
-label{display:block;margin-top:12px}
-input{width:100%;padding:8px;margin-top:4px;border:1px solid #d7dbe6;border-radius:8px}
-button{margin-top:15px;padding:10px 14px;background:#0b3d91;color:#fff;border:0;border-radius:8px}
-.result{margin-top:15px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --goodbg:#ecfdf3; --good:#027a48;
+    --warnbg:#fff4e5; --warn:#8a5300;
+  }
+  body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text)}
+  .container{max-width:1050px;margin:auto;padding:26px 18px}
+  h1{margin:0 0 12px;color:var(--primary);font-size:26px}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:980px){ .grid{grid-template-columns:1.15fr 0.85fr} }
+  .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .card h2{margin:0 0 10px;font-size:16px;color:#0f172a}
+  label{display:block;margin-top:10px;font-size:14px;color:#0f172a}
+  input,select,button{
+    width:100%;padding:10px 10px;margin-top:6px;border:1px solid #d7dbe6;border-radius:10px;
+    box-sizing:border-box;background:#fff;font-size:14px;
+  }
+  .row{display:flex;gap:10px}
+  .row > *{flex:1}
+  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:700}
+  button.secondary{background:#334155}
+  .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);color:var(--primary);display:none}
+  .note{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--goodbg);color:var(--good);border:1px solid #b7f0cc;font-size:13px;line-height:1.4}
+  .warn{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5;font-size:13px;line-height:1.4}
+  .small{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:10px}
+  .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
+  .table{width:100%;border-collapse:collapse;margin-top:10px}
+  .table th,.table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px}
+  .table th{text-align:left;color:#0f172a}
+  .table td:last-child,.table th:last-child{text-align:right}
+  .muted{color:var(--muted)}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1 style="color:#0b3d91">贈與稅試算（115年）</h1>
+  <h1>贈與稅策略工具 <span class="pill">115年免稅額 244 萬</span></h1>
 
-<div class="card">
-<label>本年度贈與總額（NT$）</label>
-<input id="gift" type="number" placeholder="例：5000000">
+  <div class="grid">
+    <!-- 左：輸入 -->
+    <div class="card">
+      <h2>1) 贈與資訊（單次／本年度）</h2>
 
-<button onclick="calc()">試算</button>
+      <label>贈與日（決定適用級距）</label>
+      <input id="giftDate" type="date" />
 
-<div id="output" class="result" style="display:none;"></div>
-</div>
+      <div class="row">
+        <div>
+          <label>本次贈與金額（NT$）</label>
+          <input id="giftNow" type="text" inputmode="numeric" placeholder="例：5,000,000" />
+        </div>
+        <div>
+          <label>同年度「已贈與累計」（NT$）</label>
+          <input id="giftYTD" type="text" inputmode="numeric" placeholder="沒有就填 0" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>贈與人數（策略常用：夫妻各自贈與）</label>
+          <select id="donors">
+            <option value="1">1 位贈與人</option>
+            <option value="2">2 位贈與人（常見：夫妻）</option>
+          </select>
+        </div>
+        <div>
+          <label>每位贈與人免稅額（NT$ / 年）</label>
+          <input id="exemptEach" type="text" inputmode="numeric" />
+        </div>
+      </div>
+
+      <label>其他可扣除金額（NT$）</label>
+      <input id="deductions" type="text" inputmode="numeric" placeholder="例如：附有負擔的金額（簡化先合併填）" />
+
+      <hr style="border:0;border-top:1px solid var(--line);margin:14px 0" />
+
+      <h2>2) 策略規劃（分年移轉）</h2>
+
+      <div class="row">
+        <div>
+          <label>目標移轉總額（NT$）</label>
+          <input id="targetTotal" type="text" inputmode="numeric" placeholder="例：30,000,000" />
+        </div>
+        <div>
+          <label>分幾年完成（N 年）</label>
+          <input id="years" type="number" min="1" step="1" value="3" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button onclick="run()">計算：單次稅額 + 策略方案</button>
+        <button class="secondary" onclick="resetDefaults()">重設</button>
+      </div>
+
+      <div class="warn" id="warnBox"></div>
+
+      <div class="note">
+        策略觀念：贈與稅按「曆年」計算，每位贈與人每年都有免稅額。
+        若能「分年」＋「分贈與人」移轉，通常可降低或延後稅負（仍須符合法規與實質要件）。
+      </div>
+
+      <p class="small">
+        ※ 教育用途：扣除額與不計入贈與總額項目很多，此工具先用「其他可扣除金額」合併簡化。<br/>
+        ※ 級距與免稅額：免稅額 244 萬；114/1/1 起贈與稅級距上限調高（28,110,000 / 56,210,000）。 :contentReference[oaicite:3]{index=3}
+      </p>
+    </div>
+
+    <!-- 右：結果 -->
+    <div class="card">
+      <h2>結果</h2>
+      <div id="output" class="result"></div>
+      <div class="small muted" style="margin-top:10px">
+        想把「策略」做更像投資決策？下一步可以加：<br/>
+        1) 把每年贈與後的資產改由受贈人投資，估算「稅負 vs 資產成長」差異；<br/>
+        2) 把受贈人改成多位，產出「分配建議表」。<br/>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-function calc(){
-let gift = Number(document.getElementById('gift').value);
-let exempt = 2440000;
-let taxable = gift - exempt;
-if(taxable<0) taxable = 0;
+/** ========= 規則（依官方資訊） =========
+ * 免稅額：每位贈與人每年 2,440,000（115年） :contentReference[oaicite:4]{index=4}
+ * 贈與稅級距：114/1/1 起 28,110,000 / 56,210,000，並有累進差額 :contentReference[oaicite:5]{index=5}
+ */
+const RULES = {
+  exemptEach: 2440000,
+  newBracketFrom: "2025-01-01", // 114/01/01
+  brackets_old: [
+    { upTo: 25000000, rate: 0.10, quick: 0 },
+    { upTo: 50000000, rate: 0.15, quick: 1250000 },
+    { upTo: Infinity, rate: 0.20, quick: 3750000 }
+  ],
+  brackets_new: [
+    { upTo: 28110000, rate: 0.10, quick: 0 },
+    { upTo: 56210000, rate: 0.15, quick: 1405500 },
+    { upTo: Infinity, rate: 0.20, quick: 4216000 }
+  ]
+};
 
-let tax=0;
-if(taxable<=25000000){
- tax = taxable*0.10;
-}else if(taxable<=50000000){
- tax = 25000000*0.10 + (taxable-25000000)*0.15;
-}else{
- tax = 25000000*0.10 + 25000000*0.15 + (taxable-50000000)*0.20;
+function $(id){ return document.getElementById(id); }
+
+function parseMoney(id){
+  const raw = ($(id).value || "").toString().trim();
+  if(!raw) return 0;
+  const cleaned = raw.replace(/[,，\s]/g, "");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : NaN;
 }
 
-document.getElementById('output').style.display="block";
-document.getElementById('output').innerHTML =
-"課稅贈與淨額：約 NT$ "+taxable.toLocaleString()+
-"<br>預估贈與稅：約 NT$ "+Math.round(tax).toLocaleString();
+function formatNum(n){
+  try { return Number(n).toLocaleString("en-US"); } catch { return String(n); }
 }
+
+function setWarn(msg){
+  const w = $("warnBox");
+  if(!msg){ w.style.display="none"; w.textContent=""; return; }
+  w.style.display="block";
+  w.textContent = msg;
+}
+
+function getBrackets(){
+  const d = ($("giftDate").value || "").trim();
+  if(!d) return { name:"新制(預設)", arr: RULES.brackets_new };
+  if(d >= RULES.newBracketFrom) return { name:"新制(114/1/1起)", arr: RULES.brackets_new };
+  return { name:"舊制(114/1/1前)", arr: RULES.brackets_old };
+}
+
+/** 計算「累計到目前」的總稅額，再扣掉「已贈與部分」的總稅額 => 本次應納 */
+function calcGiftTaxIncremental(giftYTD, giftNow, donors, exemptEach, deductions, brackets){
+  const totalGift = giftYTD + giftNow;
+
+  const totalTax = calcGiftTaxTotal(totalGift, donors, exemptEach, deductions, brackets);
+  const ytdTax = calcGiftTaxTotal(giftYTD, donors, exemptEach, deductions, brackets);
+
+  const payNow = Math.max(0, totalTax.tax - ytdTax.tax);
+
+  return {
+    bracketsName: totalTax.bracketsName,
+    taxableTotal: totalTax.taxable,
+    taxTotal: totalTax.tax,
+    taxableYTD: ytdTax.taxable,
+    taxYTD: ytdTax.tax,
+    payNow
+  };
+}
+
+/** 依「年度累計贈與總額」計算：課稅淨額、總稅額（已含累進差額） */
+function calcGiftTaxTotal(giftTotal, donors, exemptEach, deductions, brackets){
+  const exemptTotal = donors * exemptEach;
+
+  let taxable = giftTotal - exemptTotal - deductions;
+  if(taxable < 0) taxable = 0;
+
+  // 找級距（用 quick/累進差額）
+  let rate=0, quick=0, upTo=0;
+  for(const b of brackets){
+    if(taxable <= b.upTo){ rate=b.rate; quick=b.quick; upTo=b.upTo; break; }
+  }
+  const tax = Math.max(0, taxable * rate - quick);
+
+  return {
+    bracketsName: getBrackets().name,
+    giftTotal, donors, exemptTotal, deductions,
+    taxable, rate, quick, upTo,
+    tax
+  };
+}
+
+/** 策略：把 targetTotal 在 N 年內平均分配（每年同額），並比較：
+ * A) 1 位贈與人
+ * B) 2 位贈與人（若使用者選 2）
+ * 每年使用當年度免稅額，通常會看到稅負下降/延後
+ */
+function planStrategy(targetTotal, years, donors, exemptEach, brackets){
+  const perYear = targetTotal / years;
+
+  const rows = [];
+  let remaining = targetTotal;
+  let cumTax = 0;
+
+  for(let i=1;i<=years;i++){
+    const give = (i===years) ? remaining : perYear;
+    remaining -= give;
+
+    // 每年都當作「年度累計 = give」（策略規劃常見：每年分開做）
+    const r = calcGiftTaxTotal(give, donors, exemptEach, 0, brackets);
+    cumTax += r.tax;
+
+    rows.push({
+      yearIndex: i,
+      give,
+      exempt: r.exemptTotal,
+      taxable: r.taxable,
+      tax: r.tax
+    });
+  }
+  return { perYear, rows, cumTax };
+}
+
+function run(){
+  setWarn("");
+
+  const giftNow = parseMoney("giftNow");
+  const giftYTD = parseMoney("giftYTD");
+  const deductions = parseMoney("deductions");
+  const exemptEach = parseMoney("exemptEach");
+  const donors = Number($("donors").value);
+
+  if(!Number.isFinite(giftNow) || giftNow < 0){ alert("本次贈與金額請輸入有效數字"); return; }
+  if(!Number.isFinite(giftYTD) || giftYTD < 0){ alert("已贈與累計請輸入有效數字"); return; }
+  if(!Number.isFinite(deductions) || deductions < 0){ alert("扣除金額請輸入有效數字"); return; }
+  if(!Number.isFinite(exemptEach) || exemptEach < 0){ alert("免稅額請輸入有效數字"); return; }
+
+  const {name, arr} = getBrackets();
+
+  // 單次/本次應納（用累計差額觀念）
+  const inc = calcGiftTaxIncremental(giftYTD, giftNow, donors, exemptEach, deductions, arr);
+
+  // 策略規劃
+  const targetTotal = parseMoney("targetTotal");
+  const years = Math.max(1, Math.floor(Number($("years").value || 1)));
+
+  let strategyHtml = `<div class="muted">（尚未輸入目標移轉總額，略過策略表）</div>`;
+  if(Number.isFinite(targetTotal) && targetTotal > 0){
+    // 同贈與人數的策略
+    const planSame = planStrategy(targetTotal, years, donors, exemptEach, arr);
+
+    // 同金額「一次全送」的概念對照（同一年內）
+    const lump = calcGiftTaxTotal(targetTotal, donors, exemptEach, 0, arr);
+
+    // 如果 donors=2，再多算 donors=1 當比較（讓策略感更強）
+    let compareHtml = "";
+    if(donors === 2){
+      const plan1 = planStrategy(targetTotal, years, 1, exemptEach, arr);
+      const lump1 = calcGiftTaxTotal(targetTotal, 1, exemptEach, 0, arr);
+      compareHtml = `
+        <div style="margin-top:10px;font-weight:800">策略比較：1 位 vs 2 位贈與人</div>
+        <table class="table">
+          <tr><th class="muted">方案</th><th class="muted">一次全送（估）</th><th class="muted">分年（${years}年）總稅額（估）</th></tr>
+          <tr><td>1 位贈與人</td><td>NT$ ${formatNum(Math.round(lump1.tax))}</td><td>NT$ ${formatNum(Math.round(plan1.cumTax))}</td></tr>
+          <tr><td>2 位贈與人</td><td>NT$ ${formatNum(Math.round(lump.tax))}</td><td>NT$ ${formatNum(Math.round(planSame.cumTax))}</td></tr>
+        </table>
+        <div class="small muted">提示：若要做到「2 位免稅額都用到」，常見作法是夫妻各自以自己名義贈與（實務仍須符合實質資金來源與流程）。</div>
+      `;
+    }
+
+    strategyHtml = `
+      <div style="margin-top:10px;font-weight:800">策略方案：${years} 年分年移轉（每年約 NT$ ${formatNum(Math.round(planSame.perYear))}）</div>
+      <table class="table">
+        <tr>
+          <th class="muted">第N年</th>
+          <th class="muted">當年贈與</th>
+          <th class="muted">免稅額（合計）</th>
+          <th class="muted">課稅淨額</th>
+          <th class="muted">當年稅額</th>
+        </tr>
+        ${planSame.rows.map(r=>`
+          <tr>
+            <td>第 ${r.yearIndex} 年</td>
+            <td>NT$ ${formatNum(Math.round(r.give))}</td>
+            <td>NT$ ${formatNum(Math.round(r.exempt))}</td>
+            <td>NT$ ${formatNum(Math.round(r.taxable))}</td>
+            <td>NT$ ${formatNum(Math.round(r.tax))}</td>
+          </tr>
+        `).join("")}
+        <tr>
+          <td style="font-weight:800">合計</td>
+          <td></td><td></td><td></td>
+          <td style="font-weight:800">NT$ ${formatNum(Math.round(planSame.cumTax))}</td>
+        </tr>
+      </table>
+
+      <div style="margin-top:10px;font-weight:800">對照：同一年「一次移轉」估算</div>
+      <table class="table">
+        <tr><td class="muted">目標移轉總額</td><td>NT$ ${formatNum(Math.round(targetTotal))}</td></tr>
+        <tr><td class="muted">免稅額（合計）</td><td>- NT$ ${formatNum(Math.round(lump.exemptTotal))}</td></tr>
+        <tr><td class="muted">課稅贈與淨額</td><td>NT$ ${formatNum(Math.round(lump.taxable))}</td></tr>
+        <tr><td style="font-weight:800">一次移轉稅額（估）</td><td style="font-weight:800">NT$ ${formatNum(Math.round(lump.tax))}</td></tr>
+      </table>
+
+      ${compareHtml}
+    `;
+  }
+
+  // 輸出
+  const out = $("output");
+  out.style.display = "block";
+
+  out.innerHTML = `
+    <div style="font-weight:800;font-size:16px;margin-bottom:6px">
+      本次應納贈與稅（估）：NT$ ${formatNum(Math.round(inc.payNow))}
+      <span class="muted" style="font-weight:600;font-size:12.5px">（級距：${name}）</span>
+    </div>
+
+    <table class="table">
+      <tr><td class="muted">本年度已贈與累計</td><td>NT$ ${formatNum(Math.round(giftYTD))}</td></tr>
+      <tr><td class="muted">本次贈與</td><td>NT$ ${formatNum(Math.round(giftNow))}</td></tr>
+      <tr><td class="muted">本年度贈與合計</td><td>NT$ ${formatNum(Math.round(giftYTD + giftNow))}</td></tr>
+      <tr><td class="muted">贈與人數</td><td>${donors} 位</td></tr>
+      <tr><td class="muted">免稅額（合計）</td><td>- NT$ ${formatNum(Math.round(donors * exemptEach))}</td></tr>
+      <tr><td class="muted">其他扣除金額</td><td>- NT$ ${formatNum(Math.round(deductions))}</td></tr>
+      <tr><td class="muted">課稅贈與淨額（年度）</td><td>NT$ ${formatNum(Math.round(inc.taxableTotal))}</td></tr>
+      <tr><td class="muted">年度總稅額（估）</td><td>NT$ ${formatNum(Math.round(inc.taxTotal))}</td></tr>
+      <tr><td class="muted">已贈與部分稅額（估）</td><td>- NT$ ${formatNum(Math.round(inc.taxYTD))}</td></tr>
+      <tr><td style="font-weight:800">本次應納（估）</td><td style="font-weight:800">NT$ ${formatNum(Math.round(inc.payNow))}</td></tr>
+    </table>
+
+    ${strategyHtml}
+  `;
+
+  // 千分位格式化輸入
+  ["giftNow","giftYTD","deductions","exemptEach","targetTotal"].forEach(id=>{
+    const v = parseMoney(id);
+    if(Number.isFinite(v) && v >= 0) $(id).value = formatNum(v);
+  });
+
+  // 小提醒：如果沒填日期，用新制但提醒
+  if(!($("giftDate").value || "").trim()){
+    setWarn("你尚未選擇贈與日，工具先以「114/1/1 起新級距」估算；若案件發生日在 113/12/31 以前，級距會不同。");
+  }
+}
+
+function resetDefaults(){
+  // date = today
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,"0");
+  const dd = String(now.getDate()).padStart(2,"0");
+  $("giftDate").value = `${yyyy}-${mm}-${dd}`;
+
+  $("giftNow").value = "";
+  $("giftYTD").value = "0";
+  $("donors").value = "1";
+  $("exemptEach").value = formatNum(RULES.exemptEach);
+  $("deductions").value = "0";
+
+  $("targetTotal").value = "";
+  $("years").value = 3;
+
+  setWarn("");
+  $("output").style.display="none";
+  $("output").innerHTML="";
+}
+
+(function init(){
+  resetDefaults();
+  // blur => format
+  ["giftNow","giftYTD","exemptEach","deductions","targetTotal"].forEach(id=>{
+    $(id).addEventListener("blur", ()=>{
+      const v = parseMoney(id);
+      if(Number.isFinite(v) && v>=0) $(id).value = formatNum(v);
+    });
+  });
+})();
 </script>
 </body>
 </html>
