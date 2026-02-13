@@ -4,81 +4,154 @@
 <meta charset="UTF-8">
 <title>學習路徑｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用顧問式決策順序建立財商：安全邊界 → 現金流 → 投資決策 → 退休現金流 → 資產傳承。">
 
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.8}
-.nav{background:#fff;border-bottom:1px solid #e6e8ee;padding:14px 20px;position:sticky;top:0}
-.nav-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between}
+.nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0;z-index:999}
+.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-.nav a{color:#0b3d91;text-decoration:none;margin-left:14px;font-size:14px}
-
-.container{max-width:1000px;margin:50px auto;padding:0 20px 80px}
-h1{color:#0b3d91;margin-bottom:10px}
-.intro{margin-bottom:40px;color:#555}
-
-.stage{background:#fff;border-radius:18px;padding:26px;margin-bottom:28px;box-shadow:0 6px 18px rgba(0,0,0,.05)}
-.stage h2{color:#0b3d91;margin-top:0}
-.stage p{color:#555}
-.stage a{display:inline-block;margin-top:12px;color:#0b3d91;text-decoration:none}
-
-.footer{text-align:center;margin-top:40px;color:#777}
+.links a{margin-left:14px;color:#333;text-decoration:none}
+.links a:hover{color:#0b3d91}
+.container{max-width:1100px;margin:auto;padding:36px 20px 80px}
+h1,h2,h3{color:#0b3d91;margin:0 0 10px}
+.sub{color:#555;margin:0 0 22px;max-width:920px}
+.section{margin:22px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.pill{display:inline-block;background:#eef4ff;color:#0b3d91;padding:4px 10px;border-radius:999px;font-size:12px;margin-bottom:8px}
+.list{margin:10px 0 0 18px;color:#444}
+.list li{margin:6px 0}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-size:14px}
+.btn:hover{opacity:.92}
+.btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+.hr{margin:26px 0;border:none;border-top:1px solid #e6e8ee}
+.footer{margin-top:34px;padding:18px;text-align:center;color:#777;font-size:13px}
+small{color:#666}
 </style>
 </head>
-
 <body>
 
-<div class="nav">
+<nav class="nav">
   <div class="nav-inner">
     <a class="brand" href="./index.html">智 Financial Path</a>
-    <div>
-      <a href="./index.html">回主頁</a>
-      <a href="./library.html">完整知識庫</a>
+    <div class="links">
+      <a href="./path.html">學習路徑</a>
+      <a href="./library.html">知識庫</a>
+      <a href="./tools.html">工具</a>
+      <a href="./cases.html">案例</a>
+      <a href="./about.html">關於我們</a>
     </div>
   </div>
-</div>
+</nav>
 
 <div class="container">
+  <h1>學習路徑</h1>
+  <p class="sub">
+    這裡不是文章列表，而是「財務決策的順序」。<br>
+    你的目標不是看完很多內容，而是建立一套：遇到問題 → 能知道該用哪個模型判斷。
+  </p>
 
-<h1>完整財務成長路線圖</h1>
+  <div class="section">
+    <div class="grid">
 
-<p class="intro">
-真正的財務規劃，是一套從風險管理到資產傳承的系統。
-</p>
+      <div class="card">
+        <div class="pill">第一層｜安全邊界</div>
+        <h2>保障與風險架構</h2>
+        <p><small>在追求成長之前，先確保一次意外不會讓家庭資產歸零。</small></p>
+        <ol class="list">
+          <li><a href="./article_misinsurance.html">為什麼多數家庭保障都錯配？</a></li>
+          <li><a href="./article_insurance_order.html">保障購買順序與架構邏輯</a></li>
+          <li><a href="./article_coverage_amount.html">保額怎麼抓才合理？</a></li>
+          <li><a href="./article_risk_structure_design.html">家庭風險結構設計</a></li>
+        </ol>
+        <div class="btnrow">
+          <a class="btn ghost" href="./library.html#risk">到知識庫分類</a>
+          <a class="btn" href="./tools.html">配合工具</a>
+        </div>
+      </div>
 
-<div class="stage">
-<h2>第一階段：建立安全邊界</h2>
-<p>保障結構與風險控制，避免一次意外毀掉財務累積。</p>
-<a href="./library.html#protection">進入此階段 →</a>
-</div>
+      <div class="card">
+        <div class="pill">第二層｜現金流</div>
+        <h2>現金流與負債管理</h2>
+        <p><small>現金流穩定，是投資成功的前提。</small></p>
+        <ol class="list">
+          <li><a href="./article_emergency_fund_months.html">緊急預備金完整模型</a></li>
+          <li><a href="./article_debt_priority.html">信用卡、信貸、房貸先還誰？</a></li>
+          <li><a href="./article_cashflow_stability.html">如何建立穩定現金流</a></li>
+          <li><a href="./article_leverage_risk_control.html">槓桿與負債風險控制</a></li>
+        </ol>
+        <div class="btnrow">
+          <a class="btn ghost" href="./library.html#cashflow">到知識庫分類</a>
+          <a class="btn" href="./tools.html">配合工具</a>
+        </div>
+      </div>
 
-<div class="stage">
-<h2>第二階段：穩定現金流與負債結構</h2>
-<p>控制負債、建立預備金，提升財務穩定度。</p>
-<a href="./library.html#cashflow">進入此階段 →</a>
-</div>
+      <div class="card">
+        <div class="pill">第三層｜投資決策</div>
+        <h2>投資分析與估值紀律</h2>
+        <p><small>把「選股」拆成可重複的流程：配置 → 品質 → 價格 → 紀律。</small></p>
+        <ol class="list">
+          <li><a href="./article_asset_allocation.html">資產配置邏輯</a></li>
+          <li><a href="./article_financial_statement_analysis.html">三大財報決策系統</a></li>
+          <li><a href="./article_financial_ratios_comparison.html">財務比率與同業比較</a></li>
+          <li><a href="./article_pe_meaning.html">本益比的意義與陷阱</a></li>
+          <li><a href="./article_fair_value_range.html">合理價區間怎麼算</a></li>
+          <li><a href="./article_entry_exit_rules.html">進場、加碼、停損、退出：決策樹</a></li>
+          <li><a href="./article_rates_fx_macro.html">利率、匯率、美台連動與產業衝擊</a></li>
+        </ol>
+        <div class="btnrow">
+          <a class="btn ghost" href="./library.html#invest">到知識庫分類</a>
+          <a class="btn" href="./tools.html">配合工具</a>
+        </div>
+      </div>
 
-<div class="stage">
-<h2>第三階段：投資決策系統</h2>
-<p>從資產配置、財報分析、估值，到利率與匯率的宏觀影響。</p>
-<a href="./library.html#investment">進入此階段 →</a>
-</div>
+      <div class="card">
+        <div class="pill">第四層｜退休現金流</div>
+        <h2>退休現金流完整架構</h2>
+        <p><small>退休不是「存到某個數字」；是「現金流能不能穩定覆蓋支出」。</small></p>
+        <ol class="list">
+          <li><a href="./article_retirement_cashflow_system.html">退休現金流完整架構</a></li>
+          <li><a href="./article_labor_pension_logic.html">勞保年金：估算邏輯與常見誤解</a></li>
+          <li><a href="./article_withdrawal_vs_income.html">被動收入 vs 提領：兩種退休路徑</a></li>
+          <li><a href="./article_inflation_stress_test.html">通膨與壓力測試：你撐得住幾種壞情境？</a></li>
+        </ol>
+        <div class="btnrow">
+          <a class="btn ghost" href="./library.html#retire">到知識庫分類</a>
+          <a class="btn" href="./tools.html">退休工具</a>
+        </div>
+      </div>
 
-<div class="stage">
-<h2>第四階段：退休現金流設計</h2>
-<p>結合年金、被動收入與提領策略，打造可持續退休模型。</p>
-<a href="./library.html#retirement">進入此階段 →</a>
-</div>
+      <div class="card">
+        <div class="pill">第五層｜資產傳承</div>
+        <h2>傳承與稅務架構</h2>
+        <p><small>不靠條文背誦，用顧問式推演理解：家庭結構 → 權利比例 → 稅務與工具。</small></p>
+        <ol class="list">
+          <li><a href="./article_inheritance_basic.html">應繼分與特留分完整解析</a></li>
+          <li><a href="./article_inheritance_tax_logic.html">遺產稅：用「架構」理解，不用背條文</a></li>
+          <li><a href="./article_gift_tax_strategy.html">贈與稅：生前配置的思考順序</a></li>
+          <li><a href="./article_will_vs_beneficiary.html">遺囑 vs 保險受益人：差別與常見風險</a></li>
+        </ol>
+        <div class="btnrow">
+          <a class="btn ghost" href="./library.html#inherit">到知識庫分類</a>
+          <a class="btn" href="./tools.html">配合清單</a>
+        </div>
+      </div>
 
-<div class="stage">
-<h2>第五階段：資產傳承與稅務架構</h2>
-<p>應繼分、特留分、遺產稅、贈與稅與保險規劃完整架構。</p>
-<a href="./library.html#inheritance">進入此階段 →</a>
-</div>
+    </div>
+  </div>
 
-<div class="footer">
-© 2026 智 Financial Path
-</div>
+  <hr class="hr">
+  <div class="card">
+    <h3>你現在適合從哪裡開始？</h3>
+    <p><small>
+      若你不確定：先從「第二層現金流」開始做，因為它會立刻影響你的壓力與決策品質。<br>
+      若你已經有投資：直接走「第三層投資決策」，把流程補齊到估值與紀律。
+    </small></p>
+  </div>
 
+  <div class="footer">© 2026 智 Financial Path ｜ 本站為教育用途，不構成投資建議</div>
 </div>
 
 </body>
