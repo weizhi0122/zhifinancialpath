@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>槓桿與負債風險控制｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:920px;margin:auto;display:flex;justify-content:space-between;flex-wrap:wrap}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:920px;margin:auto;padding:40px 20px 90px}
+h1,h2,h3{color:#0b3d91}
+hr{margin:36px 0;border:none;border-top:1px solid #ddd}
+.box{background:#fff;padding:22px;border-radius:14px;margin:20px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.note{background:#eef4ff;padding:14px 18px;border-radius:12px;margin:18px 0}
+.warn{background:#fff4e5;padding:14px 18px;border-radius:12px;margin:18px 0}
+.calc{background:#fff;padding:18px;border-radius:14px;margin:25px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+input{padding:8px 10px;border-radius:8px;border:1px solid #ddd;margin:6px 0;width:100%}
+button{padding:8px 14px;border-radius:8px;border:none;background:#0b3d91;color:white;cursor:pointer;margin-top:8px}
+.out{margin-top:12px;padding:12px;border-radius:10px;background:#f2f4f8}
+.footer{text-align:center;margin-top:60px;color:#777;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./library.html">知識庫</a>
+      <a href="./index.html">回主頁</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>槓桿與負債風險控制</h1>
+
+<p>
+槓桿本身不是危險。  
+危險的是「不知道自己承受哪種風險」。
+</p>
+
+<hr>
+
+<h2>一、槓桿的本質：放大報酬，也放大波動</h2>
+
+<div class="box">
+資產報酬率 = ROA  
+借款成本 = r  
+
+若 ROA > r → 槓桿放大股東報酬  
+若 ROA < r → 槓桿放大虧損
+</div>
+
+<p>
+這是所有槓桿風險的數學核心。
+</p>
+
+<hr>
+
+<h2>二、什麼時候槓桿會讓人破產？</h2>
+
+<p>
+真正致命的不是平均報酬，而是波動。
+</p>
+
+<div class="warn">
+破產條件通常發生在：
+<br><br>
+1. 短期資產價值下降  
+2. 現金流無法支付利息  
+3. 被迫平倉或斷頭
+</div>
+
+<hr>
+
+<h2>三、互動計算：你的槓桿安全區</h2>
+
+<div class="calc">
+<h3>輸入你的數字</h3>
+
+資產總額（元）
+<input type="number" id="asset">
+
+負債總額（元）
+<input type="number" id="debt">
+
+年化資產報酬率（%）
+<input type="number" id="roa">
+
+借款利率（%）
+<input type="number" id="rate">
+
+<button onclick="calcLeverage()">計算槓桿效果</button>
+
+<div class="out" id="out"></div>
+</div>
+
+<hr>
+
+<h2>四、槓桿安全控制三原則</h2>
+
+<div class="box">
+<h3>原則一：負債比不要超過自己能承受的波動</h3>
+<p>
+資產若下跌 20%，你的淨值還剩多少？
+</p>
+
+<h3>原則二：利率上升壓力測試</h3>
+<p>
+若利率上升 1%～2%，月付壓力是否可承受？
+</p>
+
+<h3>原則三：現金流覆蓋率</h3>
+<p>
+每年現金流收入 / 每年利息支出 ≥ 2 倍
+</p>
+</div>
+
+<hr>
+
+<h2>五、你該問自己的三個問題</h2>
+
+<ol>
+<li>如果市場下跌 30%，我會被迫賣出嗎？</li>
+<li>如果利率上升，我是否還能持有？</li>
+<li>這筆槓桿是提高效率，還是填補焦慮？</li>
+</ol>
+
+<hr>
+
+<div class="note">
+槓桿是一種工具。  
+當它是策略的一部分，它是效率。  
+當它是情緒的產物，它是風險。
+</div>
+
+<div class="footer">
+© 2026 智 Financial Path ｜ 財商教育用途
+</div>
+
+</div>
+
+<script>
+function calcLeverage(){
+  let asset = Number(document.getElementById("asset").value);
+  let debt = Number(document.getElementById("debt").value);
+  let roa = Number(document.getElementById("roa").value)/100;
+  let rate = Number(document.getElementById("rate").value)/100;
+
+  if(asset<=0){ document.getElementById("out").innerHTML="請輸入正確數字"; return;}
+
+  let equity = asset - debt;
+  let profit = asset*roa - debt*rate;
+  let roe = equity>0 ? profit/equity : 0;
+
+  document.getElementById("out").innerHTML = 
+    "股東淨值："+equity.toLocaleString()+" 元<br>"+
+    "槓桿後淨報酬："+profit.toLocaleString()+" 元<br>"+
+    "股東報酬率(ROE)："+(roe*100).toFixed(2)+"%";
+}
+</script>
+
+</body>
+</html>
