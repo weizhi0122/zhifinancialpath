@@ -4,51 +4,50 @@
   <meta charset="UTF-8" />
   <title>負債優先順序判斷｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="用利率、現金流壓力、違約風險與信用影響，決定卡債、信貸、房貸先處理誰。" />
   <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:14px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
-    .container{max-width:1000px;margin:auto;padding:28px 20px}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-    .muted{font-size:13px;color:#666;line-height:1.5}
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333;line-height:1.75}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:1000px;margin:auto;padding:26px 20px 70px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+    .muted{font-size:13px;color:#666;line-height:1.6}
     table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border-bottom:1px solid #eef0f6;padding:10px;text-align:left;font-size:14px}
+    th,td{border-bottom:1px solid #eef0f6;padding:10px;text-align:left;font-size:14px;vertical-align:top}
     th{background:#f7f9ff;color:#0b3d91}
     input,select{width:100%;padding:8px;border:1px solid #d7dbe6;border-radius:10px;font-size:14px}
     .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .btn{background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
     .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-    .result{margin-top:12px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91}
-    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
-    a{color:#0b3d91;text-decoration:none}
+    .result{margin-top:12px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
+    .note{margin-top:12px;background:#fff;border:1px solid #e6e8ee;border-radius:12px;padding:12px}
   </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./path.html">學習路徑</a>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>負債優先順序判斷</h1>
-  <p class="muted">原則：高利率、會造成現金流壓力、會影響信用的，優先處理。教育用途。</p>
+  <h1 style="color:#0b3d91;margin:0 0 10px;">負債優先順序判斷</h1>
+  <p class="muted">原則：<b>先止血</b>（違約/信用/高利）→ <b>再減壓</b>（月付壓力）→ <b>最後才談效率</b>（低利長期負債）。</p>
 
   <div class="card">
     <table id="t">
       <thead>
         <tr>
-          <th style="width:180px;">負債類型</th>
-          <th style="width:140px;">年利率(%)</th>
-          <th style="width:180px;">每月壓力</th>
+          <th style="width:170px;">負債類型</th>
+          <th style="width:120px;">年利率(%)</th>
+          <th style="width:150px;">每月壓力</th>
+          <th style="width:160px;">違約/信用風險</th>
           <th>備註</th>
         </tr>
       </thead>
@@ -58,13 +57,21 @@
     <div class="btnrow">
       <button class="btn" onclick="addRow()">新增一筆</button>
       <button class="btn" onclick="rank()">產生優先順序</button>
+      <button class="btn ghost" onclick="fillExample()">填入範例</button>
       <button class="btn ghost" onclick="resetAll()">重置</button>
     </div>
 
     <div id="out" class="result" style="display:none;"></div>
-  </div>
 
-  <footer><a href="./disclaimer.html">免責聲明</a></footer>
+    <div class="note">
+      <b>互動檢核（你可以拿去寫文章）：</b>
+      <ol class="muted" style="margin:8px 0 0;padding-left:18px;">
+        <li>若你有「循環利息」或「已遲繳」→ 幾乎永遠第一順位。</li>
+        <li>若你每月現金流很緊 → 月付壓力權重必須上調。</li>
+        <li>房貸利率低，但若你已經快扛不住月付 → 它就不是低風險。</li>
+      </ol>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -91,7 +98,14 @@ function rowTemplate(){
         <option value="2">高</option>
       </select>
     </td>
-    <td><input placeholder="例：影響信用/即將到期/違約風險"></td>
+    <td>
+      <select>
+        <option value="0">低（正常繳）</option>
+        <option value="1">中（快扛不住）</option>
+        <option value="2">高（已遲繳/快違約）</option>
+      </select>
+    </td>
+    <td><input placeholder="例：最低繳款、已動用循環、即將到期..."></td>
   `;
   return tr;
 }
@@ -104,31 +118,66 @@ function resetAll(){
   document.getElementById('out').style.display='none';
 }
 
+function scoreRow(type, apr, pressure, risk){
+  // 權重（可解釋）：
+  // 1) 違約/信用風險最高（0/1/2 → *30）
+  // 2) 利率次之（% → *8）
+  // 3) 現金流壓力（0/1/2 → *18）
+  let s = (risk*30) + (apr*8) + (pressure*18);
+  if(type.includes('卡債')) s += 12;      // 卡債本質是高利+容易滾雪球
+  if(type.includes('信貸')) s += 4;       // 通常利率中高
+  return s;
+}
+
 function rank(){
   const rows = [...tbody.querySelectorAll('tr')].map(tr=>{
-    const type = tr.querySelector('select').value;
+    const sels = tr.querySelectorAll('select');
+    const type = sels[0].value;
     const apr = Number(tr.querySelectorAll('input')[0].value || 0);
-    const pressure = Number(tr.querySelectorAll('select')[1].value || 0);
+    const pressure = Number(sels[1].value || 0);
+    const risk = Number(sels[2].value || 0);
     const note = tr.querySelectorAll('input')[1].value || '';
-
-    // 分數：利率*10 + 壓力*15（壓力高更先處理）
-    const score = apr*10 + pressure*15 + (type.includes('卡債') ? 10 : 0);
-    return {type, apr, pressure, note, score};
+    const score = scoreRow(type, apr, pressure, risk);
+    return {type, apr, pressure, risk, note, score};
   });
 
   const sorted = rows.sort((a,b)=>b.score-a.score);
-  const lines = sorted.map((r,i)=>{
-    const p = r.pressure===2?'高':(r.pressure===1?'中':'低');
-    return `${i+1}. ${r.type}（利率 ${r.apr}%、壓力 ${p}）${r.note?`｜${r.note}`:''}`;
-  });
+  const pTxt = v => v===2?'高':(v===1?'中':'低');
+  const lines = sorted.map((r,i)=>
+    `${i+1}. ${r.type}（利率 ${r.apr}%、月壓力 ${pTxt(r.pressure)}、違約風險 ${pTxt(r.risk)}）${r.note?`｜${r.note}`:''}`
+  );
 
   const out = document.getElementById('out');
   out.style.display='';
-  out.innerHTML = `<b>建議處理順序（由高到低）</b><br><br>${lines.join('<br>')}<br><br><span style="font-size:13px;color:#0b3d91;">提醒：若已接近違約/影響信用或有法律風險，優先級應再上調。</span>`;
+  out.innerHTML = `<b>建議處理順序（由高到低）</b><br><br>${lines.join('<br>')}
+  <br><br><span style="font-size:13px;">提醒：若任何一筆已遲繳/快違約，請視為第一順位（先止血）。</span>`;
+}
+
+function fillExample(){
+  resetAll();
+  const trs = [...tbody.querySelectorAll('tr')];
+
+  trs[0].querySelectorAll('select')[0].value = '卡債/循環';
+  trs[0].querySelectorAll('input')[0].value = '15.9';
+  trs[0].querySelectorAll('select')[1].value = '2';
+  trs[0].querySelectorAll('select')[2].value = '1';
+  trs[0].querySelectorAll('input')[1].value = '已動用循環，月付壓力大';
+
+  trs[1].querySelectorAll('select')[0].value = '信貸';
+  trs[1].querySelectorAll('input')[0].value = '7.5';
+  trs[1].querySelectorAll('select')[1].value = '1';
+  trs[1].querySelectorAll('select')[2].value = '0';
+  trs[1].querySelectorAll('input')[1].value = '正常繳款';
+
+  trs[2].querySelectorAll('select')[0].value = '房貸';
+  trs[2].querySelectorAll('input')[0].value = '2.2';
+  trs[2].querySelectorAll('select')[1].value = '1';
+  trs[2].querySelectorAll('select')[2].value = '0';
+  trs[2].querySelectorAll('input')[1].value = '利率低但月付固定';
+  rank();
 }
 
 for(let i=0;i<3;i++) addRow();
 </script>
 </body>
 </html>
-
