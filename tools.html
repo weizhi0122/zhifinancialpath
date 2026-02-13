@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>工具 Tools｜智 Financial Path</title>
-<meta name="description" content="智 Financial Path 工具總入口：依主題進入投資決策、安全邊界、退休現金流、資產傳承。">
+<meta name="description" content="智 Financial Path 工具總入口：投資、風險控制、退休金、資產傳承。">
 <style>
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#223; --muted:#6b7280;
@@ -57,70 +57,70 @@
 
   <div class="container">
     <h1>工具 Tools</h1>
-    <p class="sub">總入口：先選主題，再進入「主項目工具頁」看流程卡與工具。</p>
+    <p class="sub">總入口：先選主題，再進入主題頁（會用 Step/卡片帶你照順序做）。</p>
 
     <div class="panel">
       <div class="panelRow">
         <div>
-          <label>選擇主題</label>
+          <label>選擇主題（點進去後才顯示該主題）</label>
           <select id="topic">
             <option value="all">全部主題</option>
-            <option value="invest">投資決策系統</option>
-            <option value="safety">安全邊界（預備金/負債/保單）</option>
-            <option value="retire">退休現金流</option>
-            <option value="inherit">資產傳承（盤點/比例/遺產/贈與）</option>
+            <option value="invest">投資</option>
+            <option value="risk">風險控制</option>
+            <option value="retire">退休金</option>
+            <option value="inherit">資產傳承</option>
           </select>
         </div>
         <div>
           <label>搜尋（主題名稱/描述）</label>
-          <input id="q" type="text" placeholder="例：投資、退休、傳承、安全邊界…">
+          <input id="q" type="text" placeholder="例：估值、財報、保單、現金流、遺產稅、贈與…">
         </div>
       </div>
     </div>
 
     <div class="grid" id="grid">
-      <div class="card" data-topic="invest" data-key="投資 決策 估值 配置 財報 風險">
+      <div class="card" data-topic="invest" data-key="投資 估值 安全邊際 配置 財報 研究">
         <div>
-          <span class="tag">投資決策系統</span>
-          <h2>先體質 → 再估值 → 回到配置</h2>
-          <p class="desc">估值（安全邊際）/ 資產配置風險模型 / 財報健康檢核 + 風險屬性入口。</p>
+          <span class="tag">投資</span>
+          <h2>先看體質，再談買進價格</h2>
+          <p class="desc">財報健康檢核 → 合理價值（安全邊際）→ 資產配置風險模型。</p>
         </div>
         <div class="btnRow">
-          <a class="btn" href="./tools_invest.html">進入主題</a>
-          <a class="btn ghost" href="./path.html">看路徑</a>
+          <a class="btn" href="./tools_invest.html">進入投資</a>
+          <a class="btn ghost" href="./tool_risk_quiz.html">風險屬性</a>
         </div>
       </div>
 
-      <div class="card" data-topic="safety" data-key="安全 邊界 預備金 負債 保單 保障">
+      <div class="card" data-topic="risk" data-key="風險 控制 預備金 負債 保單 保障">
         <div>
-          <span class="tag">安全邊界</span>
-          <h2>先止血、先控翻車風險</h2>
+          <span class="tag">風險控制</span>
+          <h2>先把「翻車點」清掉</h2>
           <p class="desc">預備金 → 負債優先順序 → 保單結構（清單健檢/表單閉環）。</p>
         </div>
         <div class="btnRow">
-          <a class="btn" href="./tools_safety.html">進入主題</a>
+          <a class="btn" href="./tools_risk.html">進入風險控制</a>
         </div>
       </div>
 
-      <div class="card" data-topic="retire" data-key="退休 現金流 缺口 模擬 通膨 年金">
+      <div class="card" data-topic="retire" data-key="退休金 退休 現金流 缺口 模擬 通膨 年金">
         <div>
-          <span class="tag">退休現金流</span>
-          <h2>退休不是數字，是曲線</h2>
-          <p class="desc">快速缺口 → 現金流模擬（主工具）→ 專業入口（進階）。</p>
+          <span class="tag">退休金</span>
+          <h2>退休不是數字，是現金流</h2>
+          <p class="desc">快速缺口 → 退休現金流模擬（主工具）→ 進階入口。</p>
         </div>
         <div class="btnRow">
-          <a class="btn" href="./tools_retire.html">進入主題</a>
+          <a class="btn" href="./tools_retire.html">進入退休金</a>
         </div>
       </div>
 
-      <div class="card" data-topic="inherit" data-key="傳承 繼承 比例 特留分 遺產稅 贈與 稅務">
+      <div class="card" data-topic="inherit" data-key="資產 傳承 繼承 比例 特留分 遺產稅 贈與">
         <div>
           <span class="tag">資產傳承</span>
           <h2>先治理，再公平，最後控稅源</h2>
-          <p class="desc">資產盤點 → 繼承比例（應繼分/特留分）→ 遺產稅 → 贈與策略。</p>
+          <p class="desc">資產盤點 → 繼承比例 → 遺產稅 → 贈與策略。</p>
         </div>
         <div class="btnRow">
-          <a class="btn" href="./tools_inherit.html">進入主題</a>
+          <a class="btn" href="./tools_inherit.html">進入資產傳承</a>
         </div>
       </div>
     </div>
@@ -140,7 +140,6 @@
   function apply(){
     const t = topic.value;
     const kw = (q.value||"").trim().toLowerCase();
-
     cards.forEach(c=>{
       const okTopic = (t==="all") || (c.dataset.topic===t);
       const hay = (c.innerText + " " + (c.dataset.key||"")).toLowerCase();
