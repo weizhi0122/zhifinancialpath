@@ -1,80 +1,601 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>遺產稅試算工具｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="115年遺產稅試算工具：含免稅額、扣除額、級距與估算稅額。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="遺產稅試算工具：含免稅額、扣除額、級距與估算稅額（教育用途）。" />
 
 <style>
-body{font-family:Arial;margin:0;background:#f6f8fb;color:#333}
-.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px}
-.container{max-width:900px;margin:auto;padding:30px 20px}
-.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
-label{display:block;margin-top:12px}
-input{width:100%;padding:8px;margin-top:4px;border:1px solid #d7dbe6;border-radius:8px}
-button{margin-top:15px;padding:10px 14px;background:#0b3d91;color:#fff;border:0;border-radius:8px;cursor:pointer}
-.result{margin-top:15px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
-.small{font-size:13px;color:#666}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --warnbg:#fff4e5; --warn:#8a5300;
+  }
+  body{font-family:Arial, "Noto Sans TC", sans-serif;margin:0;background:var(--bg);color:var(--text)}
+  .topbar{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+  .topbar a{color:var(--primary);text-decoration:none}
+  .container{max-width:1050px;margin:auto;padding:26px 18px}
+  h1{margin:0 0 12px;color:var(--primary);font-size:26px}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:980px){ .grid{grid-template-columns:1.15fr 0.85fr} }
+  .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .card h2{margin:0 0 10px;font-size:16px;color:#0f172a}
+  label{display:block;margin-top:10px;font-size:14px;color:#0f172a}
+  input,select,button{
+    width:100%;padding:10px 10px;margin-top:6px;border:1px solid #d7dbe6;border-radius:10px;
+    box-sizing:border-box;background:#fff;font-size:14px;
+  }
+  .row{display:flex;gap:10px}
+  .row > *{flex:1}
+  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:700}
+  button.secondary{background:#334155}
+  .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);color:var(--primary);display:none}
+  .small{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:10px}
+  .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
+  .warn{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5;font-size:13px;line-height:1.4}
+  .table{width:100%;border-collapse:collapse;margin-top:10px}
+  .table td{padding:6px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px}
+  .table td:last-child{text-align:right}
+  .muted{color:var(--muted)}
 </style>
 </head>
 
 <body>
-<div class="topbar">
-<a href="./tools.html">← 回工具</a>
-</div>
+  <div class="topbar">
+    <a href="./tools.html">← 回工具</a>
+  </div>
 
-<div class="container">
-<h1 style="color:#0b3d91">遺產稅試算工具（115年）</h1>
+  <div class="container">
+    <h1>遺產稅試算工具 <span class="pill">支援完整法定家庭組合</span></h1>
 
-<div class="card">
-<label>遺產總額（NT$）</label>
-<input id="estate" type="number" placeholder="例：80000000">
+    <div class="grid">
+      <!-- 左：輸入 -->
+      <div class="card">
+        <h2>1) 基本資料</h2>
 
-<label>配偶人數（0或1）</label>
-<input id="spouse" type="number" value="1">
+        <label>死亡日（決定適用級距）</label>
+        <input id="deathDate" type="date" />
 
-<label>直系卑親屬人數（子女）</label>
-<input id="children" type="number" value="2">
+        <div class="row">
+          <div>
+            <label>遺產總額（NT$）</label>
+            <input id="estate" type="text" inputmode="numeric" placeholder="例：80,000,000" />
+          </div>
+          <div>
+            <label>免稅額（NT$）</label>
+            <input id="exemption" type="text" inputmode="numeric" />
+          </div>
+        </div>
 
-<button onclick="calc()">試算稅額</button>
+        <label>喪葬費扣除額（NT$）</label>
+        <input id="funeral" type="text" inputmode="numeric" />
 
-<div id="output" class="result" style="display:none;"></div>
+        <label>其他自訂扣除額合計（NT$）</label>
+        <input id="customDed" type="text" inputmode="numeric" placeholder="債務/費用/其他特別扣除，先合併填在這裡" />
 
-<p class="small">※ 僅供教育用途，不含特別扣除與特殊情境。</p>
-</div>
-</div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0" />
+
+        <h2>2) 家庭/繼承人組合（全套 presets）</h2>
+
+        <label>快速選擇家庭組合（法定繼承的完整集合）</label>
+        <select id="preset" onchange="applyPreset()">
+          <option value="custom">自訂（我自己填）</option>
+
+          <!-- 有配偶的完整集合 -->
+          <option value="spouse_only">配偶（只有配偶）</option>
+          <option value="spouse_children">配偶 + 直系卑親屬（子女/孫子女代位）</option>
+          <option value="spouse_parents">配偶 + 父母</option>
+          <option value="spouse_siblings">配偶 + 兄弟姊妹（受扶養）</option>
+          <option value="spouse_grandparents">配偶 + 祖父母（受扶養）</option>
+
+          <!-- 無配偶的完整集合 -->
+          <option value="children_only">無配偶 + 直系卑親屬</option>
+          <option value="parents_only">無配偶 + 父母</option>
+          <option value="siblings_only">無配偶 + 兄弟姊妹（受扶養）</option>
+          <option value="grandparents_only">無配偶 + 祖父母（受扶養）</option>
+        </select>
+
+        <div class="warn" id="orderWarn"></div>
+
+        <label>是否有配偶</label>
+        <select id="hasSpouse" onchange="enforceInheritanceOrder()">
+          <option value="1">有</option>
+          <option value="0">無</option>
+        </select>
+
+        <div class="row">
+          <div>
+            <label>直系卑親屬人數（成年人）</label>
+            <input id="descAdult" type="number" min="0" step="1" value="0" oninput="enforceInheritanceOrder()" />
+          </div>
+          <div>
+            <label>直系卑親屬人數（未成年）</label>
+            <input id="descMinor" type="number" min="0" step="1" value="0" oninput="enforceInheritanceOrder()" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>父母人數</label>
+            <input id="parents" type="number" min="0" step="1" value="0" oninput="enforceInheritanceOrder()" />
+          </div>
+          <div>
+            <label>兄弟姊妹人數（受扶養）</label>
+            <input id="siblings" type="number" min="0" step="1" value="0" oninput="enforceInheritanceOrder()" />
+          </div>
+        </div>
+
+        <label>祖父母人數（受扶養）</label>
+        <input id="grandparents" type="number" min="0" step="1" value="0" oninput="enforceInheritanceOrder()" />
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0" />
+
+        <h2>3) 扣除額參數（可調整）</h2>
+
+        <div class="row">
+          <div>
+            <label>配偶扣除額（每案）</label>
+            <input id="spouseDed" type="text" inputmode="numeric" />
+          </div>
+          <div>
+            <label>卑親屬扣除額（每人）</label>
+            <input id="descEach" type="text" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>父母扣除額（每人）</label>
+            <input id="parentEach" type="text" inputmode="numeric" />
+          </div>
+          <div>
+            <label>兄弟姊妹/祖父母扣除額（每人）</label>
+            <input id="depEach" type="text" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>未成年加扣（每人/每年）</label>
+            <input id="minorEachYear" type="text" inputmode="numeric" />
+          </div>
+          <div>
+            <label>未成年「平均剩餘年數」(簡化)</label>
+            <input id="minorYearsAvg" type="number" min="0" step="1" value="0" />
+          </div>
+        </div>
+        <div class="small muted">
+          未成年加扣規則：按距成年剩餘年數，每年加扣（成年年齡自 112/1/1 起為 18 歲）。此工具先用「平均剩餘年數」簡化計算。  
+        </div>
+
+        <div class="row">
+          <div>
+            <label>重度以上身心障礙/嚴重病人（人數）</label>
+            <input id="disabledCount" type="number" min="0" step="1" value="0" />
+          </div>
+          <div>
+            <label>身心障礙特別扣除（每人）</label>
+            <input id="disabledEach" type="text" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button onclick="calc()">試算稅額</button>
+          <button class="secondary" onclick="resetDefaults()">重設預設</button>
+        </div>
+
+        <p class="small">
+          ※ 教育用途：未涵蓋所有法律/稅務特殊情境；重點是「家庭組合不寫死」與「級距按死亡日」。
+        </p>
+      </div>
+
+      <!-- 右：結果 -->
+      <div class="card">
+        <h2>試算結果</h2>
+        <div id="output" class="result"></div>
+        <div class="small muted" style="margin-top:10px">
+          你之後如果要更精準：把「未成年」改成逐一填年齡、把「其他扣除額」拆成債務/費用/特別扣除明細，都可以在這個架構上加，不用重寫核心。
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
+/** =========================
+ *  來源：財政部稅務入口網（扣除額/免稅額/級距）
+ *  你若要對應「115年公告」，只要更新這份常數即可
+ * ========================= */
+const RULES = {
+  // 扣除額/免稅額（以財政部稅務入口網現行常見數字）
+  exemption: 13330000,
+  funeral: 1380000,
+  spouseDed: 5530000,
+  descEach: 560000,
+  parentEach: 1380000,
+  depEach: 560000,         // 受扶養之兄弟姊妹、祖父母
+  minorEachYear: 560000,   // 未成年每年加扣（簡化用）
+  disabledEach: 6930000,   // 重度以上身心障礙/嚴重病人每人加扣
+
+  // 級距：提供「舊制」與「114/1/1後新制」兩套，依死亡日選用
+  // 舊制（你原本 50m/100m）
+  brackets_old: [
+    { upTo: 50000000, rate: 0.10 },
+    { upTo: 100000000, rate: 0.15 },
+    { upTo: Infinity, rate: 0.20 },
+  ],
+  // 新制（114/1/1 以後調整後級距，出自財政部公告）
+  brackets_new: [
+    { upTo: 56210000, rate: 0.10 },
+    { upTo: 112420000, rate: 0.15 },
+    { upTo: Infinity, rate: 0.20 },
+  ],
+  // 分界日：114/01/01
+  newBracketFrom: "2025-01-01"
+};
+
+function $(id){ return document.getElementById(id); }
+
+function parseMoney(id){
+  const raw = ($(id).value || "").toString().trim();
+  if(!raw) return 0;
+  const cleaned = raw.replace(/[,，\s]/g, "");
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : NaN;
+}
+
+function formatNum(n){
+  try { return Number(n).toLocaleString("en-US"); }
+  catch { return String(n); }
+}
+
+function clampInt(v){
+  if(!Number.isFinite(v)) return NaN;
+  return Math.max(0, Math.floor(v));
+}
+
+function showWarn(msg){
+  const w = $("orderWarn");
+  w.style.display = "block";
+  w.textContent = msg;
+}
+function hideWarn(){
+  const w = $("orderWarn");
+  w.style.display = "none";
+  w.textContent = "";
+}
+
+function resetDefaults(){
+  // deathDate：預設今天
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,"0");
+  const dd = String(now.getDate()).padStart(2,"0");
+  $("deathDate").value = `${yyyy}-${mm}-${dd}`;
+
+  $("estate").value = "";
+  $("exemption").value = formatNum(RULES.exemption);
+  $("funeral").value = formatNum(RULES.funeral);
+  $("customDed").value = "";
+
+  $("preset").value = "custom";
+  $("hasSpouse").value = "1";
+  $("descAdult").value = 0;
+  $("descMinor").value = 0;
+  $("parents").value = 0;
+  $("siblings").value = 0;
+  $("grandparents").value = 0;
+
+  $("spouseDed").value = formatNum(RULES.spouseDed);
+  $("descEach").value = formatNum(RULES.descEach);
+  $("parentEach").value = formatNum(RULES.parentEach);
+  $("depEach").value = formatNum(RULES.depEach);
+  $("minorEachYear").value = formatNum(RULES.minorEachYear);
+  $("minorYearsAvg").value = 0;
+  $("disabledCount").value = 0;
+  $("disabledEach").value = formatNum(RULES.disabledEach);
+
+  hideWarn();
+  hideOutput();
+}
+
+function hideOutput(){
+  const out = $("output");
+  out.style.display = "none";
+  out.innerHTML = "";
+}
+
+/**
+ * 法定繼承順位強制：
+ * 除配偶外，只能存在其中一組：
+ * 1 卑親屬（子女/代位孫子女）
+ * 2 父母
+ * 3 兄弟姊妹
+ * 4 祖父母
+ */
+function enforceInheritanceOrder(){
+  const desc = clampInt(Number($("descAdult").value)) + clampInt(Number($("descMinor").value));
+  const parents = clampInt(Number($("parents").value));
+  const siblings = clampInt(Number($("siblings").value));
+  const gps = clampInt(Number($("grandparents").value));
+
+  if([desc, parents, siblings, gps].some(v => !Number.isFinite(v))){
+    showWarn("人數欄位請輸入 0 或正整數。");
+    return;
+  }
+
+  // 如果填了多個順位，保留最前順位，其他清零（避免矛盾）
+  let changed = false;
+  hideWarn();
+
+  if(desc > 0){
+    if(parents>0){ $("parents").value = 0; changed = true; }
+    if(siblings>0){ $("siblings").value = 0; changed = true; }
+    if(gps>0){ $("grandparents").value = 0; changed = true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；依法只會有「卑親屬」時，父母/兄弟姊妹/祖父母不會同時繼承，已自動清零後順位。");
+    return;
+  }
+  if(parents > 0){
+    if(siblings>0){ $("siblings").value = 0; changed = true; }
+    if(gps>0){ $("grandparents").value = 0; changed = true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；有父母時，兄弟姊妹/祖父母不會同時繼承，已自動清零後順位。");
+    return;
+  }
+  if(siblings > 0){
+    if(gps>0){ $("grandparents").value = 0; changed = true; }
+    if(changed) showWarn("已偵測到同時填入多個繼承順位；有兄弟姊妹時，祖父母不會同時繼承，已自動清零後順位。");
+    return;
+  }
+  // 祖父母可單獨存在（或全都 0）
+}
+
+function applyPreset(){
+  const p = $("preset").value;
+  // 先全部清空
+  $("descAdult").value = 0;
+  $("descMinor").value = 0;
+  $("parents").value = 0;
+  $("siblings").value = 0;
+  $("grandparents").value = 0;
+
+  switch(p){
+    case "spouse_only":
+      $("hasSpouse").value = "1";
+      break;
+    case "spouse_children":
+      $("hasSpouse").value = "1";
+      $("descAdult").value = 2; // 先給常見預設，可自行改
+      break;
+    case "spouse_parents":
+      $("hasSpouse").value = "1";
+      $("parents").value = 2;
+      break;
+    case "spouse_siblings":
+      $("hasSpouse").value = "1";
+      $("siblings").value = 2;
+      break;
+    case "spouse_grandparents":
+      $("hasSpouse").value = "1";
+      $("grandparents").value = 2;
+      break;
+
+    case "children_only":
+      $("hasSpouse").value = "0";
+      $("descAdult").value = 2;
+      break;
+    case "parents_only":
+      $("hasSpouse").value = "0";
+      $("parents").value = 2;
+      break;
+    case "siblings_only":
+      $("hasSpouse").value = "0";
+      $("siblings").value = 2;
+      break;
+    case "grandparents_only":
+      $("hasSpouse").value = "0";
+      $("grandparents").value = 2;
+      break;
+
+    default:
+      // custom 不動
+      break;
+  }
+  enforceInheritanceOrder();
+  hideOutput();
+}
+
+/** 依死亡日決定級距 */
+function getBrackets(){
+  const d = ($("deathDate").value || "").trim();
+  if(!d) return { name:"新制(預設)", brackets: RULES.brackets_new };
+
+  // 字串可直接比 YYYY-MM-DD
+  if(d >= RULES.newBracketFrom){
+    return { name:"新制(114/1/1起)", brackets: RULES.brackets_new };
+  }
+  return { name:"舊制(114/1/1前)", brackets: RULES.brackets_old };
+}
+
+function calcProgressiveTax(taxable, brackets){
+  let remaining = taxable;
+  let prevCap = 0;
+  let total = 0;
+  const lines = [];
+
+  for(const b of brackets){
+    const cap = b.upTo;
+    const width = (cap === Infinity) ? remaining : Math.max(0, Math.min(remaining, cap - prevCap));
+    if(width <= 0){ prevCap = cap; continue; }
+
+    const part = width * b.rate;
+    total += part;
+
+    const bandText = (cap === Infinity)
+      ? `超過 ${formatNum(prevCap)}`
+      : `${formatNum(prevCap)} ～ ${formatNum(cap)}`;
+
+    lines.push({ band: bandText, rate: b.rate, tax: part });
+
+    remaining -= width;
+    prevCap = cap;
+    if(remaining <= 0) break;
+  }
+  return { total, lines };
+}
+
 function calc(){
-let estate = Number(document.getElementById('estate').value);
-if(!estate){ alert("請輸入遺產總額"); return;}
+  const estate = parseMoney("estate");
+  if(!Number.isFinite(estate) || estate <= 0){
+    alert("請輸入有效的遺產總額（可含逗號）");
+    return;
+  }
 
-let spouse = Number(document.getElementById('spouse').value);
-let children = Number(document.getElementById('children').value);
+  // 人數
+  const hasSpouse = Number($("hasSpouse").value) === 1;
+  const descAdult = clampInt(Number($("descAdult").value));
+  const descMinor = clampInt(Number($("descMinor").value));
+  const parents = clampInt(Number($("parents").value));
+  const siblings = clampInt(Number($("siblings").value));
+  const grandparents = clampInt(Number($("grandparents").value));
+  const disabledCount = clampInt(Number($("disabledCount").value));
 
-let exemption = 13330000;
-let spouseDed = spouse * 5530000;
-let childDed = children * 560000;
-let funeral = 1380000;
+  if([descAdult, descMinor, parents, siblings, grandparents, disabledCount].some(v => !Number.isFinite(v))){
+    alert("人數欄位請輸入 0 或正整數");
+    return;
+  }
 
-let taxable = estate - exemption - spouseDed - childDed - funeral;
-if(taxable < 0) taxable = 0;
+  enforceInheritanceOrder();
 
-let tax=0;
-if(taxable<=50000000){
- tax = taxable*0.10;
-}else if(taxable<=100000000){
- tax = 50000000*0.10 + (taxable-50000000)*0.15;
-}else{
- tax = 50000000*0.10 + 50000000*0.15 + (taxable-100000000)*0.20;
+  // 金額參數
+  const exemption = parseMoney("exemption");
+  const funeral = parseMoney("funeral");
+  const customDed = parseMoney("customDed");
+
+  const spouseDed = parseMoney("spouseDed");
+  const descEach = parseMoney("descEach");
+  const parentEach = parseMoney("parentEach");
+  const depEach = parseMoney("depEach");
+  const minorEachYear = parseMoney("minorEachYear");
+  const minorYearsAvg = clampInt(Number($("minorYearsAvg").value));
+  const disabledEach = parseMoney("disabledEach");
+
+  const checks = [
+    ["免稅額", exemption], ["喪葬費", funeral], ["其他扣除額", customDed],
+    ["配偶扣除額", spouseDed], ["卑親屬每人扣除", descEach],
+    ["父母每人扣除", parentEach], ["兄弟姊妹/祖父母每人扣除", depEach],
+    ["未成年每年加扣", minorEachYear], ["身障特別扣除", disabledEach]
+  ];
+  for(const [name, v] of checks){
+    if(!Number.isFinite(v) || v < 0){
+      alert(`「${name}」請輸入有效金額（>=0）`);
+      return;
+    }
+  }
+  if(!Number.isFinite(minorYearsAvg) || minorYearsAvg < 0){
+    alert("未成年平均剩餘年數請輸入 0 或正整數");
+    return;
+  }
+
+  // 扣除額計算（引擎）
+  const spouseDedTotal = hasSpouse ? spouseDed : 0;
+
+  const descCountTotal = descAdult + descMinor;
+  const descDedTotal = descCountTotal * descEach;
+
+  const parentDedTotal = parents * parentEach;
+
+  // 受扶養之兄弟姊妹/祖父母（簡化：用你填的數量）
+  const depRelCount = siblings + grandparents;
+  const depRelDedTotal = depRelCount * depEach;
+
+  // 未成年加扣（簡化：未成年數量 * 平均剩餘年數 * 每年加扣）
+  const minorExtraTotal = descMinor * minorYearsAvg * minorEachYear;
+
+  // 身障特別扣除（簡化：人數 * 每人）
+  const disabledTotal = disabledCount * disabledEach;
+
+  const totalDed =
+    exemption + funeral + customDed +
+    spouseDedTotal + descDedTotal + parentDedTotal + depRelDedTotal +
+    minorExtraTotal + disabledTotal;
+
+  let taxable = estate - totalDed;
+  if(taxable < 0) taxable = 0;
+
+  const br = getBrackets();
+  const prog = calcProgressiveTax(taxable, br.brackets);
+  const taxRounded = Math.round(prog.total);
+
+  const out = $("output");
+  out.style.display = "block";
+
+  out.innerHTML = `
+    <div style="font-weight:800;font-size:16px;margin-bottom:6px">
+      課稅遺產淨額：NT$ ${formatNum(taxable)}
+    </div>
+    <div style="font-weight:800;font-size:18px">
+      預估遺產稅：NT$ ${formatNum(taxRounded)}
+      <span class="muted" style="font-weight:600;font-size:12.5px">（級距：${br.name}）</span>
+    </div>
+
+    <table class="table">
+      <tr><td class="muted">遺產總額</td><td>NT$ ${formatNum(estate)}</td></tr>
+      <tr><td class="muted">免稅額</td><td>- NT$ ${formatNum(exemption)}</td></tr>
+      <tr><td class="muted">喪葬費扣除</td><td>- NT$ ${formatNum(funeral)}</td></tr>
+      <tr><td class="muted">配偶扣除</td><td>- NT$ ${formatNum(spouseDedTotal)}</td></tr>
+      <tr><td class="muted">卑親屬扣除（${descCountTotal} 人）</td><td>- NT$ ${formatNum(descDedTotal)}</td></tr>
+      <tr><td class="muted">父母扣除（${parents} 人）</td><td>- NT$ ${formatNum(parentDedTotal)}</td></tr>
+      <tr><td class="muted">受扶養兄弟姊妹/祖父母扣除（${depRelCount} 人）</td><td>- NT$ ${formatNum(depRelDedTotal)}</td></tr>
+      <tr><td class="muted">未成年加扣（${descMinor} 人 × ${minorYearsAvg} 年）</td><td>- NT$ ${formatNum(minorExtraTotal)}</td></tr>
+      <tr><td class="muted">身障特別扣除（${disabledCount} 人）</td><td>- NT$ ${formatNum(disabledTotal)}</td></tr>
+      <tr><td class="muted">其他自訂扣除額</td><td>- NT$ ${formatNum(customDed)}</td></tr>
+      <tr><td style="font-weight:800">扣除額合計</td><td style="font-weight:800">- NT$ ${formatNum(totalDed)}</td></tr>
+    </table>
+
+    <div style="margin-top:10px;font-weight:800">級距拆解</div>
+    <table class="table">
+      ${prog.lines.map(x => `
+        <tr>
+          <td class="muted">${x.band}（${Math.round(x.rate*100)}%）</td>
+          <td>NT$ ${formatNum(Math.round(x.tax))}</td>
+        </tr>
+      `).join("")}
+      <tr>
+        <td style="font-weight:800">稅額合計</td>
+        <td style="font-weight:800">NT$ ${formatNum(taxRounded)}</td>
+      </tr>
+    </table>
+  `;
+
+  // 金額欄位格式化
+  formatMoneyInputs(["estate","exemption","funeral","customDed","spouseDed","descEach","parentEach","depEach","minorEachYear","disabledEach"]);
 }
 
-document.getElementById('output').style.display="block";
-document.getElementById('output').innerHTML =
-"課稅遺產淨額：約 NT$ "+ taxable.toLocaleString() +
-"<br>預估遺產稅：約 NT$ "+ Math.round(tax).toLocaleString();
+function formatMoneyInputs(ids){
+  for(const id of ids){
+    const v = parseMoney(id);
+    if(Number.isFinite(v) && v >= 0) $(id).value = formatNum(v);
+  }
 }
+
+(function init(){
+  resetDefaults();
+
+  // 金額欄位：離開時自動千分位
+  const moneyIds = ["estate","exemption","funeral","customDed","spouseDed","descEach","parentEach","depEach","minorEachYear","disabledEach"];
+  for(const id of moneyIds){
+    $(id).addEventListener("blur", () => {
+      const v = parseMoney(id);
+      if(Number.isFinite(v) && v >= 0) $(id).value = formatNum(v);
+    });
+  }
+
+  // 變更死亡日/家庭時，先隱藏結果（避免誤讀）
+  ["deathDate","preset","hasSpouse","descAdult","descMinor","parents","siblings","grandparents"].forEach(id=>{
+    $(id).addEventListener("change", hideOutput);
+    $(id).addEventListener("input", hideOutput);
+  });
+})();
 </script>
 </body>
 </html>
