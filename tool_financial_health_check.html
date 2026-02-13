@@ -3,95 +3,99 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>財報健康檢核工具｜智 Financial Path</title>
-<meta name="description" content="輸入關鍵財務比率與現金流資訊，快速得到健康度評分、風險點與下一步檢核建議，並視覺化。">
+<title>財報健康檢核工具（研究室版）｜智 Financial Path</title>
+<meta name="description" content="比率＋現金流＋同業比較（分位數）＋紅旗檢核：快速決定要不要進估值。">
 <style>
-  body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
-  .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
-  .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
-  .container{max-width:980px;margin:auto;padding:26px 20px 90px}
-  h1,h2{color:#0b3d91;margin:0 0 10px}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#333; --muted:#666;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --danger:#d92c2c; --warnbg:#fff4f4; --ok:#15a34a; --okbg:#f1fff5;
+  }
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .container{max-width:1100px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
   .sub{color:#555;margin:0 0 18px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-  .card{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
+  .grid{display:grid;grid-template-columns:420px 1fr;gap:14px;align-items:start}
+  @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
   label{display:block;font-size:13px;color:#555;margin:10px 0 6px}
-  input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  input,select{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  input:focus,select:focus{outline:2px solid #cfe0ff;border-color:#cfe0ff}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media (max-width:520px){ .row2,.row3{grid-template-columns:1fr} }
   .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  button{border:0;border-radius:12px;padding:10px 14px;background:#0b3d91;color:#fff;cursor:pointer;font-size:14px}
-  button.secondary{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  button{border:0;border-radius:12px;padding:10px 14px;background:var(--primary);color:#fff;cursor:pointer;font-size:14px}
+  button.secondary{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
   .kpi .box{background:#f7f9ff;border:1px solid #dfeaff;border-radius:14px;padding:12px}
-  .kpi .box b{color:#0b3d91}
-  .small{font-size:13px;color:#666}
-  .note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(0,0,0,.04);margin-top:12px}
-  canvas{width:100%;height:320px;background:#fff;border-radius:14px;border:1px solid #e6e8ee}
-  ul{margin:8px 0 0 18px}
-  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef4ff;color:#0b3d91;font-size:12px}
-  .footer-links{text-align:center;margin-top:26px}
-  .footer-links a{margin:0 10px}
+  .kpi .box b{color:var(--primary)}
+  .small{font-size:13px;color:var(--muted)}
+  .hr{border:none;border-top:1px solid #eef1f6;margin:12px 0}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#f7f9ff;border:1px solid #dfeaff;color:#334155;font-size:12px}
+  .msg{border-radius:14px;padding:12px 14px;margin-top:12px}
+  .msg.warn{background:var(--warnbg);border-left:4px solid var(--danger)}
+  .msg.ok{background:var(--okbg);border-left:4px solid var(--ok)}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px}
+
+  /* Radar */
+  .radarWrap{border-radius:14px;border:1px solid var(--line);background:#fff;padding:12px}
+  canvas{width:100%;height:320px;display:block}
+
+  /* Percent bar */
+  .pctWrap{margin-top:10px}
+  .pctRow{display:grid;grid-template-columns:130px 1fr 70px;gap:10px;align-items:center;margin:10px 0}
+  .pctRow .k{font-size:13px;color:#334155}
+  .bar{height:10px;border-radius:999px;background:#eef1f6;position:relative;overflow:hidden}
+  .bar > span{position:absolute;left:0;top:0;bottom:0;background:rgba(11,61,145,.25)}
+  .dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--primary)}
+  .pctRow .v{font-size:12px;color:#0b3d91;text-align:right}
+  .help{font-size:12px;color:#7a8699;margin-top:6px;line-height:1.45}
+  .footlinks{text-align:center;margin-top:20px}
+  .footlinks a{margin:0 10px;color:var(--primary);text-decoration:none}
 </style>
 </head>
 <body>
   <div class="topbar">
     <div class="inner">
-      <a href="javascript:history.back()">← 回上頁</a>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">← 回工具</a>
+        <span class="pill">研究室版：同業比較 + 分位數 + 紅旗門檻</span>
+      </div>
       <div>
-        <a href="./index.html" style="margin-right:12px;">回主頁</a>
-        <a href="./library.html">知識庫</a>
+        <a href="./index.html" style="margin-right:12px;">🏠 回主頁</a>
+        <a href="./library.html">📚 知識庫</a>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <h1>財報健康檢核工具</h1>
-    <p class="sub">用「比率 + 現金流」快速掃描一家公司的體質：先抓大方向，再決定要不要深入做估值。</p>
+    <h1>財報健康檢核工具（研究室版）</h1>
+    <p class="sub">先判斷「體質是否值得估值」：分數要看、紅旗更要看；同業比較可以避免你用錯產業天花板。</p>
 
     <div class="grid">
+      <!-- LEFT -->
       <div class="card">
-        <h2 style="margin-top:0">輸入（% 直接輸入數字即可）</h2>
+        <h2 style="margin-top:0">輸入：公司數字</h2>
 
         <div class="row3">
-          <div>
-            <label>營收年增率（%）</label>
-            <input id="revG" type="number" step="0.1" value="8">
-          </div>
-          <div>
-            <label>毛利率（%）</label>
-            <input id="gm" type="number" step="0.1" value="35">
-          </div>
-          <div>
-            <label>營業利益率（%）</label>
-            <input id="om" type="number" step="0.1" value="15">
-          </div>
+          <div><label>營收年增率（%）</label><input id="revG" type="number" step="0.1" value="8"></div>
+          <div><label>毛利率（%）</label><input id="gm" type="number" step="0.1" value="35"></div>
+          <div><label>營業利益率（%）</label><input id="om" type="number" step="0.1" value="15"></div>
         </div>
 
         <div class="row3">
-          <div>
-            <label>淨利率（%）</label>
-            <input id="nm" type="number" step="0.1" value="10">
-          </div>
-          <div>
-            <label>ROE（%）</label>
-            <input id="roe" type="number" step="0.1" value="15">
-          </div>
-          <div>
-            <label>負債比（總負債/總資產，%）</label>
-            <input id="debt" type="number" step="0.1" value="45">
-          </div>
+          <div><label>淨利率（%）</label><input id="nm" type="number" step="0.1" value="10"></div>
+          <div><label>ROE（%）</label><input id="roe" type="number" step="0.1" value="15"></div>
+          <div><label>負債比（%）</label><input id="debt" type="number" step="0.1" value="45"></div>
         </div>
 
         <div class="row2">
-          <div>
-            <label>流動比率（倍）</label>
-            <input id="cr" type="number" step="0.01" value="1.8">
-          </div>
-          <div>
-            <label>速動比率（倍）</label>
-            <input id="qr" type="number" step="0.01" value="1.2">
-          </div>
+          <div><label>流動比率（倍）</label><input id="cr" type="number" step="0.01" value="1.8"></div>
+          <div><label>速動比率（倍）</label><input id="qr" type="number" step="0.01" value="1.2"></div>
         </div>
 
         <div class="row2">
@@ -100,33 +104,62 @@
             <input id="cfoNI" type="number" step="0.01" value="1.1">
           </div>
           <div>
-            <label>自由現金流（FCF）為正？（1=是 / 0=否）</label>
-            <input id="fcfPos" type="number" step="1" value="1">
+            <label>自由現金流（FCF）為正？</label>
+            <select id="fcfPos">
+              <option value="1" selected>是</option>
+              <option value="0">否</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div><label>利息保障倍數（倍）</label><input id="icr" type="number" step="0.1" value="8"></div>
+          <div>
+            <label>應收帳款週轉是否惡化？</label>
+            <select id="arBad">
+              <option value="0" selected>否</option>
+              <option value="1">是</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <h3 style="margin:0 0 6px">同業參考（可選填）</h3>
+        <div class="small">若你有同業平均/中位數，可以填進來，工具會算「相對位置（分位數）」。</div>
+
+        <div class="row2">
+          <div>
+            <label>同業 ROE 中位數（%）</label>
+            <input id="peer_roe" type="number" step="0.1" value="12">
+          </div>
+          <div>
+            <label>同業 負債比 中位數（%）</label>
+            <input id="peer_debt" type="number" step="0.1" value="50">
           </div>
         </div>
 
         <div class="row2">
           <div>
-            <label>利息保障倍數（倍）</label>
-            <input id="icr" type="number" step="0.1" value="8">
+            <label>同業 CFO/NI 中位數（倍）</label>
+            <input id="peer_cfoNI" type="number" step="0.01" value="1.0">
           </div>
           <div>
-            <label>應收帳款週轉是否惡化？（1=是 / 0=否）</label>
-            <input id="arBad" type="number" step="1" value="0">
+            <label>同業 毛利率 中位數（%）</label>
+            <input id="peer_gm" type="number" step="0.1" value="30">
           </div>
         </div>
+        <div class="help">沒有資料也沒關係：同業分位數就顯示「—」，不影響基本評分。</div>
 
         <div class="btnrow">
-          <button onclick="check()">開始檢核</button>
-          <button class="secondary" onclick="resetAll()">重設</button>
+          <button type="button" onclick="check()">開始檢核</button>
+          <button type="button" class="secondary" onclick="resetAll()">重設</button>
         </div>
 
-        <p class="small" style="margin-top:10px;">
-          你可以把這當作「第一關」。過關才進第二關：估值與安全邊際。<br>
-          若公司是景氣循環股，你要把 revG/毛利率 的判讀改成「區間」而不是單年。
-        </p>
+        <div id="msgBox" class="msg" style="display:none"></div>
       </div>
 
+      <!-- RIGHT -->
       <div class="card">
         <h2 style="margin-top:0">輸出</h2>
 
@@ -134,33 +167,44 @@
           <div class="box">
             <b>健康度總評</b>
             <div id="grade" style="margin-top:6px;">—</div>
-            <div class="small">A：體質佳｜B：可研究｜C：需謹慎｜D：多數投資人會被洗出去</div>
+            <div class="small">A：體質佳｜B：可研究｜C：需謹慎｜D：高風險</div>
           </div>
           <div class="box">
-            <b>關鍵風險提醒</b>
-            <div id="risk" style="margin-top:6px;">—</div>
-            <div class="small">這裡會指出你最該追查的點。</div>
+            <b>紅旗門檻（先看這個）</b>
+            <div id="redflags" style="margin-top:6px;">—</div>
+            <div class="small">紅旗越多，估值越容易變成自我安慰。</div>
           </div>
           <div class="box">
-            <b>下一步建議</b>
-            <div id="next" style="margin-top:6px;">—</div>
-            <div class="small">給你明確要看的報表位置與問題清單。</div>
+            <b>估值前置檢核</b>
+            <div id="gate" style="margin-top:6px;">—</div>
+            <div class="small">通過才進「估值＋安全邊際」。</div>
           </div>
         </div>
 
-        <div style="margin-top:12px;">
+        <div class="hr"></div>
+
+        <h3 style="margin:0 0 6px">同業相對位置（分位數）</h3>
+        <div class="small">用「你 vs 同業中位數」估算相對位置（簡化版）。</div>
+
+        <div class="pctWrap" id="pctWrap"></div>
+
+        <div class="hr"></div>
+
+        <div class="radarWrap">
           <canvas id="radar" width="940" height="320"></canvas>
+          <div class="small" style="margin-top:8px">
+            雷達圖越「飽滿」代表體質越均衡；但只要有一角深凹，就可能是未爆彈。
+          </div>
         </div>
 
-        <div class="note">
-          <span class="badge">讀者互動</span><br>
-          你現在看到的分數，是把「獲利、槓桿、流動性、現金流」放在同一張圖。<br>
-          <b>請問：</b>哪一個維度最低？那就是你最需要補證據的地方。
+        <div class="note" style="margin-top:12px">
+          <span class="badge">下一步你要做什麼？</span><br>
+          <div id="next" style="margin-top:8px">—</div>
         </div>
       </div>
     </div>
 
-    <div class="footer-links">
+    <div class="footlinks">
       <a href="./chapter_investing.html">← 回投資決策系統</a>
       <a href="./tools.html">回工具</a>
       <a href="./index.html">回主頁</a>
@@ -169,123 +213,169 @@
 
 <script>
   function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+  function $(id){ return document.getElementById(id); }
+  function num(id){ return Number($(id).value || 0); }
+
+  // 基本評分規則（同你原本邏輯，集中管理）
+  const RULES = {
+    growth: [{min:-999,max:0,score:30},{min:0,max:5,score:55},{min:5,max:15,score:75},{min:15,max:999,score:90}],
+    gm:     [{min:-999,max:20,score:35},{min:20,max:35,score:65},{min:35,max:50,score:80},{min:50,max:999,score:90}],
+    om:     [{min:-999,max:5,score:30},{min:5,max:12,score:60},{min:12,max:20,score:80},{min:20,max:999,score:90}],
+    nm:     [{min:-999,max:3,score:30},{min:3,max:8,score:60},{min:8,max:15,score:80},{min:15,max:999,score:90}],
+    roe:    [{min:-999,max:8,score:35},{min:8,max:15,score:70},{min:15,max:25,score:85},{min:25,max:999,score:90}],
+    debt:   [{min:-999,max:30,score:90},{min:30,max:50,score:75},{min:50,max:65,score:55},{min:65,max:999,score:35}],
+    cr:     [{min:-999,max:1.0,score:35},{min:1.0,max:1.5,score:60},{min:1.5,max:2.5,score:80},{min:2.5,max:999,score:85}],
+    qr:     [{min:-999,max:0.8,score:35},{min:0.8,max:1.0,score:60},{min:1.0,max:1.8,score:80},{min:1.8,max:999,score:85}],
+    cfoNI:  [{min:-999,max:0.8,score:35},{min:0.8,max:1.0,score:60},{min:1.0,max:1.3,score:80},{min:1.3,max:999,score:90}],
+    icr:    [{min:-999,max:2,score:30},{min:2,max:5,score:55},{min:5,max:10,score:80},{min:10,max:999,score:90}],
+    weights:{S_growth:0.12,S_profit:0.20,S_quality:0.16,S_leverage:0.14,S_liquidity:0.12,S_cashflow:0.18,S_interest:0.08}
+  };
 
   function scoreRange(v, rules){
-    // rules: [{min,max,score}]
-    for(const r of rules){
-      if(v>=r.min && v<r.max) return r.score;
-    }
+    for(const r of rules){ if(v>=r.min && v<r.max) return r.score; }
     return 0;
   }
 
+  // 分位數（簡化版）：用你 vs 同業中位數，做一個 S 型近似轉換
+  // > 中位數很多：>50%；遠大於中位數：接近 90%；遠小：接近 10%
+  function approxPercentile(value, median, direction){
+    // direction: "higherBetter" or "lowerBetter"
+    if(!isFinite(value) || !isFinite(median) || median===0) return null;
+
+    // 把「越大越好」轉成同向比較
+    let ratio = (direction==="higherBetter") ? (value/median) : (median/value);
+
+    // 避免爆炸
+    ratio = clamp(ratio, 0.2, 5);
+
+    // logistic-ish map: ratio=1 -> 50
+    // ratio=0.5 -> ~20-30 ; ratio=2 -> ~70-80
+    const x = Math.log(ratio); // -..+
+    const pct = 100 * (1 / (1 + Math.exp(-1.4 * x))); // slope
+    return clamp(pct, 1, 99);
+  }
+
+  function pctRow(label, pct){
+    const safe = (pct===null) ? "—" : `${pct.toFixed(0)}%`;
+    const w = (pct===null) ? 0 : pct;
+    const dotLeft = (pct===null) ? 0 : pct;
+
+    return `
+      <div class="pctRow">
+        <div class="k">${label}</div>
+        <div class="bar">
+          <span style="width:${w}%;"></span>
+          ${pct===null ? "" : `<i class="dot" style="left:${dotLeft}%;"></i>`}
+        </div>
+        <div class="v">${safe}</div>
+      </div>
+    `;
+  }
+
   function check(){
-    const revG = Number(document.getElementById('revG').value||0);
-    const gm   = Number(document.getElementById('gm').value||0);
-    const om   = Number(document.getElementById('om').value||0);
-    const nm   = Number(document.getElementById('nm').value||0);
-    const roe  = Number(document.getElementById('roe').value||0);
-    const debt = Number(document.getElementById('debt').value||0);
-    const cr   = Number(document.getElementById('cr').value||0);
-    const qr   = Number(document.getElementById('qr').value||0);
-    const cfoNI= Number(document.getElementById('cfoNI').value||0);
-    const fcfPos = Number(document.getElementById('fcfPos').value||0);
-    const icr  = Number(document.getElementById('icr').value||0);
-    const arBad= Number(document.getElementById('arBad').value||0);
+    const revG = num('revG'), gm=num('gm'), om=num('om'), nm=num('nm'), roe=num('roe');
+    const debt = num('debt'), cr=num('cr'), qr=num('qr'), cfoNI=num('cfoNI');
+    const fcfPos = Number($('fcfPos').value||0);
+    const icr = num('icr');
+    const arBad = Number($('arBad').value||0);
 
-    // 0~100 維度分數
-    const S_growth = clamp(scoreRange(revG, [
-      {min:-999,max:0,score:30},
-      {min:0,max:5,score:55},
-      {min:5,max:15,score:75},
-      {min:15,max:999,score:90},
-    ]),0,100);
-
+    // 基本分數
+    const S_growth = clamp(scoreRange(revG, RULES.growth),0,100);
     const S_profit = clamp(
-      (scoreRange(gm,[{min:-999,max:20,score:35},{min:20,max:35,score:65},{min:35,max:50,score:80},{min:50,max:999,score:90}]) *0.4) +
-      (scoreRange(om,[{min:-999,max:5,score:30},{min:5,max:12,score:60},{min:12,max:20,score:80},{min:20,max:999,score:90}]) *0.35) +
-      (scoreRange(nm,[{min:-999,max:3,score:30},{min:3,max:8,score:60},{min:8,max:15,score:80},{min:15,max:999,score:90}]) *0.25)
+      scoreRange(gm, RULES.gm)*0.40 +
+      scoreRange(om, RULES.om)*0.35 +
+      scoreRange(nm, RULES.nm)*0.25
     ,0,100);
+    const S_quality = clamp(scoreRange(roe, RULES.roe)*0.60 + ((arBad>=1)?30:85)*0.40,0,100);
+    const S_leverage = clamp(scoreRange(debt, RULES.debt),0,100);
+    const S_liquidity = clamp(scoreRange(cr, RULES.cr)*0.55 + scoreRange(qr, RULES.qr)*0.45,0,100);
+    const S_cashflow = clamp(scoreRange(cfoNI, RULES.cfoNI)*0.65 + ((fcfPos>=1)?85:40)*0.35,0,100);
+    const S_interest = clamp(scoreRange(icr, RULES.icr),0,100);
 
-    const S_quality = clamp(
-      (scoreRange(roe,[{min:-999,max:8,score:35},{min:8,max:15,score:70},{min:15,max:25,score:85},{min:25,max:999,score:90}])*0.6) +
-      (arBad>=1 ? 30 : 85)*0.4
-    ,0,100);
+    const W = RULES.weights;
+    const overall = S_growth*W.S_growth + S_profit*W.S_profit + S_quality*W.S_quality + S_leverage*W.S_leverage +
+                    S_liquidity*W.S_liquidity + S_cashflow*W.S_cashflow + S_interest*W.S_interest;
 
-    const S_leverage = clamp(scoreRange(debt,[
-      {min:-999,max:30,score:90},
-      {min:30,max:50,score:75},
-      {min:50,max:65,score:55},
-      {min:65,max:999,score:35},
-    ]),0,100);
+    let gradeTxt='B（可研究）';
+    if(overall>=82) gradeTxt='A（體質佳）';
+    else if(overall>=70) gradeTxt='B（可研究）';
+    else if(overall>=58) gradeTxt='C（需謹慎）';
+    else gradeTxt='D（高風險）';
 
-    const S_liquidity = clamp(
-      (scoreRange(cr,[{min:-999,max:1.0,score:35},{min:1.0,max:1.5,score:60},{min:1.5,max:2.5,score:80},{min:2.5,max:999,score:85}])*0.55) +
-      (scoreRange(qr,[{min:-999,max:0.8,score:35},{min:0.8,max:1.0,score:60},{min:1.0,max:1.8,score:80},{min:1.8,max:999,score:85}])*0.45)
-    ,0,100);
+    $('grade').innerHTML = `<b style="font-size:22px;color:#0b3d91">${gradeTxt}</b><div class="small">總分：${overall.toFixed(1)} / 100</div>`;
 
-    const S_cashflow = clamp(
-      (scoreRange(cfoNI,[{min:-999,max:0.8,score:35},{min:0.8,max:1.0,score:60},{min:1.0,max:1.3,score:80},{min:1.3,max:999,score:90}])*0.65) +
-      ((fcfPos>=1)?85:40)*0.35
-    ,0,100);
+    // 紅旗（可擴充）
+    const red = [];
+    if(icr < 2) red.push("利息保障 < 2（債務壓力高）");
+    if(cfoNI < 0.8) red.push("CFO/淨利 < 0.8（盈餘品質偏弱）");
+    if(debt > 65) red.push("負債比 > 65%（槓桿偏高）");
+    if(fcfPos === 0) red.push("FCF 為負（需確認資本支出/燒錢）");
+    if(arBad === 1) red.push("應收週轉惡化（回款風險）");
 
-    const S_interest = clamp(scoreRange(icr,[
-      {min:-999,max:2,score:30},
-      {min:2,max:5,score:55},
-      {min:5,max:10,score:80},
-      {min:10,max:999,score:90},
-    ]),0,100);
+    $('redflags').innerHTML = red.length ? `<ul>${red.map(x=>`<li>${x}</li>`).join("")}</ul>` : `<b>目前未看到明顯紅旗</b><div class="small">仍建議看附註確認一次性因素。</div>`;
 
-    const overall = (
-      S_growth*0.12 +
-      S_profit*0.20 +
-      S_quality*0.16 +
-      S_leverage*0.14 +
-      S_liquidity*0.12 +
-      S_cashflow*0.18 +
-      S_interest*0.08
-    );
+    // 估值前置檢核（Gate）
+    let gate = "✅ 通過：可進估值";
+    let gateHint = "下一步建議：做同業比較（毛利/費用率/ROE/現金流）＋再進估值（安全邊際）。";
+    if(red.length>=2 || overall<58){
+      gate = "⚠️ 暫緩：先補證據再估值";
+      gateHint = "紅旗偏多或總分偏低：先回答『短期週期 vs 結構性問題』，不要急著用估值安慰自己。";
+    }
+    $('gate').innerHTML = `<b>${gate}</b><div class="small">${gateHint}</div>`;
 
-    let grade='B', gradeTxt='B（可研究）';
-    if(overall>=82){ grade='A'; gradeTxt='A（體質佳）'; }
-    else if(overall>=70){ grade='B'; gradeTxt='B（可研究）'; }
-    else if(overall>=58){ grade='C'; gradeTxt='C（需謹慎）'; }
-    else { grade='D'; gradeTxt='D（高風險）'; }
+    // 同業分位（簡化）
+    const peer_roe = num('peer_roe');
+    const peer_debt= num('peer_debt');
+    const peer_cfoNI= num('peer_cfoNI');
+    const peer_gm= num('peer_gm');
 
-    // 找最低維度提示
-    const dims = [
-      {k:'成長',v:S_growth, tip:'確認成長是否可持續：看「量/價/產品線」與景氣循環位置。'},
-      {k:'獲利',v:S_profit, tip:'拆毛利/費用率：看競爭是否加劇、是否靠一次性因素撐住。'},
-      {k:'品質',v:S_quality, tip:'ROE 來源：是營運改善、還是槓桿拉高？應收是否惡化？'},
-      {k:'槓桿',v:S_leverage, tip:'槓桿偏高：關注短債壓力、利率上行敏感度與再融資風險。'},
-      {k:'流動性',v:S_liquidity, tip:'流動性偏弱：存貨/應收/短債結構要拆開看。'},
-      {k:'現金流',v:S_cashflow, tip:'現金流偏弱：檢查「盈餘品質」—淨利是否真的變成現金。'},
-      {k:'利息保障',v:S_interest, tip:'利息保障偏弱：景氣下行時最容易出事，先看最壞情境能否撐住。'},
-    ];
-    dims.sort((a,b)=>a.v-b.v);
-    const worst = dims[0];
+    const p1 = approxPercentile(roe, peer_roe, "higherBetter");
+    const p2 = approxPercentile(debt, peer_debt, "lowerBetter");
+    const p3 = approxPercentile(cfoNI, peer_cfoNI, "higherBetter");
+    const p4 = approxPercentile(gm, peer_gm, "higherBetter");
 
-    document.getElementById('grade').innerHTML = `<b style="font-size:22px;color:#0b3d91">${gradeTxt}</b><div class="small">總分：${overall.toFixed(1)} / 100</div>`;
-    document.getElementById('risk').innerHTML = `<b>${worst.k} 是目前最弱點</b><div class="small">${worst.tip}</div>`;
-    document.getElementById('next').innerHTML =
-      `<ul>
-        <li><b>先做：</b>把「${worst.k}」的證據補齊（報表附註/分部/季節性）。</li>
-        <li><b>再做：</b>若體質過關 → 進入「估值＋安全邊際」工具。</li>
-        <li><b>最後：</b>把結果放回你的資產配置模型，看投入比例是否合理。</li>
-      </ul>`;
+    $('pctWrap').innerHTML =
+      pctRow("ROE（越高越好）", p1) +
+      pctRow("負債比（越低越好）", p2) +
+      pctRow("CFO/淨利（越高越好）", p3) +
+      pctRow("毛利率（越高越好）", p4);
 
+    // next steps（更像研究流程）
+    const nextList = [];
+    if(red.length){
+      nextList.push(`<li><b>先處理紅旗：</b>把紅旗每一項都找到「附註/明細」證據，判斷可逆/不可逆。</li>`);
+    }else{
+      nextList.push(`<li><b>體質大致過關：</b>做同業比較，確認不是產業天花板限制。</li>`);
+    }
+    nextList.push(`<li><b>再做估值：</b>使用你的估值工具（EPS/FCF/折現/安全邊際），並用保守情境重算。</li>`);
+    nextList.push(`<li><b>最後放回配置：</b>依風險與把握度決定部位大小，而不是只看便宜。</li>`);
+    $('next').innerHTML = `<ul>${nextList.join("")}</ul>`;
+
+    // Radar
     drawRadar([S_growth,S_profit,S_quality,S_leverage,S_liquidity,S_cashflow,S_interest]);
+
+    // Message
+    const msgBox = $('msgBox');
+    msgBox.style.display="block";
+    if(red.length>=2 || overall<58){
+      msgBox.className="msg warn";
+      msgBox.innerHTML = `<b>提醒：</b>先別急著估值。你現在最重要的是「把風險變成可驗證的問題」。`;
+    }else{
+      msgBox.className="msg ok";
+      msgBox.innerHTML = `<b>提示：</b>可以進第二關（估值＋安全邊際）了，但仍要用壞情境重算一次。`;
+    }
   }
 
   function drawRadar(vals){
-    const c=document.getElementById('radar');
+    const c=$('radar');
     const ctx=c.getContext('2d');
-    ctx.clearRect(0,0,c.width,c.height);
+    const W=c.width, H=c.height;
+    ctx.clearRect(0,0,W,H);
 
     const labels=['成長','獲利','品質','槓桿','流動','現金流','利息'];
-    const cx=c.width/2, cy=c.height/2+10;
-    const R=Math.min(c.width,c.height)*0.33;
+    const cx=W/2, cy=H/2+10;
+    const R=Math.min(W,H)*0.33;
 
-    // grid
     ctx.strokeStyle='#d7deea'; ctx.lineWidth=2;
     for(let lv=1; lv<=4; lv++){
       const r=R*(lv/4);
@@ -299,18 +389,16 @@
       ctx.closePath(); ctx.stroke();
     }
 
-    // axes + labels
     ctx.fillStyle='#555'; ctx.font='12px Arial';
     for(let i=0;i<labels.length;i++){
       const ang=(-Math.PI/2) + i*(2*Math.PI/labels.length);
-      const x=cx + (R+18)*Math.cos(ang);
-      const y=cy + (R+18)*Math.sin(ang);
+      const x=cx + (R+20)*Math.cos(ang);
+      const y=cy + (R+20)*Math.sin(ang);
       ctx.strokeStyle='#c9d3e5'; ctx.lineWidth=2;
       ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(ang), cy+R*Math.sin(ang)); ctx.stroke();
-      ctx.fillText(labels[i], x-10, y+4);
+      ctx.fillText(labels[i], x-12, y+4);
     }
 
-    // polygon
     ctx.fillStyle='rgba(11,61,145,0.12)';
     ctx.strokeStyle='#0b3d91'; ctx.lineWidth=3;
     ctx.beginPath();
@@ -324,29 +412,31 @@
     ctx.closePath();
     ctx.fill(); ctx.stroke();
 
-    // title
+    ctx.fillStyle='#0b3d91';
+    for(let i=0;i<vals.length;i++){
+      const ang=(-Math.PI/2) + i*(2*Math.PI/vals.length);
+      const r=R*(vals[i]/100);
+      const x=cx + r*Math.cos(ang);
+      const y=cy + r*Math.sin(ang);
+      ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI); ctx.fill();
+    }
+
     ctx.fillStyle='#666'; ctx.font='13px Arial';
-    ctx.fillText('雷達圖：七大體質維度（0~100）', 26, 22);
+    ctx.fillText('雷達圖：七大體質維度（0~100）', 18, 22);
   }
 
   function resetAll(){
-    document.getElementById('revG').value=8;
-    document.getElementById('gm').value=35;
-    document.getElementById('om').value=15;
-    document.getElementById('nm').value=10;
-    document.getElementById('roe').value=15;
-    document.getElementById('debt').value=45;
-    document.getElementById('cr').value=1.8;
-    document.getElementById('qr').value=1.2;
-    document.getElementById('cfoNI').value=1.1;
-    document.getElementById('fcfPos').value=1;
-    document.getElementById('icr').value=8;
-    document.getElementById('arBad').value=0;
-    document.getElementById('grade').innerHTML='—';
-    document.getElementById('risk').innerHTML='—';
-    document.getElementById('next').innerHTML='—';
-    const c=document.getElementById('radar');
-    c.getContext('2d').clearRect(0,0,c.width,c.height);
+    $('revG').value=8; $('gm').value=35; $('om').value=15;
+    $('nm').value=10; $('roe').value=15; $('debt').value=45;
+    $('cr').value=1.8; $('qr').value=1.2; $('cfoNI').value=1.1;
+    $('fcfPos').value=1; $('icr').value=8; $('arBad').value=0;
+
+    $('peer_roe').value=12; $('peer_debt').value=50; $('peer_cfoNI').value=1.0; $('peer_gm').value=30;
+
+    $('grade').innerHTML='—'; $('redflags').innerHTML='—'; $('gate').innerHTML='—';
+    $('pctWrap').innerHTML=''; $('next').innerHTML='—';
+    const c=$('radar'); c.getContext('2d').clearRect(0,0,c.width,c.height);
+    $('msgBox').style.display="none";
     check();
   }
 
