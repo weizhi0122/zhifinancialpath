@@ -7,6 +7,40 @@
 <meta name="description" content="應繼分/特留分試算：支援配偶、子女、父母、兄弟姊妹、祖父母（台灣法定繼承）" />
 
 <style>
+  .topbar{
+  background:#ffffff;
+  border-bottom:1px solid #e6e8ee;
+  padding:10px 20px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar-inner{
+  max-width:1050px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.left-nav a{
+  margin-right:18px;
+  text-decoration:none;
+  color:#0b3d91;
+  font-size:14px;
+  font-weight:600;
+}
+
+.left-nav a:hover{
+  text-decoration:underline;
+}
+
+.brand{
+  font-size:13px;
+  color:#667085;
+}
+
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
     --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
@@ -41,6 +75,18 @@
 </head>
 
 <body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="left-nav">
+      <a href="./tools.html">← 回工具</a>
+      <a href="./index.html">🏠 回主頁</a>
+    </div>
+    <div class="right-nav">
+      <span class="brand">智 Financial Path</span>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <h1>應繼分 / 特留分試算 <span class="pill">支援完整法定繼承組合</span></h1>
 
