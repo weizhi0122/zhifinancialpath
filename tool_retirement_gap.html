@@ -2,25 +2,24 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<title>退休缺口＋勞保給付＋資產模擬｜智 Financial Path</title>
+<title>退休缺口專業工具（勞保制度精準＋資產模擬）｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="退休缺口＋勞保老年年金/一次金：輸入出生年月日、年資、退休年齡、平均投保薪資、現在投資資產、報酬率、被動收入與生活費，模擬退休前增值與退休後現金流是否撐得到（教育用途）。" />
+<meta name="description" content="勞保老年年金/一次金（制度精準）＋退休缺口資產模擬（股息/債息/增值/房租/通膨/投入）＋差額反推（多存/少花）。教育用途。" />
 <style>
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#111827; --muted:#667085;
     --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
     --warnbg:#fff4e5; --warn:#8a5300;
     --goodbg:#ecfdf3; --good:#027a48;
-    --chip:#f8fafc;
   }
   body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text)}
   a{color:var(--primary);text-decoration:none}
   a:hover{text-decoration:underline}
   .topbar{background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;position:sticky;top:0;z-index:10}
-  .topbar-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .topbar-inner{max-width:1120px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
   .left-nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
   .brand{font-size:13px;color:var(--muted)}
-  .container{max-width:1100px;margin:auto;padding:22px 18px}
+  .container{max-width:1120px;margin:auto;padding:22px 18px}
   h1{margin:0 0 10px;color:var(--primary);font-size:26px}
   .grid{display:grid;grid-template-columns:1fr;gap:14px}
   @media (min-width:980px){ .grid{grid-template-columns:1.15fr 0.85fr} }
@@ -32,16 +31,17 @@
     width:100%;padding:10px 10px;margin-top:6px;border:1px solid #d7dbe6;border-radius:10px;
     box-sizing:border-box;background:#fff;font-size:14px;
   }
-  textarea{min-height:140px;resize:vertical;line-height:1.35}
+  textarea{min-height:120px;resize:vertical;line-height:1.35}
   .row{display:flex;gap:10px;flex-wrap:wrap}
   .row > *{flex:1;min-width:160px}
   .hr{border:0;border-top:1px solid var(--line);margin:14px 0}
-  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:800}
+  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:900}
   button.secondary{background:#334155}
   .warn,.ok{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.4}
   .warn{background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5}
   .ok{background:var(--goodbg);color:var(--good);border:1px solid #b7f0cc}
   .small{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:10px}
+  .chip{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
   .result{display:none}
   .kpi{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
   @media (min-width:980px){ .kpi{grid-template-columns:1fr 1fr} }
@@ -49,9 +49,8 @@
   .kpi-title{font-size:12px;color:var(--muted);margin-bottom:6px}
   .kpi-value{font-size:18px;font-weight:900;color:var(--primary)}
   .kpi-sub{font-size:12.5px;color:var(--muted);margin-top:6px}
-  .chip{display:inline-block;padding:3px 8px;border-radius:999px;background:var(--chip);border:1px solid #e5e7eb;font-size:12px;color:#334155}
   details{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
-  summary{cursor:pointer;padding:12px 12px;font-weight:800;color:#0f172a}
+  summary{cursor:pointer;padding:12px 12px;font-weight:900;color:#0f172a}
   details .inner{padding:0 12px 12px}
   .table{width:100%;border-collapse:collapse;margin-top:10px}
   .table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px;vertical-align:top}
@@ -73,13 +72,12 @@
   </div>
 
   <div class="container">
-    <h1>退休缺口＋勞保給付＋資產模擬 <span class="chip">簡單輸入 / 嚴謹計算</span></h1>
+    <h1>退休缺口專業工具 <span class="chip">制度精準＋財務模擬</span></h1>
 
     <div class="grid">
-      <!-- LEFT -->
+      <!-- LEFT INPUT -->
       <div class="card">
-        <h2>Step 1｜你的基本資料</h2>
-
+        <h2>Step 1｜基本資料</h2>
         <div class="row">
           <div>
             <label>出生年月日（西元）</label>
@@ -91,6 +89,11 @@
               <div><input id="retireYears" type="number" min="0" step="1" value="65" /><div class="small">歲</div></div>
               <div><input id="retireMonths" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
             </div>
+          </div>
+          <div>
+            <label>預計壽命</label>
+            <input id="lifeExpectancy" type="number" min="0" step="1" value="90" />
+            <div class="small">用來判斷是否撐得到</div>
           </div>
         </div>
 
@@ -110,7 +113,7 @@
             </select>
           </div>
           <div>
-            <label>預計請領年齡（年金提早/展延用）</label>
+            <label>預計請領年齡（提早/展延用）</label>
             <div class="row">
               <div><input id="claimYears" type="number" min="0" step="1" value="65" /><div class="small">歲</div></div>
               <div><input id="claimMonths" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
@@ -120,12 +123,9 @@
 
         <hr class="hr" />
 
-        <h2>Step 2｜勞保給付（簡化輸入）</h2>
+        <h2>Step 2｜勞保（制度精準）</h2>
         <div class="small">
-          只要填兩個數字就能算：<br/>
-          <span class="chip">年金</span> 用「最高60個月平均」的平均月投保薪資（你可直接填）<br/>
-          <span class="chip">一次金</span> 用「最近36個月平均」的平均月投保薪資（你可直接填）<br/>
-          想更精準可展開進階貼明細。
+          年金：以<strong>最高60個月平均</strong>投保薪資計算；一次金：以<strong>最近36個月平均</strong>投保薪資計算。:contentReference[oaicite:1]{index=1}
         </div>
 
         <div class="row">
@@ -140,11 +140,11 @@
         </div>
 
         <details>
-          <summary>進階：貼投保薪資明細（自動算「最高60月」與「最近36月」）</summary>
+          <summary>進階：貼投保薪資明細（自動算 60月最高平均＋36月最近平均）</summary>
           <div class="inner">
             <div class="small">
-              格式：<span class="mono">YYYY-MM 金額</span> 或只貼金額（依時間順序）<br/>
-              年金會取<strong>最高60筆</strong>；一次金會取<strong>最後36筆</strong>。
+              格式：<span class="mono">YYYY-MM 金額</span> 或只貼金額（依時間順序）。<br/>
+              年金會取<strong>最高60筆</strong>；一次金會取<strong>最後36筆</strong>。:contentReference[oaicite:2]{index=2}
             </div>
             <label>投保薪資明細（可留空；有貼就優先使用）</label>
             <textarea id="salaryLines" placeholder="例：
@@ -155,8 +155,11 @@
         </details>
 
         <details>
-          <summary>進階：一次金的「60歲後年資」規則（有需要再填）</summary>
+          <summary>進階：一次金的 60歲後年資（最多5年；合併上限50月）</summary>
           <div class="inner">
+            <div class="small">
+              若你60歲後仍持續加保，才需要填。:contentReference[oaicite:3]{index=3}
+            </div>
             <div class="row">
               <div>
                 <label>60歲後加保年資（最多5年）</label>
@@ -166,12 +169,12 @@
                 </div>
               </div>
               <div>
-                <label>是否未滿60歲請領一次金？</label>
+                <label>一次金是否在未滿60歲請領？</label>
                 <select id="claimBefore60">
                   <option value="no" selected>否（60歲或之後）</option>
                   <option value="yes">是（未滿60歲）</option>
                 </select>
-                <div class="small">未滿60歲請領：一次金上限以45月為主。</div>
+                <div class="small">未滿60歲一次金上限以45月為主。:contentReference[oaicite:4]{index=4}</div>
               </div>
             </div>
           </div>
@@ -179,40 +182,46 @@
 
         <hr class="hr" />
 
-        <h2>Step 3｜你的資產與退休生活（你想要的核心）</h2>
+        <h2>Step 3｜資產模擬（股息/債息/增值）＋房租</h2>
 
         <div class="row">
           <div>
-            <label>現在投資總額（現有資產）</label>
+            <label>現在投資總額（資產池本金）</label>
             <input id="assetNow" type="number" min="0" step="10000" value="0" />
           </div>
           <div>
             <label>退休前每月投入（存/投資）</label>
             <input id="contribMonthly" type="number" min="0" step="1000" value="0" />
-            <div class="small">若你不會固定投入，填 0 也可以。</div>
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label>退休前年化報酬率（名目 %）</label>
-            <input id="rPre" type="number" step="0.1" value="3.0" />
+            <label>退休前年化股息 %（現金流）</label>
+            <input id="divPre" type="number" step="0.1" value="0" />
           </div>
           <div>
-            <label>退休後年化報酬率（名目 %）</label>
-            <input id="rPost" type="number" step="0.1" value="3.0" />
+            <label>退休前年化債息 %（現金流）</label>
+            <input id="bondPre" type="number" step="0.1" value="0" />
+          </div>
+          <div>
+            <label>退休前年化增值 %（資產成長）</label>
+            <input id="growthPre" type="number" step="0.1" value="0" />
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label>退休後每月被動收入（股息/房租等）</label>
-            <input id="passiveMonthly" type="number" min="0" step="1000" value="0" />
+            <label>退休前：股息/債息是否再投入？</label>
+            <select id="reinvestPre">
+              <option value="yes" selected>是：股息/債息再投入資產池</option>
+              <option value="no">否：股息/債息不投入（累積成現金/準備金）</option>
+            </select>
           </div>
           <div>
-            <label>被動收入用途</label>
-            <select id="passiveUse">
-              <option value="spend" selected>拿來支付生活費（可抵缺口）</option>
+            <label>退休後：股息/債息用途</label>
+            <select id="reinvestPost">
+              <option value="spend" selected>拿來生活費（抵缺口）</option>
               <option value="reinvest">再投入（不抵生活費）</option>
             </select>
           </div>
@@ -220,26 +229,32 @@
 
         <div class="row">
           <div>
-            <label>退休後每月目標生活費（以今天價值）</label>
-            <input id="needMonthlyToday" type="number" min="0" step="1000" value="80000" />
+            <label>退休後年化股息 %</label>
+            <input id="divPost" type="number" step="0.1" value="0" />
           </div>
           <div>
-            <label>預期通膨（年 %）</label>
-            <input id="inflation" type="number" min="0" step="0.1" value="2.0" />
+            <label>退休後年化債息 %</label>
+            <input id="bondPost" type="number" step="0.1" value="0" />
+          </div>
+          <div>
+            <label>退休後年化增值 %</label>
+            <input id="growthPost" type="number" step="0.1" value="0" />
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label>預計壽命（歲）</label>
-            <input id="lifeExpectancy" type="number" min="0" step="1" value="90" />
+            <label>房租收入（選填，固定月額）</label>
+            <input id="rentMonthly" type="number" min="0" step="1000" value="0" />
+            <div class="small">房租是固定金額（不是%），符合你要的「選填」。</div>
           </div>
           <div>
-            <label>退休後是否繼續投入？</label>
+            <label>退休後是否仍每月投入？</label>
             <select id="postContribMode">
               <option value="no" selected>否：退休後不再投入</option>
-              <option value="yes">是：退休後仍每月投入（填下方金額）</option>
+              <option value="yes">是：退休後仍每月投入（下方填金額）</option>
             </select>
+            <div class="small">可用來模擬「半退休」或「持續工作」。</div>
           </div>
         </div>
 
@@ -249,13 +264,24 @@
             <input id="postContribMonthly" type="number" min="0" step="1000" value="0" />
           </div>
           <div>
-            <label>退休後其他每月收入（不含勞保與被動）</label>
-            <input id="otherMonthlyIncome" type="number" min="0" step="1000" value="0" />
+            <label>退休後其他每月收入（不含勞保/股息債息/房租）</label>
+            <input id="otherIncomeMonthly" type="number" min="0" step="1000" value="0" />
           </div>
         </div>
 
         <div class="row">
-          <button onclick="calcAll()">計算（簡潔結果＋可展開細節）</button>
+          <div>
+            <label>退休後每月生活費（以今天價值）</label>
+            <input id="needMonthlyToday" type="number" min="0" step="1000" value="80000" />
+          </div>
+          <div>
+            <label>預期通膨（年%）</label>
+            <input id="inflation" type="number" min="0" step="0.1" value="2.0" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button onclick="calcAll()">計算（制度＋模擬＋差額）</button>
           <button class="secondary" onclick="loadExample()">帶入範例</button>
         </div>
 
@@ -263,20 +289,30 @@
         <div id="okBox" class="ok"></div>
 
         <p class="small">
-          ※ 教育用途：勞保核付以勞保局為準。資產模擬以「每月現金流」推估，可用來比較不同報酬率、投入額與支出情境。
+          ※ 教育用途：勞保實際核付以勞保局為準。:contentReference[oaicite:5]{index=5}
         </p>
       </div>
 
-      <!-- RIGHT -->
+      <!-- RIGHT OUTPUT -->
       <div class="card">
-        <h2>結果（先看重點）</h2>
+        <h2>結果（清晰＋詳細）</h2>
         <div id="output" class="result"></div>
       </div>
     </div>
   </div>
 
 <script>
-/* ===================== 勞保規則（維持嚴謹） ===================== */
+/* ===================== 制度規則（依勞保局公開說明） =====================
+年金：兩式擇優
+(1) 平均月投保薪資×年資×0.775% + 3000
+(2) 平均月投保薪資×年資×1.55
+提早/展延：每年±4%，最多±20%，未滿1年按月比例
+平均薪資：年金=加保期間最高60月平均；未滿5年用實際平均
+年資：未滿1年按月比例；未滿30日以1個月計
+一次金：平均月投保薪資(最近36月平均)×給付月數
+給付月數：每滿1年發1月；超過15年部分每滿1年發2月；上限45月
+60歲後最多5年；合併上限50月
+*/
 const RULES = {
   legalAgeByBirthRoc: (roc) => {
     if (roc <= 46) return { years: 60, months: 0 };
@@ -291,11 +327,11 @@ const RULES = {
 };
 
 function $(id){ return document.getElementById(id); }
-function clampInt(v){ if(!Number.isFinite(v)) return NaN; return Math.max(0, Math.floor(v)); }
-function money(v){ const n = Number(String(v||"").replace(/[,，\s]/g,"")); return Number.isFinite(n) ? n : NaN; }
 function fmt(n){ try { return Number(n).toLocaleString("en-US"); } catch { return String(n); } }
-function showWarn(msg){ const w=$("warnBox"); if(!msg){w.style.display="none";w.textContent="";return;} w.style.display="block";w.textContent=msg; }
-function showOk(msg){ const o=$("okBox"); if(!msg){o.style.display="none";o.textContent="";return;} o.style.display="block";o.textContent=msg; }
+function money(v){ const n = Number(String(v||"").replace(/[,，\s]/g,"")); return Number.isFinite(n) ? n : NaN; }
+function clampInt(v){ if(!Number.isFinite(v)) return NaN; return Math.max(0, Math.floor(v)); }
+function showWarn(msg){ const w=$("warnBox"); if(!msg){w.style.display="none";w.textContent="";return;} w.style.display="block"; w.textContent=msg; }
+function showOk(msg){ const o=$("okBox"); if(!msg){o.style.display="none";o.textContent="";return;} o.style.display="block"; o.textContent=msg; }
 function hideOutput(){ $("output").style.display="none"; $("output").innerHTML=""; }
 
 function ageToMonths(y,m){ return clampInt(y)*12 + clampInt(m); }
@@ -324,14 +360,14 @@ function insToMonths(years, months, days){
   return y*12 + m + extraMonth;
 }
 function adjustFactor(legalMonths, claimMonths){
-  const diffMonths = claimMonths - legalMonths;
+  const diffMonths = claimMonths - legalMonths; // >0展延 <0提早
   const rawYears = diffMonths / 12;
   const cappedYears = Math.max(-RULES.maxAdjYears, Math.min(RULES.maxAdjYears, rawYears));
   const factor = 1 + cappedYears * RULES.adjPerYear;
   return { factor, diffMonths, rawYears, cappedYears };
 }
 
-/* ---------- 薪資明細（進階） ---------- */
+/* ---------- 薪資明細 ---------- */
 function parseSalaryLines(text){
   const lines = (text||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   const dated = [];
@@ -350,7 +386,7 @@ function parseSalaryLines(text){
   }
   if(dated.length){
     const map=new Map();
-    for(const it of dated) map.set(it.key, it.salary);
+    for(const it of dated) map.set(it.key, it.salary); // 同月取最後一筆
     const arr=[...map.entries()].sort((a,b)=>a[0]-b[0]).map(([k,s])=>s);
     return { mode:"dated", salaries: arr, count: arr.length };
   }
@@ -361,7 +397,7 @@ function avgTop60(salaries){
   const n=salaries.length;
   if(n<60){
     const sum=salaries.reduce((a,b)=>a+b,0);
-    return { avg: sum/n, rule:"未滿60個月：以實際期間平均（年金）" };
+    return { avg: sum/n, rule:"未滿60個月：用實際期間平均（年金）" };
   }
   const top = salaries.slice().sort((a,b)=>b-a).slice(0,60);
   const sum=top.reduce((a,b)=>a+b,0);
@@ -372,125 +408,210 @@ function avgLast36(salaries){
   const n=salaries.length;
   const used = (n<=36) ? salaries.slice() : salaries.slice(n-36);
   const sum=used.reduce((a,b)=>a+b,0);
-  return { avg: sum/used.length, rule:(n<36) ? "未滿36個月：以實際期間平均（一次金）" : "最近36個月平均（一次金）" };
+  return { avg: sum/used.length, rule:(n<36) ? "未滿36個月：用實際期間平均（一次金）" : "最近36個月平均（一次金）" };
 }
 
-/* ---------- 年金 ---------- */
+/* ---------- 勞保年金（兩式擇優） ---------- */
 function calcPension(avgSalary, insMonths, factor){
-  const insYears = insMonths / 12;
+  const insYears = insMonths / 12; // 年資不足1年按比例（以月為單位）
   const base1 = avgSalary * insYears * 0.00775 + 3000;
   const base2 = avgSalary * insYears * 0.0155;
   const chosenBase = Math.max(base1, base2);
-  const chosen = (base1 >= base2) ? "式1(0.775%+3000)" : "式2(1.55%)";
+  const chosen = (base1 >= base2) ? "式1（0.775%+3000）" : "式2（1.55%）";
   const finalMonthly = Math.round(chosenBase * factor);
   return { base1, base2, chosenBase, chosen, finalMonthly };
 }
 
-/* ---------- 一次金（給付月數：前15年×1、後續×2，上限45；60後最多+5，上限50） ---------- */
+/* ---------- 一次金：給付月數（1倍+2倍，上限45；60後最多5年，合併上限50） ---------- */
 function lumpBenefitMonths(insMonthsTotal, after60MonthsInput, claimBefore60){
-  const after60MonthsCapped = Math.min(Math.max(0, after60MonthsInput), 60);
+  const after60MonthsCapped = Math.min(Math.max(0, after60MonthsInput), 60); // 最多5年
   const after60Months = claimBefore60 ? 0 : after60MonthsCapped;
 
   let pre60Months = Math.max(0, insMonthsTotal - after60Months);
-  pre60Months = Math.min(pre60Months, 360); // 60歲前年資最多30年
-
+  pre60Months = Math.min(pre60Months, 360); // 60歲前最多30年（一次金給付月數的主體仍封頂45）
   const pre60Years = pre60Months / 12;
+
   const y1 = Math.min(15, pre60Years);
   const y2 = Math.max(0, pre60Years - 15);
   const benefitPre60 = Math.min(y1*1 + y2*2, 45);
 
-  const benefitAfter60 = after60Months / 12; // 最多+5
+  const benefitAfter60 = after60Months / 12; // 0~5
   const cap = claimBefore60 ? 45 : 50;
-
   const total = Math.min(benefitPre60 + benefitAfter60, cap);
+
   return { benefitMonths: total, cap };
 }
 
-/* ===================== 資產模擬（你要的核心） ===================== */
-/** 月度模擬：
- * 退休前：資產 = 資產*(1+rPre/12) + 每月投入
- * 退休後：資產 = 資產*(1+rPost/12) + 退休後投入 + (被動收入若reinvest) - 生活費缺口(名目)
- */
+/* ===================== 資產模擬（單一資產池：股息/債息/增值拆解） ===================== */
+/*
+資產池 principal：可投資部分
+準備金 reserveCash：不再投入的股息/債息，留做現金（利率=0，保守）
+退休前：
+  principal 每月增值 + 每月投入 + （若再投入：股息/債息也加回principal；若不投入：累積到reserveCash）
+退休後：
+  現金流 = 勞保 + 其他收入 + 房租 + （若選「拿來生活」：股息/債息）
+  支出（通膨）扣除現金流後不足 → 先用reserveCash，再提領principal
+  若選「股息/債息再投入」：股息/債息不作收入，直接加回principal
+*/
+function annualToMonthlyRate(r){
+  // 名目年化轉等效月化
+  return (1 + r) ** (1/12) - 1;
+}
+
 function simulatePlan(params){
   const {
     monthsToRetire, monthsRetired,
-    assetNow, contribMonthly,
-    rPre, rPost,
+    principal0, reserve0,
+    contribMonthly, reinvestPre,
+    divPre, bondPre, growthPre,
+    reinvestPostMode,
+    divPost, bondPost, growthPost,
+    rentMonthly, otherIncomeMonthlyAtRetire,
+    laborMonthlyAtRetire,
     needMonthlyToday, inflation,
-    laborMonthlyAtRetire, otherMonthlyIncomeAtRetire,
-    passiveMonthly, passiveUse,
     postContribMode, postContribMonthly
   } = params;
 
-  let asset = assetNow;
+  let principal = principal0;
+  let reserve = reserve0;
 
-  const rPreM = (1 + rPre/100) ** (1/12) - 1;
-  const rPostM = (1 + rPost/100) ** (1/12) - 1;
-  const infM = (1 + inflation/100) ** (1/12) - 1;
+  const gPreM = annualToMonthlyRate(growthPre);
+  const dPreM = (divPre/12);
+  const bPreM = (bondPre/12);
 
-  // 退休前
+  // 退休前（到退休當月前）
   for(let t=0; t<monthsToRetire; t++){
-    asset = asset * (1 + rPreM) + contribMonthly;
-  }
-  const assetAtRetire = asset;
+    // 增值
+    principal = principal * (1 + gPreM);
 
-  // 退休當月起：將「今天生活費」膨脹到退休當月（名目）
+    // 現金流收益（股息/債息）
+    const divInc = principal * dPreM;
+    const bondInc = principal * bPreM;
+
+    if(reinvestPre){
+      principal += (divInc + bondInc);
+    }else{
+      reserve += (divInc + bondInc);
+    }
+
+    // 每月投入（視為投入principal）
+    principal += contribMonthly;
+  }
+
+  const principalAtRetire = principal;
+  const reserveAtRetire = reserve;
+  const totalAtRetire = principalAtRetire + reserveAtRetire;
+
+  // 通膨月化
+  const infM = annualToMonthlyRate(inflation);
+
+  // 把「今天的生活費」膨脹到退休當月（名目）
   let needM = needMonthlyToday * ((1 + infM) ** monthsToRetire);
 
-  // 退休當月起：其他收入也按通膨推到退休（名目）
-  let otherIncomeM = otherMonthlyIncomeAtRetire;
-  let passiveM = passiveMonthly;
-  let laborM = laborMonthlyAtRetire;
+  // 其他收入也膨脹到退休（名目）
+  let otherIncomeM = otherIncomeMonthlyAtRetire;
 
-  // 退休後
-  let minAsset = asset;
+  // 退休後月化
+  const gPostM = annualToMonthlyRate(growthPost);
+  const dPostM = (divPost/12);
+  const bPostM = (bondPost/12);
+
+  let brokeMonth = null;
+  let minTotal = totalAtRetire;
+
+  // 退休後逐月
   for(let k=0; k<monthsRetired; k++){
-    // 每月生活費也繼續通膨上升
     if(k>0) needM *= (1 + infM);
 
-    // 可用收入（若被動收入拿來花才算抵）
-    const usablePassive = (passiveUse === "spend") ? passiveM : 0;
-    const usableIncome = laborM + otherIncomeM + usablePassive;
+    // 先做增值
+    principal = principal * (1 + gPostM);
 
-    const gap = Math.max(0, needM - usableIncome); // 需要從資產提領的缺口（名目）
+    // 股息/債息
+    const divInc = principal * dPostM;
+    const bondInc = principal * bPostM;
 
-    // 退休後投入（可選）
+    let incomeFromYields = 0;
+    if(reinvestPostMode === "reinvest"){
+      principal += (divInc + bondInc);
+    }else{
+      incomeFromYields = divInc + bondInc; // 拿來生活
+    }
+
+    // 退休後投入
     const postContrib = (postContribMode === "yes") ? postContribMonthly : 0;
+    principal += postContrib;
 
-    // 若被動收入選擇 reinvest，視為直接投入資產
-    const reinvestPassive = (passiveUse === "reinvest") ? passiveM : 0;
+    // 當月總現金流收入
+    const income = laborMonthlyAtRetire + otherIncomeM + rentMonthly + incomeFromYields;
 
-    // 資產更新
-    asset = asset * (1 + rPostM) + postContrib + reinvestPassive - gap;
+    // 缺口（需提領）
+    let gap = needM - income;
 
-    if(asset < minAsset) minAsset = asset;
-    if(asset < 0){
-      return { ok:false, assetAtRetire, assetEnd: asset, monthBroke: k+1, minAsset };
+    if(gap <= 0){
+      // 有餘裕：若選「拿來生活」但有剩，視為留在reserve（保守）
+      reserve += (-gap);
+    }else{
+      // 先用reserve，再用principal
+      const useReserve = Math.min(reserve, gap);
+      reserve -= useReserve;
+      gap -= useReserve;
+
+      if(gap > 0){
+        principal -= gap;
+      }
+    }
+
+    const total = principal + reserve;
+    if(total < minTotal) minTotal = total;
+
+    if(principal < 0){
+      brokeMonth = k + 1;
+      break;
     }
   }
-  return { ok:true, assetAtRetire, assetEnd: asset, monthBroke: null, minAsset };
+
+  return {
+    ok: brokeMonth === null,
+    principalAtRetire, reserveAtRetire, totalAtRetire,
+    principalEnd: principal, reserveEnd: reserve, totalEnd: principal + reserve,
+    brokeMonth,
+    minTotal
+  };
 }
 
-/** 反推：為了不破產，退休前每月要多存多少（用二分搜尋） */
+/* 反推差額：退休前每月需多存多少（用二分搜尋） */
 function solveExtraContribution(baseParams){
-  // 若本來就OK，不需要
   const base = simulatePlan(baseParams);
-  if(base.ok) return { extra: 0, base };
+  if(base.ok) return { extra: 0, base, final: base };
 
-  // 目標：找到 extra，使得 ok=true
-  let lo = 0, hi = 200000; // hi 可依需求調大
-  for(let i=0;i<30;i++){
+  let lo = 0, hi = 300000; // 視需求調整上限
+  for(let i=0;i<32;i++){
     const mid = (lo+hi)/2;
     const test = simulatePlan({ ...baseParams, contribMonthly: baseParams.contribMonthly + mid });
-    if(test.ok) hi = mid;
-    else lo = mid;
+    if(test.ok) hi = mid; else lo = mid;
   }
   const extra = Math.ceil(hi);
   const final = simulatePlan({ ...baseParams, contribMonthly: baseParams.contribMonthly + extra });
   return { extra, base, final };
 }
 
-/* ===================== 主計算 ===================== */
+/* 反推差額：退休後每月生活費需少多少（用二分搜尋） */
+function solveExpenseCut(baseParams){
+  const base = simulatePlan(baseParams);
+  if(base.ok) return { cut: 0, base, final: base };
+
+  let lo = 0, hi = Math.max(0, baseParams.needMonthlyToday); // 最多砍到0
+  for(let i=0;i<32;i++){
+    const mid = (lo+hi)/2;
+    const test = simulatePlan({ ...baseParams, needMonthlyToday: Math.max(0, baseParams.needMonthlyToday - mid) });
+    if(test.ok) hi = mid; else lo = mid;
+  }
+  const cut = Math.ceil(hi);
+  const final = simulatePlan({ ...baseParams, needMonthlyToday: Math.max(0, baseParams.needMonthlyToday - cut) });
+  return { cut, base, final };
+}
+
+/* ===================== 主流程 ===================== */
 function calcAll(){
   showWarn(""); showOk(""); hideOutput();
 
@@ -507,6 +628,9 @@ function calcAll(){
   const claimM = clampInt(Number($("claimMonths").value));
   if(!Number.isFinite(claimY) || claimM>11){ alert("請領年齡輸入錯誤"); return; }
 
+  const lifeExp = Number($("lifeExpectancy").value);
+  if(!Number.isFinite(lifeExp) || lifeExp <= 0){ alert("預計壽命輸入錯誤"); return; }
+
   const insNowMonths = insToMonths($("insYearsNow").value, $("insMonthsNow").value, $("insDaysNow").value);
   if(!Number.isFinite(insNowMonths) || insNowMonths<=0){ alert("投保年資需大於0"); return; }
 
@@ -514,17 +638,16 @@ function calcAll(){
 
   // 年齡推算
   const ageNowMonths = calcAgeMonths(birthDate, today);
-  const ageNowY = Math.floor(ageNowMonths/12);
-  const ageNowMR = ageNowMonths%12;
+  const ageNow = ageNowMonths / 12;
 
   const retireAgeMonths = ageToMonths(retireY, retireM);
   const retireDate = calcDateAtAge(birthDate, retireAgeMonths);
   const monthsToRetire = monthsBetween(today, retireDate);
-  const yearsToRetire = monthsToRetire/12;
 
+  // 退休時年資
   const insAtRetireMonths = keepInsured ? (insNowMonths + monthsToRetire) : insNowMonths;
 
-  // 薪資：優先用明細（若有貼），否則用簡化輸入
+  // 薪資：優先明細
   const detail = parseSalaryLines($("salaryLines")?.value || "");
   let avgPension = money($("avgSalaryPension").value);
   let avgLump36 = money($("avgSalaryLump36").value);
@@ -538,182 +661,239 @@ function calcAll(){
     salaryNote = `已使用明細：${p.rule} / ${l.rule}（共${detail.count}筆）`;
   }else{
     if(!Number.isFinite(avgPension) || avgPension<=0 || !Number.isFinite(avgLump36) || avgLump36<=0){
-      alert("未貼明細時，請至少填：年金平均薪資、一次金36月平均薪資");
+      alert("未貼明細時，請填：年金平均薪資（60月）與一次金平均薪資（36月）");
       return;
     }
     salaryNote = "未貼明細：使用你輸入的兩個平均薪資";
   }
 
-  // 法定年齡與加減給係數
+  // 法定年齡 + 提早/展延係數
   const rocBirthYear = birthDateToRocYear(birthDate);
   const legal = RULES.legalAgeByBirthRoc(rocBirthYear);
   const legalMonths = ageToMonths(legal.years, legal.months);
   const claimMonthsTotal = ageToMonths(claimY, claimM);
   const adj = adjustFactor(legalMonths, claimMonthsTotal);
 
-  // 年金
+  // 年金資格：年資>=15年
   const eligiblePension = insAtRetireMonths >= 15*12;
   const pension = eligiblePension ? calcPension(avgPension, insAtRetireMonths, adj.factor) : null;
   const laborMonthlyAtRetire = eligiblePension ? pension.finalMonthly : 0;
 
-  // 一次金（進階）
-  const claimBefore60 = ($("claimBefore60")?.value || "no") === "yes";
-  const after60MonthsInput = insToMonths($("insAfter60Years")?.value || 0, $("insAfter60Months")?.value || 0, 0);
+  // 一次金
+  const claimBefore60 = ($("claimBefore60").value === "yes");
+  const after60MonthsInput = insToMonths($("insAfter60Years").value, $("insAfter60Months").value, 0);
   const bm = lumpBenefitMonths(insAtRetireMonths, after60MonthsInput, claimBefore60);
   const lumpAmount = Math.round(avgLump36 * bm.benefitMonths);
 
-  // 資產參數
-  const assetNow = Math.max(0, money($("assetNow").value) || 0);
+  // 財務參數
+  const principal0 = Math.max(0, money($("assetNow").value) || 0);
   const contribMonthly = Math.max(0, money($("contribMonthly").value) || 0);
-  const rPre = Number($("rPre").value);
-  const rPost = Number($("rPost").value);
 
-  const passiveMonthly = Math.max(0, money($("passiveMonthly").value) || 0);
-  const passiveUse = $("passiveUse").value;
-  const otherMonthlyIncome = Math.max(0, money($("otherMonthlyIncome").value) || 0);
+  const divPre = Math.max(0, Number($("divPre").value) || 0) / 100;
+  const bondPre = Math.max(0, Number($("bondPre").value) || 0) / 100;
+  const growthPre = Number($("growthPre").value || 0) / 100;
+
+  const divPost = Math.max(0, Number($("divPost").value) || 0) / 100;
+  const bondPost = Math.max(0, Number($("bondPost").value) || 0) / 100;
+  const growthPost = Number($("growthPost").value || 0) / 100;
+
+  const reinvestPre = ($("reinvestPre").value === "yes");
+  const reinvestPostMode = $("reinvestPost").value; // spend / reinvest
+
+  const rentMonthly = Math.max(0, money($("rentMonthly").value) || 0);
+  const otherIncomeMonthly = Math.max(0, money($("otherIncomeMonthly").value) || 0);
 
   const needMonthlyToday = Math.max(0, money($("needMonthlyToday").value) || 0);
-  const inflation = Number($("inflation").value);
-  const lifeExp = Number($("lifeExpectancy").value);
+  const inflation = Math.max(0, Number($("inflation").value) || 0) / 100;
 
-  const postContribMode = $("postContribMode").value;
+  const postContribMode = $("postContribMode").value; // yes/no
   const postContribMonthly = Math.max(0, money($("postContribMonthly").value) || 0);
 
-  if(!Number.isFinite(rPre) || !Number.isFinite(rPost) || !Number.isFinite(inflation) || !Number.isFinite(lifeExp)){
-    alert("報酬率/通膨/壽命 請輸入有效數字"); return;
-  }
+  // 退休後期間（月）
+  const retireAge = retireY + retireM/12;
+  const monthsRetired = Math.max(0, Math.floor((lifeExp - retireAge) * 12));
 
-  const retireYearsSpan = Math.max(0, lifeExp - (retireY + retireM/12));
-  const monthsRetired = Math.floor(retireYearsSpan * 12);
+  // 其他收入推到退休（名目）：用通膨月化推
+  const infM = annualToMonthlyRate(inflation);
+  const otherIncomeMonthlyAtRetire = otherIncomeMonthly * ((1 + infM) ** monthsToRetire);
 
-  // 把「其他收入」推到退休當月（名目）：用月通膨推（簡化但一致）
-  const infM = (1 + inflation/100) ** (1/12) - 1;
-  const otherMonthlyIncomeAtRetire = otherMonthlyIncome * ((1 + infM) ** monthsToRetire);
-
-  // 以模擬判斷可否撐到
+  // reserve：若退休前不再投入股息債息，累積成準備金；初值=0
   const baseParams = {
     monthsToRetire, monthsRetired,
-    assetNow, contribMonthly,
-    rPre, rPost,
-    needMonthlyToday, inflation,
+    principal0, reserve0: 0,
+    contribMonthly, reinvestPre,
+    divPre, bondPre, growthPre,
+    reinvestPostMode,
+    divPost, bondPost, growthPost,
+    rentMonthly, otherIncomeMonthlyAtRetire,
     laborMonthlyAtRetire,
-    otherMonthlyIncomeAtRetire,
-    passiveMonthly, passiveUse,
+    needMonthlyToday, inflation,
     postContribMode, postContribMonthly
   };
 
   const sim = simulatePlan(baseParams);
-  const solve = solveExtraContribution(baseParams);
+  const solveSave = solveExtraContribution(baseParams);
+  const solveCut  = solveExpenseCut(baseParams);
 
-  // UI: KPI + 可展開細節
-  const out = $("output");
-  out.style.display="block";
+  // 退休當下（用退休當月的資產推估當月股息債息現金流，做「差額項」展示）
+  const divInc0 = (sim.principalAtRetire) * (divPost/12);
+  const bondInc0 = (sim.principalAtRetire) * (bondPost/12);
+  const incomeFromYields0 = (reinvestPostMode === "spend") ? (divInc0 + bondInc0) : 0;
+  const infToRetire = (1 + infM) ** monthsToRetire;
+  const needAtRetire = needMonthlyToday * infToRetire;
+
+  const incomeAtRetire =
+    laborMonthlyAtRetire +
+    otherIncomeMonthlyAtRetire +
+    rentMonthly +
+    incomeFromYields0;
+
+  const gapAtRetire = Math.max(0, needAtRetire - incomeAtRetire);
 
   const retireDateStr = `${retireDate.getFullYear()}-${String(retireDate.getMonth()+1).padStart(2,"0")}-${String(retireDate.getDate()).padStart(2,"0")}`;
 
-  const statusTitle = sim.ok ? "✅ 可撐到預計壽命" : "⚠️ 可能提前用完資產";
+  const diffText = (adj.diffMonths === 0) ? "依法定年齡請領（不加減給）"
+    : (adj.diffMonths > 0) ? `展延 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}，封頂±20%）`
+    : `提早 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}，封頂±20%）`;
+
+  const statusTitle = sim.ok ? "✅ 模擬可撐到預計壽命" : "⚠️ 模擬可能提前用完資產";
   const statusSub = sim.ok
     ? `模擬到 ${lifeExp} 歲結束，資產仍為正。`
-    : `模擬到第 ${sim.monthBroke} 個退休月資產轉為負（約退休後 ${(sim.monthBroke/12).toFixed(1)} 年）。`;
+    : `約在退休後第 ${sim.brokeMonth} 個月資產轉負（≈ ${(sim.brokeMonth/12).toFixed(1)} 年）。`;
 
-  const extraText = (solve.extra<=0)
-    ? "你目前的投入與報酬假設下，不需要額外增加投入。"
-    : `若要撐到 ${lifeExp} 歲（在同樣假設下），退休前每月約需「再多存」：NT$ ${fmt(solve.extra)}。`;
+  const extraSaveText = (solveSave.extra<=0)
+    ? "不需要額外增加退休前投入。"
+    : `若要撐到 ${lifeExp} 歲，在同樣假設下：退休前每月需「再多存」約 NT$ ${fmt(solveSave.extra)}。`;
 
-  // 提早/展延提示
-  const diffText = (adj.diffMonths === 0) ? "依法定年齡請領（不加減給）"
-    : (adj.diffMonths > 0) ? `展延 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}）`
-    : `提早 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}）`;
+  const cutText = (solveCut.cut<=0)
+    ? "生活費不需要調降。"
+    : `或：把「今天價值的生活費」每月調降約 NT$ ${fmt(solveCut.cut)}（其他假設不變）。`;
+
+  // Output
+  const out = $("output");
+  out.style.display="block";
 
   out.innerHTML = `
     <div class="kpi">
       <div class="kpi-box">
         <div class="kpi-title">${statusTitle}</div>
-        <div class="kpi-value">退休時資產：NT$ ${fmt(Math.round(sim.assetAtRetire))}</div>
+        <div class="kpi-value">退休時總資產：NT$ ${fmt(Math.round(sim.totalAtRetire))}</div>
         <div class="kpi-sub">${statusSub}</div>
       </div>
+
       <div class="kpi-box">
-        <div class="kpi-title">建議（用同一套假設反推）</div>
-        <div class="kpi-value">${solve.extra<=0 ? "不需加存" : "需加存"}</div>
-        <div class="kpi-sub">${extraText}</div>
+        <div class="kpi-title">差額項（最重要）</div>
+        <div class="kpi-value">退休當下每月缺口：NT$ ${fmt(Math.round(gapAtRetire))}</div>
+        <div class="kpi-sub">
+          ${extraSaveText}<br/>${cutText}
+        </div>
       </div>
+
       <div class="kpi-box">
-        <div class="kpi-title">勞保老年年金（估）</div>
+        <div class="kpi-title">勞保老年年金（制度精準估算）</div>
         <div class="kpi-value">NT$ ${fmt(laborMonthlyAtRetire)} /月</div>
-        <div class="kpi-sub">${eligiblePension ? `採 ${pension.chosen}；${diffText}` : "年資未滿15年：年金=0（一次金仍可估）"}</div>
+        <div class="kpi-sub">
+          ${eligiblePension
+            ? `兩式擇優：${pension.chosen}；${diffText}`
+            : `年資未滿15年：一般不符年金（仍可看一次金）。`}
+        </div>
       </div>
+
       <div class="kpi-box">
-        <div class="kpi-title">勞保一次金（估）</div>
+        <div class="kpi-title">勞保一次金（制度精準估算）</div>
         <div class="kpi-value">NT$ ${fmt(lumpAmount)}</div>
         <div class="kpi-sub">給付月數：${bm.benefitMonths.toFixed(2)}（上限${bm.cap}）</div>
       </div>
     </div>
 
     <details style="margin-top:12px">
-      <summary>展開：我這次的計算細節（給想要嚴謹的人）</summary>
+      <summary>展開：退休當下現金流拆解（清晰版）</summary>
       <div class="inner">
         <table class="table">
-          <tr><td class="muted">目前年齡（估）</td><td>${ageNowY}歲${ageNowMR}月</td></tr>
           <tr><td class="muted">退休日期（估）</td><td>${retireDateStr}</td></tr>
-          <tr><td class="muted">距離退休</td><td>${monthsToRetire}個月（≈${yearsToRetire.toFixed(2)}年）</td></tr>
-          <tr><td class="muted">退休時投保年資（估）</td><td>${(insAtRetireMonths/12).toFixed(2)}年</td></tr>
-          <tr><td class="muted">薪資來源</td><td>${salaryNote}</td></tr>
-          <tr><td class="muted">年金平均薪資（最高60月）</td><td>NT$ ${fmt(Math.round(avgPension))}</td></tr>
-          <tr><td class="muted">一次金平均薪資（最近36月）</td><td>NT$ ${fmt(Math.round(avgLump36))}</td></tr>
-          <tr><td class="muted">法定請領年齡（ROC ${rocBirthYear}）</td><td>${legal.years}歲</td></tr>
-          <tr><td class="muted">提早/展延</td><td>${diffText}</td></tr>
-          <tr><td class="muted">資產模擬：退休前每月投入</td><td>NT$ ${fmt(Math.round(contribMonthly))}</td></tr>
-          <tr><td class="muted">資產模擬：退休前/後報酬率</td><td>${rPre.toFixed(1)}% / ${rPost.toFixed(1)}%</td></tr>
-          <tr><td class="muted">退休生活費（今天價值）</td><td>NT$ ${fmt(Math.round(needMonthlyToday))}/月；通膨${inflation.toFixed(1)}%</td></tr>
-          <tr><td class="muted">被動收入</td><td>NT$ ${fmt(Math.round(passiveMonthly))}/月（${passiveUse==="spend"?"拿來花":"再投入"}）</td></tr>
-          <tr><td class="muted">退休後其他收入（今天價值）</td><td>NT$ ${fmt(Math.round(otherMonthlyIncome))}/月</td></tr>
-          <tr><td class="muted">退休後是否投入</td><td>${postContribMode==="yes" ? `是：NT$ ${fmt(Math.round(postContribMonthly))}/月` : "否"}</td></tr>
+          <tr><td class="muted">退休當下生活費（名目）</td><td>NT$ ${fmt(Math.round(needAtRetire))}</td></tr>
+          <tr><td class="muted">勞保月領</td><td>NT$ ${fmt(laborMonthlyAtRetire)}</td></tr>
+          <tr><td class="muted">其他收入（名目）</td><td>NT$ ${fmt(Math.round(otherIncomeMonthlyAtRetire))}</td></tr>
+          <tr><td class="muted">房租（月額）</td><td>NT$ ${fmt(Math.round(rentMonthly))}</td></tr>
+          <tr><td class="muted">股息+債息（月）</td><td>NT$ ${fmt(Math.round(incomeFromYields0))} ${reinvestPostMode==="reinvest" ? "（你選擇再投入→此項不作生活費收入）" : ""}</td></tr>
+          <tr><td style="font-weight:900">合計收入</td><td style="font-weight:900">NT$ ${fmt(Math.round(incomeAtRetire))}</td></tr>
+          <tr><td style="font-weight:900">缺口（需提領/動用資產）</td><td style="font-weight:900">NT$ ${fmt(Math.round(gapAtRetire))}</td></tr>
         </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>展開：制度計算細節（給想確認規則的人）</summary>
+      <div class="inner">
+        <table class="table">
+          <tr><td class="muted">薪資來源</td><td>${salaryNote}</td></tr>
+          <tr><td class="muted">年金平均薪資（60月最高平均）</td><td>NT$ ${fmt(Math.round(avgPension))}</td></tr>
+          <tr><td class="muted">一次金平均薪資（36月最近平均）</td><td>NT$ ${fmt(Math.round(avgLump36))}</td></tr>
+          <tr><td class="muted">退休時年資（估）</td><td>${(insAtRetireMonths/12).toFixed(2)} 年</td></tr>
+          <tr><td class="muted">法定請領年齡（依出生年次 ROC ${rocBirthYear}）</td><td>${legal.years} 歲</td></tr>
+          <tr><td class="muted">提早/展延</td><td>${diffText}</td></tr>
+          ${eligiblePension ? `
+            <tr><td class="muted">年金式1（未加減給）</td><td>NT$ ${fmt(Math.round(pension.base1))}</td></tr>
+            <tr><td class="muted">年金式2（未加減給）</td><td>NT$ ${fmt(Math.round(pension.base2))}</td></tr>
+            <tr><td class="muted">擇優基礎（未加減給）</td><td>NT$ ${fmt(Math.round(pension.chosenBase))}</td></tr>
+            <tr><td class="muted">加減給係數</td><td>× ${adj.factor.toFixed(4)}</td></tr>
+          ` : ``}
+          <tr><td class="muted">一次金給付月數</td><td>${bm.benefitMonths.toFixed(2)}（上限${bm.cap}）</td></tr>
+        </table>
+        <div class="small muted">
+          規則摘要：年金兩式擇優、60月最高平均、提早/展延每年±4%封頂±20%、一次金36月平均、1倍+2倍、45/50月上限、60歲後最多5年。:contentReference[oaicite:6]{index=6}
+        </div>
       </div>
     </details>
   `;
 
-  // 小提醒：若請領差超過5年
   if(Math.abs(adj.diffMonths) > 60){
     showWarn("你輸入的請領年齡與法定年齡相差超過5年；年金加減給已依規則封頂（±20%）。");
   }else{
-    showOk("已完成：勞保（嚴謹規則）＋資產增值＋退休後現金流模擬。");
+    showOk("已完成：制度精準（勞保）＋財務模擬（股息/債息/增值/房租）＋差額反推（多存/少花）。");
   }
 }
 
 function loadExample(){
   $("birthDate").value = "1980-01-01";
   $("retireYears").value = 65; $("retireMonths").value = 0;
-  $("claimYears").value = 65; $("claimMonths").value = 0;
+  $("lifeExpectancy").value = 90;
 
   $("insYearsNow").value = 28; $("insMonthsNow").value = 0; $("insDaysNow").value = 5;
   $("keepInsured").value = "yes";
+  $("claimYears").value = 65; $("claimMonths").value = 0;
 
   $("avgSalaryPension").value = 45800;
   $("avgSalaryLump36").value = 45800;
-
-  $("assetNow").value = 8000000;
-  $("contribMonthly").value = 30000;
-  $("rPre").value = 5.0;
-  $("rPost").value = 3.0;
-
-  $("passiveMonthly").value = 25000;
-  $("passiveUse").value = "spend";
-
-  $("needMonthlyToday").value = 80000;
-  $("inflation").value = 2.0;
-  $("lifeExpectancy").value = 90;
-
-  $("postContribMode").value = "no";
-  $("postContribMonthly").value = 0;
-  $("otherMonthlyIncome").value = 0;
-
   $("salaryLines").value = "";
+
   $("insAfter60Years").value = 0;
   $("insAfter60Months").value = 0;
   $("claimBefore60").value = "no";
 
-  showOk("已帶入範例：8M資產、每月投入3萬、退休後被動收入2.5萬、生活費8萬。");
+  $("assetNow").value = 8000000;
+  $("contribMonthly").value = 30000;
+
+  $("divPre").value = 3.0;
+  $("bondPre").value = 1.0;
+  $("growthPre").value = 3.0;
+  $("reinvestPre").value = "yes";
+
+  $("divPost").value = 3.0;
+  $("bondPost").value = 1.0;
+  $("growthPost").value = 2.0;
+  $("reinvestPost").value = "spend";
+
+  $("rentMonthly").value = 15000;
+  $("otherIncomeMonthly").value = 0;
+
+  $("needMonthlyToday").value = 80000;
+  $("inflation").value = 2.0;
+
+  $("postContribMode").value = "no";
+  $("postContribMonthly").value = 0;
+
+  showOk("已帶入範例：資產800萬、每月投入3萬、股息3%債息1%增值(前3%後2%)、房租1.5萬、生活費8萬。");
   showWarn("");
   hideOutput();
 }
@@ -721,14 +901,17 @@ function loadExample(){
 (function init(){
   if(!$("birthDate").value) $("birthDate").value = "1980-01-01";
   [
-    "birthDate","retireYears","retireMonths","claimYears","claimMonths",
+    "birthDate","retireYears","retireMonths","lifeExpectancy",
     "insYearsNow","insMonthsNow","insDaysNow","keepInsured",
+    "claimYears","claimMonths",
     "avgSalaryPension","avgSalaryLump36","salaryLines",
     "insAfter60Years","insAfter60Months","claimBefore60",
-    "assetNow","contribMonthly","rPre","rPost",
-    "passiveMonthly","passiveUse",
-    "needMonthlyToday","inflation","lifeExpectancy",
-    "postContribMode","postContribMonthly","otherMonthlyIncome"
+    "assetNow","contribMonthly",
+    "divPre","bondPre","growthPre","reinvestPre",
+    "divPost","bondPost","growthPost","reinvestPost",
+    "rentMonthly","otherIncomeMonthly",
+    "needMonthlyToday","inflation",
+    "postContribMode","postContribMonthly"
   ].forEach(id=>{
     const el = $(id);
     if(!el) return;
