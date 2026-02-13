@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>繼承比例試算工具｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb}
+.container{max-width:900px;margin:auto;padding:30px}
+.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+label{display:block;margin-top:12px}
+input{width:100%;padding:8px;margin-top:4px;border:1px solid #ddd;border-radius:8px}
+button{margin-top:15px;padding:10px;background:#0b3d91;color:#fff;border:0;border-radius:8px}
+.result{margin-top:15px;padding:12px;background:#eef4ff;border-radius:12px}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1 style="color:#0b3d91">應繼分 / 特留分試算</h1>
+
+<div class="card">
+<label>配偶人數（0或1）</label>
+<input id="spouse" type="number" value="1">
+
+<label>子女人數</label>
+<input id="children" type="number" value="2">
+
+<button onclick="calc()">計算比例</button>
+
+<div id="output" class="result" style="display:none;"></div>
+</div>
+</div>
+
+<script>
+function calc(){
+let spouse = Number(document.getElementById('spouse').value);
+let children = Number(document.getElementById('children').value);
+
+let text="";
+
+if(spouse==1 && children>0){
+ let total = children + 1;
+ let each = (1/total*100).toFixed(2);
+ text+="應繼分：<br>";
+ text+="配偶："+each+"%<br>";
+ text+="每位子女："+each+"%<br><br>";
+ text+="特留分：<br>";
+ text+="配偶："+(each/2).toFixed(2)+"%<br>";
+ text+="每位子女："+(each/2).toFixed(2)+"%";
+}else if(spouse==0 && children>0){
+ let each=(100/children).toFixed(2);
+ text+="應繼分：每位子女 "+each+"%<br>";
+ text+="特留分：每位子女 "+(each/2).toFixed(2)+"%";
+}else{
+ text="目前版本僅計算配偶與子女情境（可再擴充父母與兄弟姐妹）。";
+}
+
+document.getElementById('output').style.display="block";
+document.getElementById('output').innerHTML=text;
+}
+</script>
+</body>
+</html>
