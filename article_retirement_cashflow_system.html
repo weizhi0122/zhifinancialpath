@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>退休現金流系統：不是存夠，而是撐得久｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="結合勞保年金、被動收入、提領率與通膨壓力測試的完整退休模型。">
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:900px;margin:auto;padding:30px 20px 100px}
+h1,h2{color:#0b3d91}
+.note{background:#fff;padding:15px;border-left:4px solid #0b3d91;margin:20px 0;border-radius:12px}
+.calc-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+input{padding:8px;margin:6px 0;width:100%;border:1px solid #ccc;border-radius:8px}
+button{background:#0b3d91;color:#fff;padding:10px 14px;border:none;border-radius:8px;margin-top:10px;cursor:pointer}
+.result{margin-top:15px;background:#eef4ff;padding:12px;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="inner">
+<a href="javascript:history.back()">← 回上頁</a>
+<div>
+<a href="./index.html" style="margin-right:15px;">回主頁</a>
+<a href="./library.html">知識庫</a>
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<h1>退休現金流系統：不是存夠，而是撐得久</h1>
+
+<p>
+退休不是一個數字問題，
+而是一個「現金流持續時間」問題。
+</p>
+
+<hr>
+
+<h2>一、三大來源</h2>
+
+<ul>
+<li>勞保年金</li>
+<li>被動收益（殖利率）</li>
+<li>提領資產</li>
+</ul>
+
+<div class="note">
+關鍵不是資產總額，而是每年可支撐多少現金流。
+</div>
+
+<hr>
+
+<h2>二、基本模型</h2>
+
+退休缺口 = 年支出 −（年金 + 被動收益）
+
+如果存在缺口 → 需提領本金
+
+<hr>
+
+<h2>三、試算模型</h2>
+
+<div class="calc-box">
+
+<label>每年退休支出</label>
+<input type="number" id="expense" value="1200000">
+
+<label>每年勞保年金</label>
+<input type="number" id="pension" value="400000">
+
+<label>可投資資產</label>
+<input type="number" id="asset" value="20000000">
+
+<label>被動收益率 (%)</label>
+<input type="number" id="yield" value="3.5">
+
+<label>通膨率 (%)</label>
+<input type="number" id="inflation" value="3">
+
+<button onclick="calcRetirement()">計算現金流安全性</button>
+
+<div id="result" class="result" style="display:none;"></div>
+
+</div>
+
+<hr>
+
+<h2>四、安全判斷邏輯</h2>
+
+<ul>
+<li>被動收入 ≥ 支出 → 財務自由</li>
+<li>部分缺口 → 需提領</li>
+<li>缺口大 → 風險較高</li>
+</ul>
+
+<hr>
+
+<h2>五、壓力測試思維</h2>
+
+請問自己：
+
+- 若報酬下降 2% 呢？
+- 若通膨升到 4% 呢？
+- 若活到 95 歲呢？
+
+<hr>
+
+<h2>六、進階模擬</h2>
+
+<p>
+若想用完整模型跑 30 年模擬，
+加入 LINE 輸入：
+<strong>退休壓力測試</strong>
+</p>
+
+<p>
+<a href="https://lin.ee/yvD5Vu8" target="_blank">
+👉 點此模擬你的退休現金流
+</a>
+</p>
+
+<hr>
+
+<div class="footer-links">
+<a href="./library.html">← 回知識庫</a>
+<a href="./index.html">回主頁</a>
+</div>
+
+</div>
+
+<script>
+function calcRetirement(){
+var expense=parseFloat(document.getElementById("expense").value)||0;
+var pension=parseFloat(document.getElementById("pension").value)||0;
+var asset=parseFloat(document.getElementById("asset").value)||0;
+var yieldRate=parseFloat(document.getElementById("yield").value)||0;
+var inflation=parseFloat(document.getElementById("inflation").value)||0;
+
+var passive=asset*(yieldRate/100);
+var gap=expense-(pension+passive);
+
+var resultDiv=document.getElementById("result");
+resultDiv.style.display="block";
+
+if(gap<=0){
+resultDiv.innerHTML="現金流充足，每年盈餘約 "+Math.abs(gap).toLocaleString()+" 元";
+}else{
+resultDiv.innerHTML="每年仍有缺口約 "+gap.toLocaleString()+" 元（需提領或調整策略）";
+}
+}
+</script>
+
+</body>
+</html>
