@@ -1,178 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>學習路徑｜智 Financial Path</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="智 Financial Path 學習路徑：從新手到資產傳承，逐步建立五層財務決策體系，並導流進入知識庫進階學習。">
-  <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0;z-index:10}
-    .nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:16px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
+<meta charset="UTF-8">
+<title>學習路徑｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .container{max-width:1100px;margin:auto;padding:36px 20px}
-    h1{margin:0 0 10px}
-    .sub{color:#666;margin:0 0 18px;line-height:1.6}
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.8}
+.nav{background:#fff;border-bottom:1px solid #e6e8ee;padding:14px 20px;position:sticky;top:0}
+.nav-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between}
+.brand{font-weight:700;color:#0b3d91;text-decoration:none}
+.nav a{color:#0b3d91;text-decoration:none;font-size:14px;margin-left:14px}
 
-    .btnbar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px}
-    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-size:14px;border:0;cursor:pointer}
-    .btn:hover{opacity:.92}
-    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-    .btn.soft{background:#eef4ff;color:#0b3d91;border:1px solid #cfe0ff}
+.container{max-width:1100px;margin:50px auto;padding:0 20px 90px}
+h1{color:#0b3d91;margin-bottom:12px}
+.intro{color:#555;margin-bottom:36px;max-width:800px}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px}
-    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-    .tag{display:inline-block;background:#eef4ff;color:#0b3d91;padding:4px 10px;border-radius:999px;font-size:12px;margin-bottom:10px}
-    .muted{font-size:13px;color:#666;line-height:1.6}
-    ul{margin:10px 0 0 18px}
-    li{margin:6px 0}
+.stage{background:#fff;border-radius:18px;padding:26px;margin-bottom:26px;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.stage h2{margin-top:0;color:#0b3d91}
+.stage p{margin:10px 0 16px;color:#555}
+.stage ul{padding-left:18px;line-height:2}
+.stage a{color:#0b3d91;text-decoration:none}
+.stage a:hover{text-decoration:underline}
 
-    .divider{height:1px;background:#e6e8ee;margin:22px 0}
-    .callout{background:#ffffff;border:1px solid #e6e8ee;border-radius:14px;padding:16px;box-shadow:0 4px 10px rgba(0,0,0,.03)}
-    .callout h3{margin:0 0 8px}
-    .callout .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.tag{display:inline-block;font-size:12px;background:#eef4ff;color:#0b3d91;padding:4px 8px;border-radius:6px;margin-left:8px}
 
-    footer{margin-top:30px;padding:18px;text-align:center;color:#777}
-    a{color:#0b3d91;text-decoration:none}
-    a:hover{text-decoration:underline}
-    .note{font-size:12px;color:#777;line-height:1.6}
-  </style>
+.footer{text-align:center;margin-top:40px;color:#777;font-size:13px}
+</style>
 </head>
+
 <body>
 
-<nav class="nav">
+<div class="nav">
   <div class="nav-inner">
     <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./path.html">學習路徑</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./tools.html">工具</a>
-      <a href="./cases.html">案例</a>
-      <a href="./about.html">關於我們</a>
+    <div>
+      <a href="./index.html">回主頁</a>
+      <a href="./library.html">回知識庫</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>學習路徑</h1>
-  <p class="sub">
-    這是一條「不迷路」的財商路：先把人生大風險關起來 → 建立現金流緩衝 → 再談投資決策 → 退休現金流 → 最後到資產傳承與稅務架構。
-    <br>
-    <span class="muted">想學更專業、更完整的系統內容，隨時可以進入「知識庫」。</span>
-  </p>
 
-  <!-- 回上一頁 / 回主頁 -->
-  <div class="btnbar">
-    <button class="btn ghost" type="button" onclick="history.back()">← 回上一頁</button>
-    <a class="btn" href="./index.html">回主頁</a>
-    <a class="btn soft" href="./library.html">進入知識庫（更專業）</a>
-  </div>
+<h1>你的財務成長路線圖</h1>
 
-  <!-- 導流提示：為什麼要進知識庫 -->
-  <div class="callout">
-    <h3>想從「會做」升級成「會判斷」？</h3>
-    <p class="muted" style="margin:0;">
-      學習路徑會帶你建立基本順序與行動；而<strong>知識庫</strong>是你的「財務決策引擎」，用五層架構把觀念變成可重複的判斷方法（保障 → 現金流 → 投資決策 → 退休現金流 → 傳承稅務）。
-    </p>
-    <div class="row">
-      <a class="btn" href="./library.html">我想學更專業（去知識庫）</a>
-      <a class="btn ghost" href="./tools.html">我想先做工具（測驗/清單）</a>
-    </div>
-  </div>
+<p class="intro">
+真正的財務規劃不是買產品，而是一個由淺入深的系統。  
+以下是我建議的成長順序。
+</p>
 
-  <div class="divider"></div>
+<!-- 第一層 -->
+<div class="stage">
+  <h2>第一層：建立安全邊界</h2>
+  <p>如果人生發生意外，財務是否會崩潰？</p>
 
-  <div class="grid">
-    <!-- Lv1 -->
-    <div class="card">
-      <div class="tag">Lv.1 新手起步</div>
-      <h3>現金流 & 緊急預備金</h3>
-      <p class="muted">先站穩：收支、預備金、避免財務失血。</p>
-      <ul>
-        <li>預備金要存多少？（用月支出反推）</li>
-        <li>記帳怎麼做才有效？（先抓大項）</li>
-        <li>先還債還是先投資？（先看利率與壓力）</li>
-      </ul>
-      <div class="btnbar" style="margin-top:12px;">
-        <a class="btn ghost" href="./tools.html">做工具：預備金（上線中）</a>
-        <a class="btn soft" href="./library.html">進階：現金流系統</a>
-      </div>
-    </div>
+  <ul>
+    <li><a href="./article_misinsurance.html">為什麼多數家庭保障錯配？</a></li>
+    <li><a href="./coming_soon.html">保障購買順序</a></li>
+    <li><a href="./coming_soon.html">保額怎麼抓才合理？</a></li>
+  </ul>
+</div>
 
-    <!-- Lv2 -->
-    <div class="card">
-      <div class="tag">Lv.2 穩健基礎</div>
-      <h3>保障 & 負債順序</h3>
-      <p class="muted">先不翻車：把大風險關起來，投資才有意義。</p>
-      <ul>
-        <li>保險購買順序：意外 / 醫療 / 失能 / 壽險</li>
-        <li>常見保單浪費：重複、買貴、保額不足</li>
-        <li>房貸/信貸/卡債：先處理誰？</li>
-      </ul>
-      <div class="btnbar" style="margin-top:12px;">
-        <a class="btn ghost" href="./tools.html">做工具：保單健檢（上線中）</a>
-        <a class="btn soft" href="./library.html">進階：安全邊界</a>
-      </div>
-    </div>
+<!-- 第二層 -->
+<div class="stage">
+  <h2>第二層：穩定現金流</h2>
+  <p>在沒有被迫賣出之前，投資才有勝率。</p>
 
-    <!-- Lv3 -->
-    <div class="card">
-      <div class="tag">Lv.3 開始投資</div>
-      <h3>資產配置 & 風險控制</h3>
-      <p class="muted">建立策略：分散、成本、紀律、再平衡。</p>
-      <ul>
-        <li>資產配置是什麼？（先分散再選標的）</li>
-        <li>定期定額 vs 一次投入：怎麼選才合理</li>
-        <li>市場波動來時怎麼不手賤</li>
-      </ul>
-      <div class="btnbar" style="margin-top:12px;">
-        <a class="btn soft" href="./library.html">進階：投資決策系統</a>
-        <a class="btn ghost" href="./cases.html">看案例（待上線）</a>
-      </div>
-    </div>
+  <ul>
+    <li><a href="./article_debt_priority.html">信用卡、信貸、房貸先還誰？</a></li>
+    <li><a href="./coming_soon.html">緊急預備金模型</a></li>
+  </ul>
+</div>
 
-    <!-- Lv4 -->
-    <div class="card">
-      <div class="tag">Lv.4 高端規劃</div>
-      <h3>稅務 & 資產傳承</h3>
-      <p class="muted">把家庭財務變成可交棒的系統：先整理資料，再談工具。</p>
-      <ul>
-        <li>遺囑 / 受益人 / 信託差在哪？（白話版）</li>
-        <li>家庭資產盤點清單：先整理什麼</li>
-        <li>如何避免家庭衝突：規則與資料先到位</li>
-      </ul>
-      <div class="btnbar" style="margin-top:12px;">
-        <a class="btn soft" href="./library.html">進階：傳承與稅務架構</a>
-        <a class="btn ghost" href="./tools.html">做工具：資產盤點表（上線中）</a>
-      </div>
-    </div>
-  </div>
+<!-- 第三層 -->
+<div class="stage">
+  <h2>第三層：投資決策系統</h2>
+  <p>選股只是最後一步，決策系統才是核心。</p>
 
-  <div class="divider"></div>
+  <ul>
+    <li><a href="./article_asset_allocation.html">資產配置邏輯</a></li>
+    <li><a href="./article_financial_statement_analysis.html">三大財報分析</a></li>
+    <li><a href="./article_stock_valuation.html">估值與安全邊際</a></li>
+  </ul>
+</div>
 
-  <!-- 路徑 → 知識庫的明確引導（收尾 CTA） -->
-  <div class="callout">
-    <h3>下一步：把路徑變成「決策能力」</h3>
-    <p class="muted" style="margin:0;">
-      如果你已經走完 Lv.1～Lv.4 的概念，下一步請直接進入知識庫，用「五層架構」把每個決策拆解成可判斷、可複用的系統。
-    </p>
-    <div class="row">
-      <a class="btn" href="./library.html">進入知識庫（五層決策系統）</a>
-      <a class="btn ghost" href="./tools.html">先做工具（把觀念落地）</a>
-    </div>
-  </div>
+<!-- 第四層 -->
+<div class="stage">
+  <h2>第四層：退休現金流設計</h2>
+  <p>退休不是存多少，而是錢能活多久。</p>
 
-  <footer>
-    <div class="note">
-      本站內容為教育用途，不構成投資、保險或稅務之個別建議。投資有風險，可能產生損失，過去不代表未來。
-    </div>
-    <div style="margin-top:10px;">
-      <a href="./disclaimer.html">免責聲明</a> ｜ <a href="./index.html">回主頁</a>
-    </div>
-  </footer>
+  <ul>
+    <li><a href="./article_retirement_cashflow_system.html">退休現金流系統</a></li>
+  </ul>
+</div>
+
+<!-- 第五層 -->
+<div class="stage">
+  <h2>第五層：資產傳承與稅務設計</h2>
+  <p>真正的財商，是讓財富跨越世代而不失控。</p>
+
+  <ul>
+    <li><a href="./article_inheritance_basic.html">應繼分與特留分比例</a></li>
+    <li><a href="./coming_soon.html">遺產稅與贈與稅架構</a></li>
+  </ul>
+</div>
+
+<div class="footer">
+© 2026 智 Financial Path
+</div>
+
 </div>
 
 </body>
