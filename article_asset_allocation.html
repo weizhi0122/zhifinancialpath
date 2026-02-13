@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>資產配置邏輯：風險管理才是投資核心｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between}
+.topbar a{color:#0b3d91;text-decoration:none}
+.container{max-width:900px;margin:auto;padding:30px 20px 100px}
+h1,h2,h3{color:#0b3d91}
+.section{background:#fff;padding:20px;border-radius:12px;margin:25px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.note{background:#fff;border-left:4px solid #0b3d91;padding:15px;margin:20px 0;border-radius:12px}
+.chart-bar{margin:12px 0}
+.bar{height:20px;border-radius:10px;background:#0b3d91}
+.bar2{background:#4a6edb}
+.canvas-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px}
+canvas{border:1px solid #eee;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+hr{margin:40px 0;border:none;border-top:1px solid #ddd}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="inner">
+<a href="javascript:history.back()">← 回上頁</a>
+<a href="./library.html">回知識庫</a>
+</div>
+</div>
+
+<div class="container">
+
+<h1>資產配置邏輯：風險管理才是投資核心</h1>
+
+<p>
+大多數人把焦點放在選股，  
+真正影響長期報酬的卻是：配置比例。
+</p>
+
+<hr>
+
+<h2>一、配置決定波動，而非標的本身</h2>
+
+<div class="section">
+
+<div class="chart-bar">
+<strong>100% 股票</strong>
+<div class="bar" style="width:90%"></div>
+</div>
+
+<div class="chart-bar">
+<strong>60% 股票 + 40% 債券</strong>
+<div class="bar bar2" style="width:60%"></div>
+</div>
+
+<p>
+股票越高，長期報酬可能越高，但最大回撤也越大。
+</p>
+
+</div>
+
+<hr>
+
+<h2>二、最大回撤示意圖</h2>
+
+<div class="canvas-box">
+<canvas id="drawdownChart" width="700" height="300"></canvas>
+</div>
+
+<div class="note">
+回撤不是虧損本身，而是你能否撐過市場低點。
+</div>
+
+<hr>
+
+<h2>三、人生階段 vs 配置比例</h2>
+
+<div class="section">
+
+<div class="chart-bar">
+<strong>30歲 成長型（80%股票）</strong>
+<div class="bar" style="width:80%"></div>
+</div>
+
+<div class="chart-bar">
+<strong>45歲 平衡型（60%股票）</strong>
+<div class="bar" style="width:60%"></div>
+</div>
+
+<div class="chart-bar">
+<strong>60歲 穩健型（40%股票）</strong>
+<div class="bar" style="width:40%"></div>
+</div>
+
+</div>
+
+<hr>
+
+<h2>四、通膨影響圖</h2>
+
+<div class="canvas-box">
+<canvas id="inflationChart" width="700" height="300"></canvas>
+</div>
+
+<div class="note">
+3%通膨，30年後購買力只剩約40%。
+</div>
+
+<hr>
+
+<h2>五、再平衡的意義</h2>
+
+再平衡不是調整績效，  
+而是讓風險回到原本設計的區間。
+
+<hr>
+
+<h2>六、顧問決策模型</h2>
+
+<ul>
+<li>是否有足夠預備金？</li>
+<li>是否有負債壓力？</li>
+<li>是否有退休現金流規劃？</li>
+<li>最大能承受多少回撤？</li>
+</ul>
+
+<hr>
+
+<div class="footer-links">
+<a href="./article_financial_statement_analysis.html">上一篇：財報分析</a>
+<a href="./article_stock_valuation.html">下一篇：估值與安全邊際 →</a>
+</div>
+
+</div>
+
+<script>
+// 回撤圖
+const ctx1 = document.getElementById("drawdownChart").getContext("2d");
+ctx1.beginPath();
+ctx1.moveTo(0,100);
+ctx1.lineTo(100,60);
+ctx1.lineTo(200,150);
+ctx1.lineTo(300,40);
+ctx1.lineTo(400,120);
+ctx1.strokeStyle="#0b3d91";
+ctx1.stroke();
+
+// 通膨圖
+const ctx2 = document.getElementById("inflationChart").getContext("2d");
+ctx2.beginPath();
+ctx2.moveTo(0,250);
+ctx2.lineTo(100,230);
+ctx2.lineTo(200,200);
+ctx2.lineTo(300,160);
+ctx2.lineTo(400,120);
+ctx2.lineTo(500,80);
+ctx2.strokeStyle="#4a6edb";
+ctx2.stroke();
+</script>
+
+</body>
+</html>
