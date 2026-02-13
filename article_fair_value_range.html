@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>合理價區間怎麼算｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用顧問式方式做估值：三情境（保守/基準/樂觀）、安全邊際、利率敏感度與假設驗證，做出可用的合理價區間。">
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.95}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:980px;margin:auto;padding:30px 20px 90px}
+h1,h2,h3{color:#0b3d91}
+.sub{color:#555;max-width:920px}
+.card{background:#fff;padding:18px;border-radius:14px;margin:16px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+.note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:14px 16px;margin:16px 0;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+.warn{border-left-color:#d33}
+.hr{margin:28px 0;border:none;border-top:1px solid #e6e8ee}
+.calc label{display:block;font-size:14px;color:#555;margin:10px 0 6px}
+.calc input{width:100%;max-width:520px;padding:10px 12px;border:1px solid #d9deea;border-radius:10px;font-size:15px;background:#fbfcff}
+.btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-size:14px}
+.btn:hover{opacity:.92}
+.btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.small{color:#666;font-size:13px}
+.result{margin-top:10px;font-weight:700}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{margin:0 12px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:15px;">回主頁</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h1>合理價區間怎麼算</h1>
+  <p class="sub">
+    估值不是求出「唯一正確價」，而是做出一個可用的 <b>合理價區間</b>：
+    你要先寫下假設，再用數據驗證，最後加上安全邊際。
+  </p>
+
+  <div class="note">
+    <b>顧問式估值三句話：</b><br>
+    ① 你相信未來盈餘/現金流怎麼成長？（假設）<br>
+    ② 你要求多少報酬？（折現/資金成本）<br>
+    ③ 你留多少安全邊際？（容錯空間）
+  </div>
+
+  <hr class="hr">
+
+  <h2>一、先把估值從「算術」拉回「假設」</h2>
+  <div class="card">
+    <p><b>估值的本質</b>：把未來一串現金流折現回今天。</p>
+    <p class="small">
+      但一般人最常犯的錯是：不是假設太粗糙，而是「把假設寫得很漂亮」，卻沒有去驗證它是否合理。
+    </p>
+  </div>
+
+  <div class="note warn">
+    <b>你只要記住一個核心：</b><br>
+    同一家公司，估值差異常常不是因為公式不同，而是因為 <b>成長假設</b> 與 <b>折現率</b> 不同。
+  </div>
+
+  <hr class="hr">
+
+  <h2>二、我們用「三情境 + 安全邊際」做合理價區間</h2>
+  <div class="card">
+    <p><b>三情境</b>不是讓你猜，而是讓你誠實面對不確定性：</p>
+    <ul>
+      <li><b>保守</b>：成長低、或景氣下修</li>
+      <li><b>基準</b>：最可能的合理假設</li>
+      <li><b>樂觀</b>：有利條件成立（但仍要可驗證）</li>
+    </ul>
+    <p class="small">
+      然後你再對每個情境加上安全邊際（例如 20%），最後得到「可操作的區間」。
+    </p>
+  </div>
+
+  <hr class="hr">
+
+  <h2>三、互動工具：用「簡化 DCF」做區間估值</h2>
+  <div class="card calc">
+    <p class="small">
+      這裡用簡化模型（教育用途）：<br>
+      ① 以「今年自由現金流（FCF）」作為起點<br>
+      ② 用 5 年成長（g）推估未來 FCF<br>
+      ③ 用折現率（r）折回現在<br>
+      ④ 第 5 年後用「終值成長率（tg）」估終值<br>
+      ⑤ 輸出「合理價區間」與安全邊際後的進場區間
+    </p>
+
+    <label>今年自由現金流 FCF（每股，元）</label>
+    <input id="fcf" type="number" step="0.01" value="5">
+
+    <label>未來 5 年年成長率 g（%）</label>
+    <input id="g" type="number" step="0.1" value="8">
+
+    <label>折現率 r（%）</label>
+    <input id="r" type="number" step="0.1" value="10">
+
+    <label>終值成長率 tg（%）</label>
+    <input id="tg" type="number" step="0.1" value="2">
+
+    <label>安全邊際（%）</label>
+    <input id="mos" type="number" step="1" value="20">
+
+    <div class="btnrow">
+      <a class="btn" href="javascript:void(0)" onclick="calc()">計算合理價</a>
+      <a class="btn ghost" href="./article_pe_meaning.html">回到：本益比意義</a>
+    </div>
+
+    <div id="out" class="result"></div>
+
+    <p class="small" style="margin-top:10px;">
+      <b>注意：</b>這是用來建立估值思維的工具，不是取代研究。你必須回去驗證：成長假設是否合理、現金流是否可持續、同業比較是否支持溢價。
+    </p>
+  </div>
+
+  <script>
+    function pv(x, r, t){ return x / Math.pow(1+r, t); }
+
+    function calc(){
+      const fcf = parseFloat(document.getElementById('fcf').value || 0);
+      const g = parseFloat(document.getElementById('g').value || 0) / 100;
+      const r = parseFloat(document.getElementById('r').value || 0) / 100;
+      const tg = parseFloat(document.getElementById('tg').value || 0) / 100;
+      const mos = parseFloat(document.getElementById('mos').value || 0) / 100;
+
+      if(fcf<=0 || r<=0 || r<=tg){
+        document.getElementById('out').innerHTML = "請確認：FCF > 0，且折現率 r 必須大於終值成長率 tg。";
+        return;
+      }
+
+      // 5 年 FCF 預測
+      let sum = 0;
+      for(let t=1; t<=5; t++){
+        const f = fcf * Math.pow(1+g, t);
+        sum += pv(f, r, t);
+      }
+
+      // 第 5 年終值：FCF6 / (r - tg)
+      const fcf6 = fcf * Math.pow(1+g, 6);
+      const terminal = fcf6 / (r - tg);
+      const terminalPV = pv(terminal, r, 5);
+
+      const fair = sum + terminalPV;
+      const entry = fair * (1 - mos);
+
+      document.getElementById('out').innerHTML =
+        `推估「合理價（每股）」≈ <b>${fair.toFixed(2)}</b> 元<br>` +
+        `套用安全邊際 ${(mos*100).toFixed(0)}% 後，「偏保守進場價」≈ <b>${entry.toFixed(2)}</b> 元<br><br>` +
+        `下一步：請用同業比較與現金流驗證你的成長假設，而不是用假設去美化結果。`;
+    }
+  </script>
+
+  <hr class="hr">
+
+  <h2>四、怎麼驗證你的假設「不是幻想」？</h2>
+  <div class="card">
+    <ul>
+      <li><b>同業比較</b>：你的毛利/營益/ROE 是靠競爭力，還是靠景氣？</li>
+      <li><b>現金流驗證</b>：淨利漂亮但現金流不足，估值容易失真</li>
+      <li><b>景氣位置</b>：循環股在高峰估值最容易被低估假象欺騙</li>
+      <li><b>利率敏感度</b>：利率上升通常壓縮倍數與折現後價值</li>
+    </ul>
+
+    <div class="btnrow">
+      <a class="btn" href="./article_entry_exit_rules.html">下一篇：進出場決策樹 →</a>
+      <a class="btn ghost" href="./library.html#invest">回投資分類</a>
+    </div>
+
+    <p class="small" style="margin-top:12px;">
+      （若你已經能寫出成長假設與安全邊際，想把某家公司帶入流程做一次完整檢核，可進入進階討論。）
+      <a href="https://lin.ee/yvD5Vu8" target="_blank" rel="noopener">進入進階討論</a>
+    </p>
+  </div>
+
+  <div class="footer-links">
+    <a href="./library.html">← 回知識庫</a>
+    <a href="./index.html">回主頁</a>
+  </div>
+</div>
+
+</body>
+</html>
