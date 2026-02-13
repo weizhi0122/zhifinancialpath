@@ -1,1 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>信用卡、信貸、房貸先還誰？｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="用利率、現金流壓力與機會成本模型，決定債務償還順序。">
 
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:900px;margin:auto;padding:30px 20px 100px}
+h1,h2,h3{color:#0b3d91}
+.note{background:#fff;padding:15px;border-left:4px solid #0b3d91;margin:20px 0;border-radius:12px}
+.warning{background:#fff4f4;padding:15px;border-left:4px solid #d10000;margin:20px 0;border-radius:12px}
+.section{background:#fff;padding:18px;border-radius:12px;margin:20px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+hr{margin:40px 0;border:none;border-top:1px solid #ddd}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:#fff;border-radius:12px;overflow:hidden}
+th,td{border:1px solid #e6e6e6;padding:10px;font-size:14px}
+th{background:#eef4ff}
+.calc-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+input{padding:8px;margin:6px 0;width:100%;border:1px solid #ccc;border-radius:8px}
+button{background:#0b3d91;color:#fff;padding:10px 14px;border:none;border-radius:8px;margin-top:10px;cursor:pointer}
+.result{margin-top:15px;background:#eef4ff;padding:12px;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:15px;">回主頁</a>
+      <a href="./library.html">知識庫</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>信用卡、信貸、房貸先還誰？</h1>
+
+<p>
+大多數人聽過一句話：
+「利率高的先還。」
+</p>
+
+<p>
+方向沒錯，但在實務上，  
+還需要加入三個變數：
+</p>
+
+<ul>
+<li>利率差</li>
+<li>現金流壓力</li>
+<li>投資機會成本</li>
+</ul>
+
+<hr>
+
+<h2>一、純數學模型：有效利率比較</h2>
+
+<table>
+<tr><th>債務</th><th>常見利率</th></tr>
+<tr><td>信用卡循環</td><td>12%–15%</td></tr>
+<tr><td>信貸</td><td>4%–8%</td></tr>
+<tr><td>房貸</td><td>1.8%–2.5%</td></tr>
+</table>
+
+<div class="note">
+如果存在信用卡循環，幾乎一定優先清償。
+</div>
+
+<hr>
+
+<h2>二、機會成本模型</h2>
+
+如果你有 100 萬可運用資金：
+
+- 還 6% 信貸 → 等於穩定報酬 6%
+- 投資市場 → 長期期望 5–7%
+
+<p>
+如果投資波動存在，
+實際風險調整後報酬可能低於債務利率。
+</p>
+
+<hr>
+
+<h2>三、現金流壓力測試</h2>
+
+<div class="warning">
+假設收入減少 30%，
+哪筆債務會讓你最難承受？
+</div>
+
+思考兩件事：
+
+1. 每月償還比例佔收入多少？
+2. 若延遲還款，後果是什麼？
+
+<hr>
+
+<h2>四、進階排序框架</h2>
+
+<div class="section">
+<strong>第一層：</strong> 清除高利率循環債
+</div>
+
+<div class="section">
+<strong>第二層：</strong> 比較信貸利率 vs 長期投資報酬
+</div>
+
+<div class="section">
+<strong>第三層：</strong> 低利房貸是否可保留槓桿
+</div>
+
+<hr>
+
+<h2>五、互動試算</h2>
+
+<div class="calc-box">
+
+<label>信貸金額</label>
+<input type="number" id="loan1" value="1000000">
+
+<label>信貸利率 (%)</label>
+<input type="number" id="rate1" value="6">
+
+<label>房貸金額</label>
+<input type="number" id="loan2" value="8000000">
+
+<label>房貸利率 (%)</label>
+<input type="number" id="rate2" value="2">
+
+<button onclick="calcInterest()">比較年利息差異</button>
+
+<div id="result" class="result" style="display:none;"></div>
+
+</div>
+
+<hr>
+
+<h2>六、心理負債模型</h2>
+
+有些人即使利率低，
+只要背債就焦慮。
+
+<div class="note">
+如果心理壓力高於利率差，
+提前償還可能更適合。
+</div>
+
+<hr>
+
+<h2>七、關鍵結論</h2>
+
+最佳答案來自三個交集：
+
+- 數學（利率）
+- 現金流（壓力）
+- 人性（情緒承受）
+
+<hr>
+
+<h2>八、進階情境模擬</h2>
+
+如果你同時面臨：
+
+- 子女教育責任
+- 投資部位波動
+- 收入可能變動
+
+排序可能會不同。
+
+<p>
+如果想用你的數字做一次完整壓力測試，
+加入 LINE 輸入：
+<strong>債務模擬</strong>
+</p>
+
+<p>
+<a href="https://lin.ee/yvD5Vu8" target="_blank">
+👉 點此進行個人情境模擬
+</a>
+</p>
+
+<hr>
+
+<div class="footer-links">
+<a href="./library.html">← 回知識庫</a>
+<a href="./index.html">回主頁</a>
+</div>
+
+</div>
+
+<script>
+function calcInterest() {
+    var loan1 = parseFloat(document.getElementById("loan1").value) || 0;
+    var rate1 = parseFloat(document.getElementById("rate1").value) || 0;
+    var loan2 = parseFloat(document.getElementById("loan2").value) || 0;
+    var rate2 = parseFloat(document.getElementById("rate2").value) || 0;
+
+    var interest1 = loan1 * rate1 / 100;
+    var interest2 = loan2 * rate2 / 100;
+
+    var resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.innerHTML =
+    "信貸年利息：約 " + interest1.toLocaleString() +
+    " 元<br>房貸年利息：約 " + interest2.toLocaleString() + " 元";
+}
+</script>
+
+</body>
+</html>
