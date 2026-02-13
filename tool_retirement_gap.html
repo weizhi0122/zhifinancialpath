@@ -4,39 +4,40 @@
   <meta charset="UTF-8" />
   <title>退休缺口估算｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="快速估算退休缺口：用年度缺口與提領率反推退休資產需求。" />
   <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:14px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
-    .container{max-width:1000px;margin:auto;padding:28px 20px}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333;line-height:1.75}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:1000px;margin:auto;padding:26px 20px 70px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
     label{display:block;margin:12px 0 6px;font-size:14px;color:#444}
     input{width:100%;padding:10px;border:1px solid #d7dbe6;border-radius:10px;font-size:14px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{margin-top:14px;display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
-    .muted{font-size:13px;color:#666;line-height:1.5}
-    .result{margin-top:14px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91}
-    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
+    @media (max-width: 720px){ .row{grid-template-columns:1fr} }
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    .muted{font-size:13px;color:#666;line-height:1.6}
+    .result{margin-top:14px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
   </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./path.html">學習路徑</a>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>退休缺口估算</h1>
-  <p class="muted">這是「教育用途」的保守估算：以年支出與可預期年收入，推回你需要的退休資產區間（不做報酬保證）。</p>
+  <h1 style="color:#0b3d91;margin:0 0 10px;">退休缺口估算（快速版）</h1>
+  <p class="muted">用「年度缺口 ÷ 提領率」快速反推你需要的退休資產區間。想做更精準的通膨/年金/被動收益/壓測 → 請用「退休現金流模擬」。</p>
 
   <div class="card">
     <div class="row">
@@ -52,9 +53,9 @@
 
     <div class="row">
       <div>
-        <label>安全提領率（保守）</label>
+        <label>安全提領率（%）</label>
         <input id="wr" type="number" min="1" max="6" step="0.1" value="3.5" />
-        <div class="muted">建議用 3%～4% 做估算（越低越保守）</div>
+        <div class="muted">常用 3%～4%（越低越保守）。</div>
       </div>
       <div>
         <label>你目前可用退休資產（投資/現金/可動用）(NT$)</label>
@@ -62,16 +63,18 @@
       </div>
     </div>
 
-    <button class="btn" onclick="calc()">計算退休資產需求</button>
+    <div class="btnrow">
+      <button class="btn" onclick="calc()">計算退休資產需求</button>
+      <a class="btn ghost" href="./tool_retirement_cashflow.html">進階：現金流模擬</a>
+    </div>
 
     <div id="out" class="result" style="display:none;"></div>
+
     <p class="muted" style="margin-top:10px;">
       公式：需要資產 ≈（年支出 − 年可預期收入）÷（提領率）。<br>
-      這是估算工具，不含個別稅務/保險/醫療支出波動等因素。
+      快速版不處理：通膨路徑、退休初期回撤、被動收益變動、醫療/長照波動等。
     </p>
   </div>
-
-  <footer><a href="./disclaimer.html">免責聲明</a></footer>
 </div>
 
 <script>
@@ -95,11 +98,10 @@ function calc(){
   out.style.display = '';
   out.innerHTML =
     `退休後「年度缺口」：<b>NT$ ${fmt(needNet)}</b><br>` +
-    `估算所需退休資產：<b>NT$ ${fmt(Math.round(required))}</b>（提領率 ${ (wr*100).toFixed(1) }%）<br>` +
+    `估算所需退休資產：<b>NT$ ${fmt(Math.round(required))}</b>（提領率 ${(wr*100).toFixed(1)}%）<br>` +
     `你目前資產：<b>NT$ ${fmt(current)}</b><br>` +
     `推估缺口：<b>NT$ ${fmt(Math.round(gap))}</b>`;
 }
 </script>
 </body>
 </html>
-
