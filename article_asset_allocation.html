@@ -7,18 +7,19 @@
 
 <style>
 body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
-.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0}
-.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between}
-.topbar a{color:#0b3d91;text-decoration:none}
-.container{max-width:900px;margin:auto;padding:30px 20px 100px}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
+.topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+.container{max-width:980px;margin:auto;padding:30px 20px 100px}
 h1,h2,h3{color:#0b3d91}
-.section{background:#fff;padding:20px;border-radius:12px;margin:25px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.section{background:#fff;padding:20px;border-radius:14px;margin:25px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
 .note{background:#fff;border-left:4px solid #0b3d91;padding:15px;margin:20px 0;border-radius:12px}
+.mini{color:#666;font-size:13px}
 .chart-bar{margin:12px 0}
 .bar{height:20px;border-radius:10px;background:#0b3d91}
 .bar2{background:#4a6edb}
-.canvas-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px}
-canvas{border:1px solid #eee;border-radius:8px}
+.canvas-box{background:#fff;padding:16px;border-radius:14px;margin-top:16px}
+canvas{width:100%;max-width:940px;height:320px;border:1px solid #eee;border-radius:10px;display:block}
 .footer-links{text-align:center;margin-top:40px}
 .footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
 hr{margin:40px 0;border:none;border-top:1px solid #ddd}
@@ -28,10 +29,13 @@ hr{margin:40px 0;border:none;border-top:1px solid #ddd}
 <body>
 
 <div class="topbar">
-<div class="inner">
-<a href="javascript:history.back()">← 回上頁</a>
-<a href="./library.html">回知識庫</a>
-</div>
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./library.html">回知識庫</a>
+    </div>
+  </div>
 </div>
 
 <div class="container">
@@ -39,129 +43,329 @@ hr{margin:40px 0;border:none;border-top:1px solid #ddd}
 <h1>資產配置邏輯：風險管理才是投資核心</h1>
 
 <p>
-大多數人把焦點放在選股，  
-真正影響長期報酬的卻是：配置比例。
+多數人把焦點放在選股，但長期「能不能賺到該賺的報酬」更取決於兩件事：
+<strong>你的資產配置</strong>與<strong>你能承受的回撤</strong>。
 </p>
 
 <hr>
 
-<h2>一、配置決定波動，而非標的本身</h2>
+<h2>一、配置比例決定波動輪廓</h2>
 
 <div class="section">
+  <div class="chart-bar">
+    <div><strong>100% 股票</strong> <span class="mini">（潛在報酬高，但回撤也大）</span></div>
+    <div class="bar" style="width:92%"></div>
+  </div>
 
-<div class="chart-bar">
-<strong>100% 股票</strong>
-<div class="bar" style="width:90%"></div>
-</div>
+  <div class="chart-bar">
+    <div><strong>60% 股票 + 40% 債券</strong> <span class="mini">（用部分防禦資產降低波動）</span></div>
+    <div class="bar bar2" style="width:62%"></div>
+  </div>
 
-<div class="chart-bar">
-<strong>60% 股票 + 40% 債券</strong>
-<div class="bar bar2" style="width:60%"></div>
-</div>
-
-<p>
-股票越高，長期報酬可能越高，但最大回撤也越大。
-</p>
-
-</div>
-
-<hr>
-
-<h2>二、最大回撤示意圖</h2>
-
-<div class="canvas-box">
-<canvas id="drawdownChart" width="700" height="300"></canvas>
-</div>
-
-<div class="note">
-回撤不是虧損本身，而是你能否撐過市場低點。
+  <div class="note">
+    配置不是為了「讓你不會跌」，而是讓你在跌的時候<strong>不會被迫做錯決策</strong>。
+  </div>
 </div>
 
 <hr>
 
-<h2>三、人生階段 vs 配置比例</h2>
+<h2>二、回撤不是抽象概念：它是一條「情緒壓力曲線」</h2>
 
 <div class="section">
+  <p class="mini">
+    定義：回撤（Drawdown）=（當期資產 − 歷史最高資產）÷ 歷史最高資產。  
+    最大回撤（Max Drawdown）= 全期間最深的那一段回撤（通常是投資者最想「受不了」的時候）。
+  </p>
 
-<div class="chart-bar">
-<strong>30歲 成長型（80%股票）</strong>
-<div class="bar" style="width:80%"></div>
-</div>
+  <div class="canvas-box">
+    <canvas id="ddChart" width="940" height="320"></canvas>
+    <div class="mini" style="margin-top:8px;">
+      圖中同時顯示：資產淨值曲線（上）與回撤曲線（下，負值）。  
+      這樣你會直觀知道：資產看似在成長，但「途中可能有多痛」。
+    </div>
+  </div>
 
-<div class="chart-bar">
-<strong>45歲 平衡型（60%股票）</strong>
-<div class="bar" style="width:60%"></div>
-</div>
-
-<div class="chart-bar">
-<strong>60歲 穩健型（40%股票）</strong>
-<div class="bar" style="width:40%"></div>
-</div>
-
-</div>
-
-<hr>
-
-<h2>四、通膨影響圖</h2>
-
-<div class="canvas-box">
-<canvas id="inflationChart" width="700" height="300"></canvas>
-</div>
-
-<div class="note">
-3%通膨，30年後購買力只剩約40%。
+  <div class="note">
+    顧問在乎回撤，因為多數投資失敗不是「標的不好」，而是「跌的時候扛不住」。
+  </div>
 </div>
 
 <hr>
 
-<h2>五、再平衡的意義</h2>
+<h2>三、通膨不是背景雜訊，而是長期最大的隱形稅</h2>
 
-再平衡不是調整績效，  
-而是讓風險回到原本設計的區間。
+<div class="section">
+  <p class="mini">
+    以通膨率 π 計算購買力：<strong>購買力指數 = 1 / (1+π)<sup>t</sup></strong>。  
+    例如 π=3%，t=30 年 → 購買力約剩 0.412（也就是只剩約 41%）。
+  </p>
+
+  <div class="canvas-box">
+    <canvas id="inflChart" width="940" height="320"></canvas>
+    <div class="mini" style="margin-top:8px;">
+      這張圖回答的是：同樣 100 元，30 年後還剩多少「實質價值」。
+    </div>
+  </div>
+
+  <div class="note">
+    所以「只存現金」看起來安全，但在長期其實是在<strong>慢慢變窮</strong>。
+  </div>
+</div>
 
 <hr>
 
-<h2>六、顧問決策模型</h2>
+<h2>四、再平衡：不是追績效，而是維持你承諾的風險</h2>
 
-<ul>
-<li>是否有足夠預備金？</li>
-<li>是否有負債壓力？</li>
-<li>是否有退休現金流規劃？</li>
-<li>最大能承受多少回撤？</li>
-</ul>
+<div class="section">
+  <p>
+    再平衡（Rebalancing）的本質：把漂移的配置拉回原本的風險設計。  
+    不是預測市場，而是讓「風險」保持可控，避免不知不覺越投越冒險或越投越保守。
+  </p>
+  <ul>
+    <li><strong>漲多的</strong>通常權重變高 → 需要部分回收</li>
+    <li><strong>跌深的</strong>權重變低 → 需要補回原比例</li>
+    <li>頻率常見：半年/一年，或偏離 5%~10% 才調整</li>
+  </ul>
+</div>
+
+<hr>
+
+<h2>五、顧問式決策框架</h2>
+
+<div class="section">
+  <ul>
+    <li>你有足夠預備金嗎？（沒有 → 配置再好也會被迫賣出）</li>
+    <li>你的負債壓力多大？（壓力大 → 需要更強的防禦設計）</li>
+    <li>你能接受多深的回撤？（回撤容忍度 → 決定股票比例上限）</li>
+    <li>你需要現金流嗎？（需要 → 配置要能兼顧收益與穩定）</li>
+  </ul>
+</div>
 
 <hr>
 
 <div class="footer-links">
-<a href="./article_financial_statement_analysis.html">上一篇：財報分析</a>
-<a href="./article_stock_valuation.html">下一篇：估值與安全邊際 →</a>
+  <a href="./article_financial_statement_analysis.html">上一篇：三大財報</a>
+  <a href="./article_stock_valuation.html">下一篇：估值與安全邊際 →</a>
 </div>
 
 </div>
 
 <script>
-// 回撤圖
-const ctx1 = document.getElementById("drawdownChart").getContext("2d");
-ctx1.beginPath();
-ctx1.moveTo(0,100);
-ctx1.lineTo(100,60);
-ctx1.lineTo(200,150);
-ctx1.lineTo(300,40);
-ctx1.lineTo(400,120);
-ctx1.strokeStyle="#0b3d91";
-ctx1.stroke();
+/** ===== 小工具：畫格線與座標 ===== **/
+function drawGrid(ctx, x0, y0, w, h, xTicks, yTicks) {
+  ctx.save();
+  ctx.strokeStyle = "#e9edf5";
+  ctx.lineWidth = 1;
 
-// 通膨圖
-const ctx2 = document.getElementById("inflationChart").getContext("2d");
-ctx2.beginPath();
-ctx2.moveTo(0,250);
-ctx2.lineTo(100,230);
-ctx2.lineTo(200,200);
-ctx2.lineTo(300,160);
-ctx2.lineTo(400,120);
-ctx2.lineTo(500,80);
-ctx2.strokeStyle="#4a6edb";
-ctx2.stroke();
+  for (let i = 0; i <= xTicks; i++) {
+    const x = x0 + (w * i / xTicks);
+    ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y0 + h); ctx.stroke();
+  }
+  for (let j = 0; j <= yTicks; j++) {
+    const y = y0 + (h * j / yTicks);
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + w, y); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawAxes(ctx, x0, y0, w, h) {
+  ctx.save();
+  ctx.strokeStyle = "#cfd6e6";
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(x0, y0);
+  ctx.lineTo(x0, y0 + h);
+  ctx.lineTo(x0 + w, y0 + h);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function formatPct(x) {
+  const v = Math.round(x * 1000) / 10;
+  return (v > 0 ? "+" : "") + v.toFixed(1) + "%";
+}
+
+/** ===== 圖 1：回撤（資產曲線 + 回撤曲線） ===== **/
+(function renderDrawdown(){
+  const c = document.getElementById("ddChart");
+  const ctx = c.getContext("2d");
+
+  // 例子：假想月度資產淨值（可理解為指數化 NAV）
+  // 你後續也可以把它改成真實資料（例如某ETF或組合）
+  const nav = [
+    100,105,110,108,112,118,125,120,115,108,102,98,
+    101,106,112,120,128,135,142,150,147,140,132,138,
+    145,152,160,170,165,158,162,175,190,205,198,210
+  ];
+
+  // 計算 drawdown
+  let peak = nav[0];
+  const dd = nav.map(v => {
+    peak = Math.max(peak, v);
+    return (v - peak) / peak; // <= 0
+  });
+  const maxDD = Math.min(...dd); // 最小值(最負)
+
+  // Layout
+  const padL = 55, padR = 20, padT = 18, padB = 30;
+  const W = c.width - padL - padR;
+  const H = c.height - padT - padB;
+
+  // 上半區（資產曲線）/ 下半區（回撤）
+  const split = 0.62; // 上方 62%
+  const H1 = Math.floor(H * split);
+  const H2 = H - H1;
+
+  const x0 = padL, y0 = padT;
+
+  // 背景
+  ctx.clearRect(0,0,c.width,c.height);
+  drawGrid(ctx, x0, y0, W, H, 10, 6);
+  drawAxes(ctx, x0, y0, W, H);
+
+  // 標題
+  ctx.fillStyle = "#0b3d91";
+  ctx.font = "bold 14px Arial";
+  ctx.fillText("回撤示意：資產淨值（上）＋回撤（下）", x0, 14);
+
+  // x mapping
+  const n = nav.length;
+  const x = (i) => x0 + (W * i / (n-1));
+
+  // 上：資產曲線 y mapping
+  const navMin = Math.min(...nav);
+  const navMax = Math.max(...nav);
+  const yNav = (v) => y0 + (H1 - (v - navMin) / (navMax - navMin) * (H1 - 10));
+
+  // 下：回撤 y mapping（0 到 maxDD(負)）
+  const ddMin = maxDD; // negative
+  const ddMax = 0;
+  const yDDBase = y0 + H1;           // 分隔線
+  const yDD = (v) => yDDBase + 10 + ( (ddMax - v) / (ddMax - ddMin) ) * (H2 - 20);
+
+  // 分隔線
+  ctx.strokeStyle = "#dfe5f2";
+  ctx.beginPath(); ctx.moveTo(x0, yDDBase); ctx.lineTo(x0 + W, yDDBase); ctx.stroke();
+
+  // y labels（資產）
+  ctx.fillStyle = "#666";
+  ctx.font = "12px Arial";
+  ctx.fillText("資產淨值", 6, y0 + 14);
+
+  // y labels（回撤）
+  ctx.fillText("回撤", 18, yDDBase + 18);
+
+  // 畫資產曲線
+  ctx.strokeStyle = "#0b3d91";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  nav.forEach((v,i) => {
+    const xi = x(i), yi = yNav(v);
+    if(i===0) ctx.moveTo(xi, yi);
+    else ctx.lineTo(xi, yi);
+  });
+  ctx.stroke();
+
+  // 畫回撤曲線
+  ctx.strokeStyle = "#4a6edb";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  dd.forEach((v,i) => {
+    const xi = x(i), yi = yDD(v);
+    if(i===0) ctx.moveTo(xi, yi);
+    else ctx.lineTo(xi, yi);
+  });
+  ctx.stroke();
+
+  // 標注最大回撤
+  const idxMaxDD = dd.indexOf(maxDD);
+  const xM = x(idxMaxDD);
+  const yM = yDD(maxDD);
+  ctx.fillStyle = "#4a6edb";
+  ctx.beginPath(); ctx.arc(xM, yM, 4, 0, Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = "#333";
+  ctx.font = "12px Arial";
+  ctx.fillText("最大回撤 " + formatPct(maxDD), Math.min(xM+10, x0+W-120), yM-8);
+
+  // x刻度（每隔幾個點）
+  ctx.fillStyle = "#666";
+  ctx.font = "11px Arial";
+  for(let i=0;i<n;i+=6){
+    ctx.fillText(String(i+1), x(i)-4, y0 + H + 22);
+  }
+  ctx.fillText("期數（示意）", x0 + W - 70, y0 + H + 22);
+})();
+
+/** ===== 圖 2：通膨購買力衰減 ===== **/
+(function renderInflation(){
+  const c = document.getElementById("inflChart");
+  const ctx = c.getContext("2d");
+
+  // 參數：你要更專業可把這裡改成可輸入（之後我們會做互動版）
+  const inflation = 0.03; // 3%
+  const years = 30;
+
+  const power = [];
+  for(let t=0;t<=years;t++){
+    power.push(1 / Math.pow(1 + inflation, t));
+  }
+
+  const padL = 55, padR = 20, padT = 18, padB = 30;
+  const W = c.width - padL - padR;
+  const H = c.height - padT - padB;
+
+  const x0 = padL, y0 = padT;
+
+  ctx.clearRect(0,0,c.width,c.height);
+  drawGrid(ctx, x0, y0, W, H, 10, 6);
+  drawAxes(ctx, x0, y0, W, H);
+
+  // 標題
+  ctx.fillStyle = "#0b3d91";
+  ctx.font = "bold 14px Arial";
+  ctx.fillText("通膨影響：購買力指數（π = 3%，以現在=1）", x0, 14);
+
+  const n = power.length;
+  const x = (t) => x0 + (W * t / years);
+  const y = (v) => y0 + (H - (v - 0) / (1 - 0) * (H - 10)); // v in [0,1]
+
+  // 曲線
+  ctx.strokeStyle = "#0b3d91";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  power.forEach((v,t) => {
+    const xi = x(t), yi = y(v);
+    if(t===0) ctx.moveTo(xi, yi);
+    else ctx.lineTo(xi, yi);
+  });
+  ctx.stroke();
+
+  // 標注 10/20/30 年
+  const marks = [10,20,30];
+  ctx.fillStyle = "#333";
+  ctx.font = "12px Arial";
+  marks.forEach(t=>{
+    const v = power[t];
+    const xi = x(t), yi = y(v);
+    ctx.beginPath(); ctx.arc(xi, yi, 4, 0, Math.PI*2); ctx.fill();
+    ctx.fillText(t+"年："+Math.round(v*100)+"%", Math.min(xi+10, x0+W-95), yi-8);
+  });
+
+  // y axis labels (0%, 20%, ... 100%)
+  ctx.fillStyle = "#666";
+  ctx.font = "11px Arial";
+  for(let p=0;p<=100;p+=20){
+    const v = p/100;
+    ctx.fillText(p+"%", 12, y(v)+4);
+  }
+
+  // x labels
+  for(let t=0;t<=30;t+=5){
+    ctx.fillText(String(t), x(t)-4, y0 + H + 22);
+  }
+  ctx.fillText("年數", x0 + W - 30, y0 + H + 22);
+})();
 </script>
 
 </body>
