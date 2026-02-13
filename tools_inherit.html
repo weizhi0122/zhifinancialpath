@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>資產傳承｜工具｜智 Financial Path</title>
+<meta name="description" content="資產傳承：先盤點→繼承比例→估稅（遺產稅）→分年策略（贈與）。">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--text:#223;--muted:#6b7280;--line:#e6e8ee;--primary:#0b3d91;--soft:#eef4ff;--shadow:0 10px 22px rgba(16,24,40,.06);--radius:18px;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .container{max-width:1200px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 16px}
+  .head{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .pill{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+  @media (max-width:1200px){.grid4{grid-template-columns:1fr 1fr}}
+  @media (max-width:720px){.grid4{grid-template-columns:1fr}}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:18px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between}
+  .card h3{margin:0 0 8px;color:#111827;font-size:18px}
+  .desc{color:#4b5563;margin:0 0 14px}
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 14px;border-radius:14px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .btn:hover{opacity:.92}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">← 回工具總入口</a>
+        <a href="./index.html">回主頁</a>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./library.html">知識庫</a>
+        <a href="./path.html">學習路徑</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="head">
+      <div>
+        <h1 style="margin:0">資產傳承（顧問式導引）</h1>
+        <div class="sub">先治理、再公平、最後才控制稅源：<b>盤點 → 比例 → 遺產稅 → 贈與策略</b></div>
+      </div>
+      <span class="pill">主題工具頁</span>
+    </div>
+
+    <div class="grid4">
+      <div class="card">
+        <div>
+          <h3>Step 1｜先盤點（資訊風險）</h3>
+          <p class="desc">很多家庭不是缺工具，是缺資料。先把資產/負債/文件集中，避免未來爭議。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_asset_inventory.html">資產盤點</a>
+          <a class="btn ghost" href="./library.html">讀傳承</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 2｜繼承比例（應繼分/特留分）</h3>
+          <p class="desc">先算法律底線，你才知道遺囑能做到哪裡、哪些安排會踩到特留分。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_inheritance_ratio.html">繼承比例試算</a>
+          <a class="btn ghost" href="./library.html">讀比例邏輯</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 3｜估稅：遺產稅</h3>
+          <p class="desc">先用架構算出稅負大概落點，再決定要不要做更進階的工具配置。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_estate_tax.html">遺產稅試算</a>
+          <a class="btn ghost" href="./library.html">讀稅務架構</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 4｜分年策略：贈與與稅</h3>
+          <p class="desc">贈與不只是控稅源，也包含控制權、婚姻/債務風險與你的退休安全。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_gift_tax.html">贈與稅試算</a>
+          <a class="btn ghost" href="./library.html">讀贈與策略</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
