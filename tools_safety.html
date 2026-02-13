@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>安全邊界｜工具｜智 Financial Path</title>
+<meta name="description" content="安全邊界：預備金→負債排序→保單結構（清單健檢/表單閉環）。">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--text:#223;--muted:#6b7280;--line:#e6e8ee;--primary:#0b3d91;--soft:#eef4ff;--shadow:0 10px 22px rgba(16,24,40,.06);--radius:18px;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{color:var(--primary);text-decoration:none;font-size:14px}
+  .container{max-width:1200px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 16px}
+  .head{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .pill{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:12px;border:1px solid #dfeaff}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+  @media (max-width:1100px){.grid3{grid-template-columns:1fr 1fr}}
+  @media (max-width:720px){.grid3{grid-template-columns:1fr}}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:18px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between}
+  .card h3{margin:0 0 8px;color:#111827;font-size:20px}
+  .desc{color:#4b5563;margin:0 0 14px}
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 14px;border-radius:14px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .btn:hover{opacity:.92}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./tools.html">← 回工具總入口</a>
+        <a href="./index.html">回主頁</a>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a href="./library.html">知識庫</a>
+        <a href="./path.html">學習路徑</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="head">
+      <div>
+        <h1 style="margin:0">安全邊界（顧問式導引）</h1>
+        <div class="sub">先做安全邊界，再做成長：<b>預備金 → 負債排序 → 保單結構</b></div>
+      </div>
+      <span class="pill">主題工具頁</span>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <div>
+          <h3>Step 1｜預備金</h3>
+          <p class="desc">你要的是「突發事件不翻車」。先估算可承受的現金流月份，而不是追求漂亮數字。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_emergency_fund.html">預備金計算</a>
+          <a class="btn ghost" href="./library.html">讀觀念</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 2｜負債排序</h3>
+          <p class="desc">先止血（高利/違約風險）→ 再減壓（月付壓力）→ 最後才談效率（低利長期）。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_debt_priority.html">負債優先順序</a>
+          <a class="btn ghost" href="./library.html">讀觀念</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <h3>Step 3｜保單結構</h3>
+          <p class="desc">先用「清單」快速抓缺口，再用「表單」把資料結構化，才能做調整與追蹤。</p>
+        </div>
+        <div class="btnRow">
+          <a class="btn" href="./tool_insurance_checklist.html">清單健檢</a>
+          <a class="btn ghost" href="./tool_insurance_form.html">填表閉環</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
