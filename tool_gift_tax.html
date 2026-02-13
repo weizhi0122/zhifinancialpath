@@ -6,6 +6,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="贈與稅策略工具：單次試算＋分年規劃，含免稅額與級距（教育用途）。" />
 <style>
+  .topbar{
+  background:#ffffff;
+  border-bottom:1px solid #e6e8ee;
+  padding:10px 20px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar-inner{
+  max-width:1050px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.left-nav a{
+  margin-right:18px;
+  text-decoration:none;
+  color:#0b3d91;
+  font-size:14px;
+  font-weight:600;
+}
+
+.left-nav a:hover{
+  text-decoration:underline;
+}
+
+.brand{
+  font-size:13px;
+  color:#667085;
+}
+
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
     --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
@@ -42,6 +76,18 @@
 </head>
 
 <body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="left-nav">
+      <a href="./tools.html">← 回工具</a>
+      <a href="./index.html">🏠 回主頁</a>
+    </div>
+    <div class="right-nav">
+      <span class="brand">智 Financial Path</span>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <h1>贈與稅策略工具 <span class="pill">115年免稅額 244 萬</span></h1>
 
