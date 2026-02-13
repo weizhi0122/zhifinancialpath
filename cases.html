@@ -1,35 +1,300 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>案例解析｜智 Financial Path</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>案例解析｜保險 × 資產傳承 × 醫療 × 長照｜智 Financial Path</title>
+<meta name="description" content="用真實世界的案例拆解：資產傳承、醫療與長照的風險如何發生？保險怎麼用？該檢查什麼、下一步做什麼。">
 <style>
-body{font-family:Arial;margin:40px auto;max-width:900px;line-height:1.8;color:#333}
-h1{color:#0b3d91}
-.case{margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid #ddd}
-h3{margin-bottom:10px}
+  :root{
+    --bg:#f6f8fb; --card:#fff; --text:#1f2937; --muted:#667085;
+    --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
+    --ok:#16a34a; --okbg:#f1fff5; --warn:#d92c2c; --warnbg:#fff4f4;
+    --shadow:0 10px 22px rgba(16,24,40,.06); --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar .left{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .topbar a{font-size:14px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#f7f9ff;border:1px solid #dfeaff;color:#334155;font-size:12px}
+  .container{max-width:1100px;margin:auto;padding:26px 20px 90px}
+  h1,h2,h3{color:var(--primary);margin:0 0 10px}
+  .sub{color:#4b5563;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:14px;align-items:start}
+  @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf0f6;padding:16px}
+  .toc a{display:block;padding:10px 12px;border-radius:12px;border:1px solid #edf0f6;background:#fff;margin:8px 0}
+  .toc a:hover{background:#f7f9ff}
+  .small{font-size:13px;color:var(--muted)}
+  .hr{border:none;border-top:1px solid #eef1f6;margin:12px 0}
+  .tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .tag{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--primary)}
+  .caseTitle{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;flex-wrap:wrap}
+  .meta{font-size:12px;color:#64748b}
+  .quote{background:#fff;border-left:4px solid var(--primary);border-radius:14px;padding:12px 14px;margin-top:10px}
+  .box{border-radius:14px;padding:12px 14px;margin-top:12px}
+  .box.warn{background:var(--warnbg);border-left:4px solid var(--warn)}
+  .box.ok{background:var(--okbg);border-left:4px solid var(--ok)}
+  ul{margin:8px 0 0 18px}
+  li{margin:6px 0}
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:680px){ .steps{grid-template-columns:1fr} }
+  .step{border:1px solid #edf0f6;border-radius:14px;padding:12px;background:#fff}
+  .step b{color:#0b3d91}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{display:inline-block;background:var(--primary);color:#fff;padding:10px 14px;border-radius:12px}
+  .btn.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
+  .footer-links{text-align:center;margin-top:26px}
+  .footer-links a{margin:0 10px}
 </style>
 </head>
+
 <body>
+  <div class="topbar">
+    <div class="inner">
+      <div class="left">
+        <a href="javascript:history.back()">← 回上頁</a>
+        <span class="pill">案例解析：用真實情境學會「怎麼做決策」</span>
+      </div>
+      <div>
+        <a href="./index.html" style="margin-right:12px;">🏠 回主頁</a>
+        <a href="./tools.html" style="margin-right:12px;">🧰 回工具</a>
+        <a href="./library.html">📚 知識庫</a>
+      </div>
+    </div>
+  </div>
 
-<h1>案例解析</h1>
+  <div class="container">
+    <h1>案例解析｜保險 × 資產傳承 × 醫療 × 長照</h1>
+    <p class="sub">
+      這裡不講「感動故事」，而是用更接近現實的方式拆解：<b>風險怎麼發生</b>、<b>為什麼很多人當下會做錯</b>、以及<b>你可以怎麼做得更好</b>。<br>
+      每個案例最後都會給你：<b>檢核清單</b>＋<b>下一步工具/文章</b>（把學到的變成行動）。
+    </p>
 
-<div class="case">
-<h3>案例一：35 歲上班族退休規劃</h3>
-描述：年收入穩定，有房貸壓力。  
-分析：透過退休診斷工具發現缺口 1,200 萬。  
-建議：提高資產生產力比例，並保留 12 個月預備金。
-</div>
+    <div class="grid">
+      <!-- MAIN -->
+      <div>
+        <!-- CASE 1 -->
+        <section id="case1" class="card" style="margin-bottom:14px;">
+          <div class="caseTitle">
+            <h2 style="margin:0">案例 1｜資產傳承：一份「以為很簡單」的受益人，讓家人卡在現金流</h2>
+            <div class="meta">情境：50–60 歲家庭｜有房、有存款、保單多年</div>
+          </div>
+          <div class="tagrow">
+            <span class="tag">資產傳承</span>
+            <span class="tag">保險受益人</span>
+            <span class="tag">遺產現金流</span>
+          </div>
 
-<div class="case">
-<h3>案例二：保障結構錯配</h3>
-描述：多張儲蓄型保單，實際醫療保障不足。  
-分析：保障地基未建立。  
-建議：重新調整保障優先順序。
-</div>
+          <p class="small" style="margin-top:10px;">
+            爸爸突然過世。家裡主要資產是房子與定存，平常生活費靠爸爸工作收入。家人第一時間不是在算遺產稅，而是遇到更現實的問題：
+            <b>接下來 3–6 個月的生活費、房貸、照顧支出從哪裡來？</b>
+          </p>
 
-<p>更多案例與進階解析，請加入 LINE 取得更新。</p>
+          <div class="quote">
+            家人原本以為：「有保險就有現金。」<br>
+            但真正出事才發現：受益人寫法、理賠流程、銀行帳戶與文件準備，任何一個卡住，就會讓「理應最快到位的現金」延後。
+          </div>
 
+          <div class="box warn">
+            <b>最常見的盲點（不是法律，而是「現金流」）：</b>
+            <ul>
+              <li>受益人沒寫清楚（或變更過卻沒同步家人知道），理賠要補件、確認、甚至造成家人爭議。</li>
+              <li>家裡可立即動用現金太少，房子雖值錢，但短期變現不容易。</li>
+              <li>遺產流程、帳戶凍結、戶籍文件、繼承系統（順位/比例）等，讓「明明是自己家的錢」暫時動不了。</li>
+            </ul>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <b>你可以怎麼做（今天就能做）</b>
+              <ul>
+                <li>把所有保單列一張清單：保險公司、保單號碼、被保險人、受益人、聯絡窗口。</li>
+                <li>確認受益人寫法是否符合你想要的「傳承結果」：是否需要指定比例？是否需要改變？</li>
+                <li>準備「家人找得到」的文件位置（紙本 + 雲端），不要只放在自己的手機。</li>
+              </ul>
+            </div>
+            <div class="step">
+              <b>更進階（把風險變小）</b>
+              <ul>
+                <li>建立「家庭緊急預備現金」：至少 6–12 個月家庭支出（避免被迫賣資產）。</li>
+                <li>如果家中有長者或主要收入者：把「理賠到帳前的空窗期」當成要管理的風險。</li>
+                <li>做一次「最壞情境」推演：若明天少一個收入，你的家庭現金流能撐多久？</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="box ok">
+            <b>關鍵結論：</b>資產傳承不是先算稅，而是先確保「家人不中斷」——<b>現金流</b>要先穩住，稅是第二步。
+          </div>
+
+          <div class="btnrow">
+            <a class="btn" href="./tools.html">下一步：到工具頁（傳承/稅務/比例試算）</a>
+            <a class="btn ghost" href="./library.html">回知識庫：看「受益人 vs 遺囑」整理</a>
+          </div>
+        </section>
+
+        <!-- CASE 2 -->
+        <section id="case2" class="card" style="margin-bottom:14px;">
+          <div class="caseTitle">
+            <h2 style="margin:0">案例 2｜醫療：不是「住院費」打垮人，是「復原期＋收入中斷」</h2>
+            <div class="meta">情境：40–55 歲上班族｜家庭支出固定｜有房貸或學費</div>
+          </div>
+          <div class="tagrow">
+            <span class="tag">醫療</span>
+            <span class="tag">收入中斷</span>
+            <span class="tag">自費與復健</span>
+          </div>
+
+          <p class="small" style="margin-top:10px;">
+            一次急性手術後，住院費用其實「可預期」。真正讓家裡壓力變大的，是出院後的 2–6 個月：
+            <b>復健、回診、自費耗材、照顧人力、以及工作收入下降</b>。
+          </p>
+
+          <div class="quote">
+            很多人保險買對了住院日額或手術給付，卻忽略：<br>
+            <b>如果不能立即回到工作狀態，你的現金流才是最先出問題的地方。</b>
+          </div>
+
+          <div class="box warn">
+            <b>常見盲點：</b>
+            <ul>
+              <li>只看住院費，忽略出院後的復原期成本（交通、復健、自費耗材、看護）。</li>
+              <li>收入中斷風險沒有管理：家庭開銷照跑，存款卻在下降。</li>
+              <li>保單內容「看起來有」，但實際理賠條件卡在診斷書、手術定義、等待期或除外條款。</li>
+            </ul>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <b>你可以怎麼填資料做檢核（很務實）</b>
+              <ul>
+                <li>先列「每月固定支出」：房貸/租金、學費、保費、生活費、孝親等。</li>
+                <li>估「若收入下降 50% 持續 3 個月」：你的現金可撐多久？</li>
+                <li>把保單拿出來找「住院、手術、重大傷病、失能/工作能力」相關條款。</li>
+              </ul>
+            </div>
+            <div class="step">
+              <b>更進階：把醫療風險變成系統</b>
+              <ul>
+                <li>建立「醫療事件預備金」：用來覆蓋自費與復原期缺口（不要全部押在理賠速度）。</li>
+                <li>保險不是越多越好，而是要覆蓋：<b>自費缺口＋收入中斷</b>。</li>
+                <li>每年做一次保單健檢：保障是否隨收入/家庭責任變化而更新。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="box ok">
+            <b>關鍵結論：</b>醫療風險管理的核心不是「住院費」，而是<b>復原期＋收入中斷</b>造成的現金流缺口。
+          </div>
+
+          <div class="btnrow">
+            <a class="btn" href="./tools.html">下一步：到工具頁（財務健康/現金流壓力測試）</a>
+            <a class="btn ghost" href="./library.html">回知識庫：醫療保障/自費缺口整理</a>
+          </div>
+        </section>
+
+        <!-- CASE 3 -->
+        <section id="case3" class="card">
+          <div class="caseTitle">
+            <h2 style="margin:0">案例 3｜長照：最痛的是「時間」，不是一次性花費</h2>
+            <div class="meta">情境：65+ 家庭｜子女有工作與小孩｜照顧資源有限</div>
+          </div>
+          <div class="tagrow">
+            <span class="tag">長照</span>
+            <span class="tag">家庭照顧壓力</span>
+            <span class="tag">長期現金流</span>
+          </div>
+
+          <p class="small" style="margin-top:10px;">
+            長照常見的現實是：不是一次性支出，而是<b>每月持續</b>的照護成本，搭配照顧者身心與工作被拖垮。  
+            「多花一點錢」往往不是奢侈，而是為了讓家庭可以<b>撐得久</b>。
+          </p>
+
+          <div class="quote">
+            真正讓人崩潰的，不是某一次大額花費，而是「每個月都要處理」，而且看不到終點。<br>
+            長照風險的本質：<b>時間 × 現金流 × 家庭承受力</b>。
+          </div>
+
+          <div class="box warn">
+            <b>最常見盲點：</b>
+            <ul>
+              <li>以為「有房＝有資產」，但長照需要的是<b>可持續現金流</b>，不是資產帳面價值。</li>
+              <li>把照顧成本只算錢，卻忽略：照顧者工作減少、情緒耗損、家庭衝突。</li>
+              <li>沒有把長照放進退休計畫：退休金算得剛好，一遇到長照就整個翻車。</li>
+            </ul>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <b>你可以怎麼做（先用簡單數字）</b>
+              <ul>
+                <li>估「每月長照成本區間」：居家/日照/機構，各抓一個保守值。</li>
+                <li>估「可能持續幾年」：不是預言，而是拿來做壓力測試。</li>
+                <li>把這段長照現金流直接塞進退休模擬：看資產會不會被耗盡。</li>
+              </ul>
+            </div>
+            <div class="step">
+              <b>更進階：讓家庭不被拖垮</b>
+              <ul>
+                <li>把照顧責任做「分工與備援」：誰負責什麼、誰是替補、緊急時的流程。</li>
+                <li>保險的角色：若能提供「每月固定金額」支援，能大幅降低家庭衝突。</li>
+                <li>長照規劃不是只給父母，也是給子女：避免把壓力變成下一代的負債。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="box ok">
+            <b>關鍵結論：</b>長照規劃不是「怕花錢」，而是要確保家庭在長時間壓力下仍能運作：<b>現金流可持續 + 照顧可持續</b>。
+          </div>
+
+          <div class="btnrow">
+            <a class="btn" href="./tool_retirement_cashflow.html">下一步：退休現金流工具（把長照變成情境）</a>
+            <a class="btn ghost" href="./tools.html">回工具頁</a>
+          </div>
+          <p class="small" style="margin-top:10px;">
+            ※ 若你目前的退休工具頁檔名不同，把上面連結改成你實際的檔名即可。
+          </p>
+        </section>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="card">
+        <h2 style="margin-top:0">快速導覽</h2>
+        <p class="small" style="margin-top:6px;">
+          先挑你最關心的一題。每個案例都會帶你回到「可行動」的檢核與工具。
+        </p>
+        <div class="toc">
+          <a href="#case1"><b>案例 1</b>｜資產傳承：受益人與現金流空窗</a>
+          <a href="#case2"><b>案例 2</b>｜醫療：復原期與收入中斷</a>
+          <a href="#case3"><b>案例 3</b>｜長照：時間×現金流×家庭承受力</a>
+        </div>
+
+        <div class="hr"></div>
+
+        <h3 style="margin:0 0 6px">你可以先做的 3 件事</h3>
+        <ul class="small">
+          <li><b>列清單：</b>保單 / 帳戶 / 文件放哪裡，家人找不找得到？</li>
+          <li><b>算現金流：</b>如果少一份收入 3 個月，你撐得住嗎？</li>
+          <li><b>做情境：</b>把「醫療/長照」塞進退休模擬，看看會不會翻車。</li>
+        </ul>
+
+        <div class="btnrow" style="margin-top:12px;">
+          <a class="btn" href="./tools.html">去工具頁</a>
+          <a class="btn ghost" href="./index.html">回主頁</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer-links">
+      <a href="./index.html">回主頁</a>
+      <a href="./tools.html">回工具</a>
+      <a href="./library.html">回知識庫</a>
+    </div>
+  </div>
 </body>
 </html>
