@@ -4,16 +4,15 @@
   <meta charset="UTF-8" />
   <title>家庭資產盤點表｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="家庭資產盤點：把帳戶、投資、保單、不動產、負債、重要文件集中成一張表，可匯出文字摘要。" />
   <style>
     body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-    .nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:14px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
-    .container{max-width:1100px;margin:auto;padding:28px 20px}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-    .muted{font-size:13px;color:#666;line-height:1.5}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:1100px;margin:auto;padding:26px 20px 70px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+    .muted{font-size:13px;color:#666;line-height:1.6}
     table{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border-radius:12px;overflow:hidden}
     th,td{border-bottom:1px solid #eef0f6;padding:10px;text-align:left;font-size:14px;vertical-align:top}
     th{background:#f7f9ff;color:#0b3d91}
@@ -22,54 +21,48 @@
     .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .btn{background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;border:0;cursor:pointer}
     .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
-    footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
-    a{color:#0b3d91;text-decoration:none}
+    pre{margin-top:10px;white-space:pre-wrap;display:none;background:#f7f9ff;padding:12px;border-radius:12px}
   </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./path.html">學習路徑</a>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>家庭資產盤點表</h1>
-  <p class="muted">目的：把「資訊」集中，讓家人找得到。這不是報稅或投資建議工具，教育用途。</p>
+  <h1 style="color:#0b3d91;margin:0 0 10px;">家庭資產盤點表</h1>
+  <p class="muted">目的：把「資訊」集中，降低家人找不到資料的風險。填完可按「匯出文字」複製保存（教育用途）。</p>
 
   <div class="card">
-    <p class="muted">建議先填：帳戶/投資/保單/不動產/負債/重要文件。填完可按「匯出文字」複製保存。</p>
-
     <table id="t">
       <thead>
         <tr>
           <th style="width:140px;">類別</th>
           <th>項目/機構</th>
-          <th style="width:160px;">帳號/保單號（可略）</th>
+          <th style="width:180px;">帳號/保單號（可略）</th>
           <th style="width:140px;">持有人</th>
           <th>備註（位置/受益人/聯絡方式）</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- 先給 6 列 -->
-      </tbody>
+      <tbody></tbody>
     </table>
 
     <div class="btnrow">
       <button class="btn" onclick="addRow()">新增一列</button>
       <button class="btn ghost" onclick="exportText()">匯出文字（可複製）</button>
+      <button class="btn ghost" onclick="copyOut()">複製匯出內容</button>
       <button class="btn ghost" onclick="clearAll()">清空</button>
     </div>
 
-    <pre id="out" class="muted" style="margin-top:10px;white-space:pre-wrap;display:none;background:#f7f9ff;padding:12px;border-radius:12px;"></pre>
+    <pre id="out" class="muted"></pre>
   </div>
-
-  <footer><a href="./disclaimer.html">免責聲明</a></footer>
 </div>
 
 <script>
@@ -93,7 +86,9 @@ function clearAll(){
   if(!confirm('確定要清空嗎？')) return;
   tbody.innerHTML = '';
   for(let i=0;i<6;i++) addRow();
-  document.getElementById('out').style.display='none';
+  const out = document.getElementById('out');
+  out.style.display='none';
+  out.textContent='';
 }
 
 function exportText(){
@@ -109,8 +104,13 @@ function exportText(){
   out.textContent = rows.length ? ('【家庭資產盤點摘要】\n' + rows.join('\n')) : '目前沒有可匯出的內容。';
 }
 
+function copyOut(){
+  const out = document.getElementById('out');
+  if(out.style.display==='none'){ alert('請先按「匯出文字」'); return; }
+  navigator.clipboard.writeText(out.textContent).then(()=>alert('已複製到剪貼簿'));
+}
+
 for(let i=0;i<6;i++) addRow();
 </script>
 </body>
 </html>
-
