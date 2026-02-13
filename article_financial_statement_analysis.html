@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>三大財報不是給會計看的｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333;line-height:1.9}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0}
+.topbar .inner{max-width:900px;margin:auto;display:flex;justify-content:space-between}
+.topbar a{color:#0b3d91;text-decoration:none}
+.container{max-width:900px;margin:auto;padding:30px 20px 100px}
+h1,h2,h3{color:#0b3d91}
+.section{background:#fff;padding:18px;border-radius:12px;margin:25px 0;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.note{background:#fff;padding:15px;border-left:4px solid #0b3d91;margin:20px 0;border-radius:12px}
+.chart-bar{margin:10px 0}
+.bar{height:18px;background:#0b3d91;border-radius:8px}
+.bar-light{background:#4a6edb}
+.label{font-size:14px;margin-bottom:4px}
+.canvas-box{background:#fff;padding:20px;border-radius:12px;margin-top:20px}
+canvas{background:#fff;border:1px solid #eee;border-radius:8px}
+.footer-links{text-align:center;margin-top:40px}
+.footer-links a{color:#0b3d91;text-decoration:none;margin:0 12px}
+hr{margin:40px 0;border:none;border-top:1px solid #ddd}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="inner">
+<a href="javascript:history.back()">← 回上頁</a>
+<a href="./library.html">回知識庫</a>
+</div>
+</div>
+
+<div class="container">
+
+<h1>三大財報不是給會計看的</h1>
+
+<p>
+投資專業度，來自對企業體質的視覺化理解。
+</p>
+
+<hr>
+
+<h2>一、損益表：成長與獲利結構</h2>
+
+<div class="section">
+<h3>營收與淨利差異示意</h3>
+
+<div class="chart-bar">
+<div class="label">營收成長 20%</div>
+<div class="bar" style="width:80%"></div>
+</div>
+
+<div class="chart-bar">
+<div class="label">淨利成長 5%</div>
+<div class="bar bar-light" style="width:30%"></div>
+</div>
+
+<div class="note">
+營收高成長但淨利低成長 → 成本壓力上升。
+</div>
+</div>
+
+<hr>
+
+<h2>二、資產負債結構</h2>
+
+<div class="section">
+
+<div class="chart-bar">
+<div class="label">負債比 60%</div>
+<div class="bar" style="width:60%"></div>
+</div>
+
+<div class="chart-bar">
+<div class="label">流動比率 150%</div>
+<div class="bar bar-light" style="width:75%"></div>
+</div>
+
+<p>
+一般來說：
+</p>
+
+<ul>
+<li>負債比 > 70% 風險偏高</li>
+<li>流動比率 < 100% 需注意</li>
+</ul>
+
+</div>
+
+<hr>
+
+<h2>三、現金流趨勢示意圖</h2>
+
+<div class="canvas-box">
+<canvas id="cashflowChart" width="700" height="300"></canvas>
+</div>
+
+<div class="note">
+營運現金流長期向上，企業體質才健康。
+</div>
+
+<hr>
+
+<h2>四、顧問決策思維</h2>
+
+<ul>
+<li>營收是否連續成長？</li>
+<li>淨利率是否穩定？</li>
+<li>負債是否可控？</li>
+<li>現金流是否持續增加？</li>
+</ul>
+
+<hr>
+
+<div class="footer-links">
+<a href="./article_stock_valuation.html">下一篇：估值與合理價 →</a>
+</div>
+
+</div>
+
+<script>
+const canvas = document.getElementById("cashflowChart");
+const ctx = canvas.getContext("2d");
+
+const data = [50, 80, 120, 150];
+const labels = ["2021", "2022", "2023", "2024"];
+
+const maxVal = Math.max(...data);
+const chartHeight = 200;
+const chartWidth = 600;
+
+ctx.fillStyle = "#0b3d91";
+
+data.forEach((val, i) => {
+  const x = 100 + i * 120;
+  const height = (val / maxVal) * chartHeight;
+  ctx.fillRect(x, 250 - height, 50, height);
+  ctx.fillText(labels[i], x, 270);
+});
+</script>
+
+</body>
+</html>
