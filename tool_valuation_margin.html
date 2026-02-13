@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>合理價值試算（含安全邊際）｜智 Financial Path</title>
+<meta name="description" content="輸入 EPS、成長率與折現率，輸出合理價值區間與安全邊際買進區，並用圖表視覺化。">
+<style>
+  body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.85}
+  .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+  .topbar .inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+  .container{max-width:980px;margin:auto;padding:26px 20px 90px}
+  h1,h2{color:#0b3d91;margin:0 0 10px}
+  .sub{color:#555;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .card{background:#fff;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05);padding:16px}
+  label{display:block;font-size:13px;color:#555;margin:10px 0 6px}
+  input,select{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9e2f2;border-radius:12px;background:#fff;font-size:14px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button{border:0;border-radius:12px;padding:10px 14px;background:#0b3d91;color:#fff;cursor:pointer;font-size:14px}
+  button.secondary{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+  .note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:12px 14px;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+  .small{font-size:13px;color:#666}
+  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  .kpi .box{background:#f7f9ff;border:1px solid #dfeaff;border-radius:14px;padding:12px}
+  .kpi .box b{color:#0b3d91}
+  canvas{width:100%;max-width:100%;height:260px;background:#fff;border-radius:14px;border:1px solid #e6e8ee}
+  .footer-links{text-align:center;margin-top:26px}
+  .footer-links a{margin:0 10px}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <a href="javascript:history.back()">← 回上頁</a>
+      <div>
+        <a href="./index.html" style="margin-right:12px;">回主頁</a>
+        <a href="./library.html">知識庫</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>合理價值試算（含安全邊際）</h1>
+    <p class="sub">目標：不是算出「唯一正確價格」，而是得到一個<strong>可決策的區間</strong>：合理價值帶 + 安全邊際買進區。</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2 style="margin-top:0">輸入</h2>
+
+        <label>目前 EPS（近四季或近一年）</label>
+        <input id="eps" type="number" step="0.01" value="10" />
+
+        <div class="row2">
+          <div>
+            <label>預期年成長率（基準，%）</label>
+            <input id="g" type="number" step="0.1" value="10" />
+          </div>
+          <div>
+            <label>折現率 / 你的要求報酬（%）</label>
+            <input id="r" type="number" step="0.1" value="10" />
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>估值年數（年）</label>
+            <input id="years" type="number" step="1" value="5" />
+          </div>
+          <div>
+            <label>安全邊際（%）</label>
+            <input id="mos" type="number" step="1" value="30" />
+          </div>
+        </div>
+
+        <label>終值本益比（若不知道，建議選「用折現率推導」）</label>
+        <select id="peMode">
+          <option value="auto" selected>用折現率推導（保守）</option>
+          <option value="manual">自行輸入</option>
+        </select>
+
+        <div id="peManualWrap" style="display:none;">
+          <label>終值本益比（手動）</label>
+          <input id="peManual" type="number" step="0.1" value="15" />
+        </div>
+
+        <div class="btnrow">
+          <button onclick="calc()">開始試算</button>
+          <button class="secondary" onclick="resetAll()">重設</button>
+        </div>
+
+        <p class="small" style="margin-top:10px;">
+          小提醒：這是「顧問式區間估值」。你在做的是：用假設換取決策清晰度。<br>
+          折現率可以理解成「你要不要承擔風險的門檻」。
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0">結果</h2>
+        <div class="kpi">
+          <div class="box">
+            <b>合理價值區間（保守→樂觀）</b>
+            <div id="rangeText" style="margin-top:6px;">—</div>
+            <div class="small">用三情境推演，避免單點幻想。</div>
+          </div>
+          <div class="box">
+            <b>安全邊際買進區</b>
+            <div id="mosText" style="margin-top:6px;">—</div>
+            <div class="small">安全邊際的本質：少犯錯。</div>
+          </div>
+          <div class="box">
+            <b>終值本益比（採用）</b>
+            <div id="peText" style="margin-top:6px;">—</div>
+            <div class="small">要求報酬越高 → 允許的 PE 越低。</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <canvas id="chart" width="940" height="260"></canvas>
+        </div>
+
+        <div class="note" style="margin-top:12px;">
+          <b>你可以問自己三個問題：</b><br>
+          ① 成長假設是否被「過去景氣」騙到？<br>
+          ② 折現率是否把產業/匯率/利率風險算進去？<br>
+          ③ 就算估錯 20%，你會不會被迫在壞時間賣出？
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <a href="./chapter_investing.html">← 回投資決策系統</a>
+      <a href="./tools.html">回工具</a>
+      <a href="./index.html">回主頁</a>
+    </div>
+  </div>
+
+<script>
+  const peMode = document.getElementById('peMode');
+  const peManualWrap = document.getElementById('peManualWrap');
+
+  peMode.addEventListener('change', () => {
+    peManualWrap.style.display = (peMode.value === 'manual') ? 'block' : 'none';
+  });
+
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+  function fmt(n){ return isFinite(n) ? n.toFixed(2) : '—'; }
+
+  function derivePE(rPct){
+    const r = rPct/100;
+    const gT = 0.02;                 // 長期保守成長
+    const denom = Math.max(0.01, r - gT);
+    const pe = 1/denom;
+    return clamp(pe, 6, 25);         // 避免不合理爆高
+  }
+
+  function scenarioGrowth(gBase){
+    return [
+      clamp(gBase*0.6, -5, 25),
+      clamp(gBase, -5, 25),
+      clamp(gBase*1.4, -5, 25)
+    ];
+  }
+
+  function intrinsic(eps, gPct, years, pe){
+    const g = gPct/100;
+    const epsN = eps * Math.pow(1+g, years);
+    return epsN * pe;
+  }
+
+  function calc(){
+    const eps = Number(document.getElementById('eps').value || 0);
+    const gBase = Number(document.getElementById('g').value || 0);
+    const r = Number(document.getElementById('r').value || 0);
+    const years = Math.max(1, parseInt(document.getElementById('years').value || 5, 10));
+    const mos = clamp(Number(document.getElementById('mos').value || 30), 0, 80);
+
+    const pe = (peMode.value === 'manual')
+      ? clamp(Number(document.getElementById('peManual').value || 15), 5, 40)
+      : derivePE(r);
+
+    const gs = scenarioGrowth(gBase);
+    const vals = gs.map(g => intrinsic(eps, g, years, pe)).sort((a,b)=>a-b);
+    const low = vals[0], mid = vals[1], high = vals[2];
+
+    const buyLow = low * (1 - mos/100);
+    const buyMid = mid * (1 - mos/100);
+
+    document.getElementById('rangeText').innerHTML =
+      `保守 ${fmt(low)} ｜基準 ${fmt(mid)} ｜樂觀 ${fmt(high)}`;
+
+    document.getElementById('mosText').innerHTML =
+      `安全邊際 ${mos}%：買進參考區 ≈ ${fmt(buyLow)} ～ ${fmt(buyMid)}`;
+
+    document.getElementById('peText').innerHTML =
+      `${fmt(pe)}（${peMode.value === 'manual' ? '手動' : '由折現率推導'}）`;
+
+    drawBar(low, mid, high, buyLow, buyMid);
+  }
+
+  function drawBar(low, mid, high, buyLow, buyMid){
+    const c = document.getElementById('chart');
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0,0,c.width,c.height);
+
+    const pad = 40;
+    const w = c.width - pad*2;
+    const y = 140;
+
+    const minX = Math.max(0, buyLow*0.85);
+    const maxX = high*1.15;
+
+    function x(v){
+      return pad + ( (v - minX) / (maxX - minX) ) * w;
+    }
+
+    // baseline
+    ctx.strokeStyle = '#d7deea';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pad, y);
+    ctx.lineTo(pad+w, y);
+    ctx.stroke();
+
+    // fair range
+    ctx.fillStyle = '#eef4ff';
+    ctx.fillRect(x(low), y-30, Math.max(2, x(high)-x(low)), 60);
+
+    // mid line
+    ctx.strokeStyle = '#0b3d91';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x(mid), y-35);
+    ctx.lineTo(x(mid), y+35);
+    ctx.stroke();
+
+    // MOS buy zone
+    ctx.fillStyle = '#eaf7ef';
+    ctx.fillRect(x(buyLow), y-18, Math.max(2, x(buyMid)-x(buyLow)), 36);
+    ctx.strokeStyle = '#b7e2c6';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x(buyLow), y-18, Math.max(2, x(buyMid)-x(buyLow)), 36);
+
+    // labels
+    ctx.fillStyle = '#333';
+    ctx.font = '14px Arial';
+    ctx.fillText('合理價值區間', x(low), y-40);
+    ctx.fillText('安全邊際買進區', x(buyLow), y+55);
+
+    // ticks
+    function tick(v, label){
+      ctx.strokeStyle = '#c9d3e5';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x(v), y);
+      ctx.lineTo(x(v), y+10);
+      ctx.stroke();
+      ctx.fillStyle = '#555';
+      ctx.font = '12px Arial';
+      ctx.fillText(label, x(v)-10, y+26);
+    }
+    tick(low, fmt(low));
+    tick(mid, fmt(mid));
+    tick(high, fmt(high));
+
+    ctx.fillStyle = '#666';
+    ctx.font = '13px Arial';
+    ctx.fillText('提示：用區間思維，而非單點價格。你的目標是「犯錯也活得下來」。', pad, 30);
+  }
+
+  function resetAll(){
+    document.getElementById('eps').value = 10;
+    document.getElementById('g').value = 10;
+    document.getElementById('r').value = 10;
+    document.getElementById('years').value = 5;
+    document.getElementById('mos').value = 30;
+    document.getElementById('peMode').value = 'auto';
+    peManualWrap.style.display = 'none';
+    document.getElementById('rangeText').innerHTML = '—';
+    document.getElementById('mosText').innerHTML = '—';
+    document.getElementById('peText').innerHTML = '—';
+    const c = document.getElementById('chart');
+    c.getContext('2d').clearRect(0,0,c.width,c.height);
+  }
+
+  calc();
+</script>
+</body>
+</html>
