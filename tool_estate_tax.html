@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>遺產稅試算工具｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="115年遺產稅試算工具：含免稅額、扣除額、級距與估算稅額。">
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f8fb;color:#333}
+.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px}
+.container{max-width:900px;margin:auto;padding:30px 20px}
+.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+label{display:block;margin-top:12px}
+input{width:100%;padding:8px;margin-top:4px;border:1px solid #d7dbe6;border-radius:8px}
+button{margin-top:15px;padding:10px 14px;background:#0b3d91;color:#fff;border:0;border-radius:8px;cursor:pointer}
+.result{margin-top:15px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+<a href="./tools.html">← 回工具</a>
+</div>
+
+<div class="container">
+<h1 style="color:#0b3d91">遺產稅試算工具（115年）</h1>
+
+<div class="card">
+<label>遺產總額（NT$）</label>
+<input id="estate" type="number" placeholder="例：80000000">
+
+<label>配偶人數（0或1）</label>
+<input id="spouse" type="number" value="1">
+
+<label>直系卑親屬人數（子女）</label>
+<input id="children" type="number" value="2">
+
+<button onclick="calc()">試算稅額</button>
+
+<div id="output" class="result" style="display:none;"></div>
+
+<p class="small">※ 僅供教育用途，不含特別扣除與特殊情境。</p>
+</div>
+</div>
+
+<script>
+function calc(){
+let estate = Number(document.getElementById('estate').value);
+if(!estate){ alert("請輸入遺產總額"); return;}
+
+let spouse = Number(document.getElementById('spouse').value);
+let children = Number(document.getElementById('children').value);
+
+let exemption = 13330000;
+let spouseDed = spouse * 5530000;
+let childDed = children * 560000;
+let funeral = 1380000;
+
+let taxable = estate - exemption - spouseDed - childDed - funeral;
+if(taxable < 0) taxable = 0;
+
+let tax=0;
+if(taxable<=50000000){
+ tax = taxable*0.10;
+}else if(taxable<=100000000){
+ tax = 50000000*0.10 + (taxable-50000000)*0.15;
+}else{
+ tax = 50000000*0.10 + 50000000*0.15 + (taxable-100000000)*0.20;
+}
+
+document.getElementById('output').style.display="block";
+document.getElementById('output').innerHTML =
+"課稅遺產淨額：約 NT$ "+ taxable.toLocaleString() +
+"<br>預估遺產稅：約 NT$ "+ Math.round(tax).toLocaleString();
+}
+</script>
+</body>
+</html>
