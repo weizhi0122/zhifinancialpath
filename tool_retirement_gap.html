@@ -2,9 +2,9 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<title>勞保老年給付試算｜智 Financial Path</title>
+<title>退休缺口＋勞保老年給付試算｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="勞保老年年金／一次金試算：輸入年資、請領年齡、投保薪資明細，自動抓最高60個月平均並依現行公式計算（教育用途）。" />
+<meta name="description" content="退休缺口試算＋勞保老年年金/一次金：輸入出生年月日、目前投保年資、退休年齡、平均月投保薪資或貼薪資明細，自動推估退休時年資、勞保給付與退休缺口（教育用途）。" />
 <style>
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#222; --muted:#667085;
@@ -29,7 +29,7 @@
   .container{max-width:1100px;margin:auto;padding:22px 18px}
   h1{margin:0 0 10px;color:var(--primary);font-size:26px}
   .grid{display:grid;grid-template-columns:1fr;gap:14px}
-  @media (min-width:980px){ .grid{grid-template-columns:1.2fr 0.8fr} }
+  @media (min-width:980px){ .grid{grid-template-columns:1.25fr 0.75fr} }
 
   .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
   .card h2{margin:0 0 10px;font-size:16px;color:#0f172a}
@@ -39,8 +39,8 @@
     box-sizing:border-box;background:#fff;font-size:14px;
   }
   textarea{min-height:140px;resize:vertical;line-height:1.35}
-  .row{display:flex;gap:10px}
-  .row > *{flex:1}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row > *{flex:1; min-width: 160px;}
   button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:800}
   button.secondary{background:#334155}
   .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--soft);color:var(--primary);display:none}
@@ -49,12 +49,13 @@
   .small{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:10px}
   .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
   .table{width:100%;border-collapse:collapse;margin-top:10px}
-  .table th,.table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px}
+  .table th,.table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px;vertical-align:top}
   .table th{text-align:left;color:#0f172a}
   .table td:last-child,.table th:last-child{text-align:right}
   .muted{color:var(--muted)}
   .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
   .chip{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #dbe2f0;color:#334155;background:#f8fafc;font-size:12px;margin-left:6px}
+  .hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 </style>
 </head>
 
@@ -70,21 +71,63 @@
   </div>
 
   <div class="container">
-    <h1>勞保老年給付試算 <span class="pill">更真實：貼投保薪資明細，自動抓最高60個月平均</span></h1>
+    <h1>退休缺口＋勞保老年給付試算 <span class="pill">可算到退休總年資 / 年金 / 缺口資產</span></h1>
 
     <div class="grid">
       <!-- 左：輸入 -->
       <div class="card">
-        <h2>1) 你的資料</h2>
+        <h2>1) 基本資料（會自動推算現在年齡、退休日、退休時投保年資）</h2>
 
         <div class="row">
           <div>
-            <label>出生年次（民國）</label>
-            <input id="birthRoc" type="number" min="1" step="1" value="60" />
-            <div class="small">例：民國60年</div>
+            <label>出生年月日（西元）</label>
+            <input id="birthDate" type="date" />
+            <div class="small">例：1985-06-15</div>
+          </div>
+
+          <div>
+            <label>預計退休年齡</label>
+            <div class="row">
+              <div>
+                <input id="retireYears" type="number" min="0" step="1" value="65" />
+                <div class="small">歲</div>
+              </div>
+              <div>
+                <input id="retireMonths" type="number" min="0" max="11" step="1" value="0" />
+                <div class="small">月</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label>目前投保年資（可填到天；未滿30日以1個月計）</label>
+        <div class="row">
+          <div>
+            <input id="insYearsNow" type="number" min="0" step="1" value="30" />
+            <div class="small">年</div>
           </div>
           <div>
-            <label>預計請領年齡</label>
+            <input id="insMonthsNow" type="number" min="0" max="11" step="1" value="0" />
+            <div class="small">月</div>
+          </div>
+          <div>
+            <input id="insDaysNow" type="number" min="0" max="30" step="1" value="0" />
+            <div class="small">天（>0 視為 +1月）</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>到退休是否持續投保？</label>
+            <select id="keepInsured">
+              <option value="yes" selected>是：一直投保到退休</option>
+              <option value="no">否：不再增加年資（用目前年資）</option>
+            </select>
+            <div class="small">若你未必每月都有投保，建議選「否」或自行貼薪資明細。</div>
+          </div>
+
+          <div>
+            <label>預計請領年齡（年金加減給用）</label>
             <div class="row">
               <div>
                 <input id="claimYears" type="number" min="0" step="1" value="65" />
@@ -98,32 +141,34 @@
           </div>
         </div>
 
-        <label>勞保年資（更真實：可填到「天」；未滿30日以1個月計）</label>
+        <hr class="hr" />
+
+        <h2>2) 投保薪資（兩種方式擇一：填「平均月投保薪資」或貼「投保薪資明細」）</h2>
+
         <div class="row">
           <div>
-            <input id="insYears" type="number" min="0" step="1" value="30" />
-            <div class="small">年</div>
+            <label>平均月投保薪資（直接輸入）</label>
+            <input id="avgSalaryInput" type="number" min="0" step="100" placeholder="例：45800" />
+            <div class="small">若你不想貼明細，直接填這欄即可。</div>
           </div>
           <div>
-            <input id="insMonths" type="number" min="0" max="11" step="1" value="0" />
-            <div class="small">月</div>
-          </div>
-          <div>
-            <input id="insDays" type="number" min="0" max="30" step="1" value="0" />
-            <div class="small">天（1~29視為+1月；30也視為+1月）</div>
+            <label>是否以明細計算「最高60個月平均」？</label>
+            <select id="salaryMode">
+              <option value="auto" selected>自動：有貼明細就用明細，沒有就用平均薪資</option>
+              <option value="detail">強制用明細（需至少1筆）</option>
+              <option value="avg">強制用平均薪資（忽略明細）</option>
+            </select>
+            <div class="small">要更準，請用明細（可抓最高60個月）。</div>
           </div>
         </div>
 
-        <hr style="border:0;border-top:1px solid var(--line);margin:14px 0" />
-
-        <h2>2) 投保薪資明細（用來算「最高60個月平均」）</h2>
         <div class="small">
-          你可以用兩種方式擇一：<br/>
-          A) 貼「月投保薪資序列」（只貼金額，一行一個月）<span class="chip">最快</span><br/>
-          B) 貼「YYYY-MM 金額」或「YYYY/MM 金額」，例如：<span class="mono">2024-01 45800</span>
+          明細格式：<br/>
+          A) 只貼金額，一行一個月（最快）<span class="chip">推薦</span><br/>
+          B) <span class="mono">YYYY-MM 金額</span> 或 <span class="mono">YYYY/MM 金額</span>，例：<span class="mono">2024-01 45800</span>
         </div>
 
-        <label>投保薪資明細（至少填 1 行；建議貼 60 行以上）</label>
+        <label>投保薪資明細（可留空）</label>
         <textarea id="salaryLines" placeholder="例：
 45800
 45800
@@ -132,8 +177,51 @@
 2024-01 45800
 2024-02 45800"></textarea>
 
+        <hr class="hr" />
+
+        <h2>3) 退休缺口（你真正想算的）</h2>
+
         <div class="row">
-          <button onclick="calcAll()">計算（年金 / 一次金）</button>
+          <div>
+            <label>退休後每月目標生活費（以「今天」價值）</label>
+            <input id="needMonthlyToday" type="number" min="0" step="1000" value="80000" />
+            <div class="small">例：8萬/月（會用通膨推到退休當年）。</div>
+          </div>
+          <div>
+            <label>預期通膨（年）</label>
+            <input id="inflation" type="number" min="0" step="0.1" value="2.0" />
+            <div class="small">例：2.0 表示 2%</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休後其他「每月」收入（退休金/房租/配偶年金等）</label>
+            <input id="otherMonthlyIncome" type="number" min="0" step="1000" value="0" />
+            <div class="small">不含勞保年金（勞保會自動算）。</div>
+          </div>
+          <div>
+            <label>預計壽命（歲）</label>
+            <input id="lifeExpectancy" type="number" min="0" step="1" value="90" />
+            <div class="small">退休到壽命之間的期間用來算缺口資產。</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休後投資報酬（年，名目）</label>
+            <input id="returnNominal" type="number" step="0.1" value="3.0" />
+            <div class="small">例：3.0 表示 3%（用來算缺口資產現值）。</div>
+          </div>
+          <div>
+            <label>退休前投資報酬（年，名目）</label>
+            <input id="returnPreNominal" type="number" step="0.1" value="3.0" />
+            <div class="small">用來算「從現在到退休每月要存多少」。</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button onclick="calcAll()">計算（勞保＋退休缺口）</button>
           <button class="secondary" onclick="loadExample()">帶入範例</button>
         </div>
 
@@ -141,7 +229,7 @@
         <div id="okBox" class="ok"></div>
 
         <p class="small">
-          ※ 教育用途：實際核付仍以勞保局資料為準。若你的投保薪資有空窗、不同工作、或非每月都有投保，請盡量貼上實際月資料，結果會更接近。
+          ※ 教育用途：勞保核付以勞保局為準。本工具以「你輸入的參數」推估退休缺口，適合用來做決策與比較不同情境。
         </p>
       </div>
 
@@ -154,7 +242,7 @@
   </div>
 
 <script>
-/** ========= 核心規則（依勞保局現行說明） =========
+/** ========= 勞保年金規則（你原本的核心） =========
  * 老年年金：兩式擇優
  * ① 平均月投保薪資 × 年資 × 0.775% + 3,000
  * ② 平均月投保薪資 × 年資 × 1.55%
@@ -163,219 +251,293 @@
  * 年資未滿1年按月比例；未滿30日者以1個月計
  */
 const RULES = {
-  // 法定請領年齡（依出生年次：46(含)以前=60、47=61、48=62、49=63、50=64、51(含)以後=65）
   legalAgeByBirthRoc: (roc) => {
     if (roc <= 46) return { years: 60, months: 0 };
     if (roc === 47) return { years: 61, months: 0 };
     if (roc === 48) return { years: 62, months: 0 };
     if (roc === 49) return { years: 63, months: 0 };
     if (roc === 50) return { years: 64, months: 0 };
-    return { years: 65, months: 0 }; // 51(含)以後
+    return { years: 65, months: 0 };
   },
   maxAdjYears: 5,
   adjPerYear: 0.04
 };
 
 function $(id){ return document.getElementById(id); }
-
-function clampInt(v){
-  if(!Number.isFinite(v)) return NaN;
-  return Math.max(0, Math.floor(v));
-}
-
+function clampInt(v){ if(!Number.isFinite(v)) return NaN; return Math.max(0, Math.floor(v)); }
 function parseMoneyStr(s){
   const cleaned = (s||"").toString().trim().replace(/[,，]/g,"");
   if(!cleaned) return NaN;
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : NaN;
 }
+function fmt(n){ try { return Number(n).toLocaleString("en-US"); } catch { return String(n); } }
+function showWarn(msg){ const w=$("warnBox"); if(!msg){w.style.display="none";w.textContent="";return;} w.style.display="block";w.textContent=msg; }
+function showOk(msg){ const o=$("okBox"); if(!msg){o.style.display="none";o.textContent="";return;} o.style.display="block";o.textContent=msg; }
+function hideOutput(){ $("output").style.display="none"; $("output").innerHTML=""; }
 
-function fmt(n){
-  try { return Number(n).toLocaleString("en-US"); } catch { return String(n); }
-}
+function ageToMonths(y,m){ return clampInt(y)*12 + clampInt(m); }
 
-function showWarn(msg){
-  const w = $("warnBox");
-  if(!msg){ w.style.display="none"; w.textContent=""; return; }
-  w.style.display="block"; w.textContent = msg;
-}
-function showOk(msg){
-  const o = $("okBox");
-  if(!msg){ o.style.display="none"; o.textContent=""; return; }
-  o.style.display="block"; o.textContent = msg;
-}
-function hideOutput(){
-  $("output").style.display="none";
-  $("output").innerHTML="";
+/** 出生年月日 -> 民國年次（只取「出生年」） */
+function birthDateToRocYear(birthDate){
+  // ROC = AD - 1911
+  return birthDate.getFullYear() - 1911;
 }
 
-function ageToMonths(y,m){
-  return clampInt(y)*12 + clampInt(m);
+/** 計算某人在 today 的年齡（月） */
+function calcAgeMonths(birthDate, today){
+  let months = (today.getFullYear() - birthDate.getFullYear()) * 12 + (today.getMonth() - birthDate.getMonth());
+  // 若今天日期 < 出生日日期，算未滿月，退1個月
+  if (today.getDate() < birthDate.getDate()) months -= 1;
+  return Math.max(0, months);
 }
 
-/** 提早/展延加減給：每年±4%（未滿1年按月比例），最多±20% */
+/** 由 birthDate + 退休年齡(月) -> 退休日期（以生日為基準） */
+function calcDateAtAge(birthDate, targetAgeMonths){
+  const d = new Date(birthDate.getTime());
+  // 先加月份
+  d.setMonth(d.getMonth() + targetAgeMonths);
+  return d;
+}
+
+/** 年資：年/月/天 -> 月（天>0 視為+1月） */
+function insToMonths(years, months, days){
+  const y=clampInt(years), m=clampInt(months), d=clampInt(days);
+  if([y,m,d].some(v => !Number.isFinite(v))) return NaN;
+  if(m>11 || d>30) return NaN;
+  const extraMonth = (d > 0) ? 1 : 0;
+  return y*12 + m + extraMonth;
+}
+
+/** 提早/展延係數 */
 function adjustFactor(legalMonths, claimMonths){
-  const diffMonths = claimMonths - legalMonths; // >0 展延, <0 提早
+  const diffMonths = claimMonths - legalMonths;
   const rawYears = diffMonths / 12;
   const cappedYears = Math.max(-RULES.maxAdjYears, Math.min(RULES.maxAdjYears, rawYears));
   const factor = 1 + cappedYears * RULES.adjPerYear;
   return { factor, diffMonths, rawYears, cappedYears };
 }
 
-/** 年資：年/月/天 -> 以「月」為最小單位（天>0 視為+1月） */
-function insToMonths(years, months, days){
-  const y = clampInt(years), m = clampInt(months), d = clampInt(days);
-  if([y,m,d].some(v => !Number.isFinite(v))) return NaN;
-  if(m > 11) return NaN;
-  if(d > 30) return NaN;
-  const extraMonth = (d > 0) ? 1 : 0; // 未滿30日，以1個月計（>0就+1）
-  return y*12 + m + extraMonth;
-}
-
-/** 解析投保薪資明細
- * 支援：
- * - 一行一個金額
- * - 或 YYYY-MM 金額 / YYYY/MM 金額
- */
+/** 解析投保薪資明細 */
 function parseSalaryLines(text){
   const lines = (text||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-
   const items = [];
   for(const line of lines){
-    // 允許：2024-01 45800 / 2024/01 45800 / 2024-01,45800
     const m = line.match(/^(\d{4})[\/\-](\d{1,2})[^\d]+([\d,，]+(\.\d+)?)$/);
     if(m){
-      const yyyy = Number(m[1]);
-      const mm = Number(m[2]);
-      const salary = parseMoneyStr(m[3]);
+      const yyyy=Number(m[1]), mm=Number(m[2]);
+      const salary=parseMoneyStr(m[3]);
       if(!Number.isFinite(yyyy) || !Number.isFinite(mm) || mm<1 || mm>12 || !Number.isFinite(salary) || salary<=0) continue;
-      // 用 yyyy*12+mm 做排序 key
       const key = yyyy*12 + mm;
-      items.push({ key, salary, raw: line });
+      items.push({ key, salary });
       continue;
     }
-
-    // 只填金額
-    const salary = parseMoneyStr(line);
-    if(Number.isFinite(salary) && salary>0){
-      items.push({ key: null, salary, raw: line });
-    }
+    const salary=parseMoneyStr(line);
+    if(Number.isFinite(salary) && salary>0) items.push({ key:null, salary });
   }
 
-  // 若有日期 key：依月份排序；同月重複保留最後一筆
-  const hasKey = items.some(x => x.key !== null);
+  const hasKey = items.some(x=>x.key!==null);
   if(hasKey){
     const map = new Map();
     for(const it of items){
-      if(it.key === null) continue; // 混用時，沒有日期的忽略（避免污染）
+      if(it.key===null) continue;
       map.set(it.key, it.salary);
     }
-    const arr = [...map.entries()].sort((a,b)=>a[0]-b[0]).map(([key,salary])=>({key,salary}));
-    return { mode:"dated", salaries: arr.map(x=>x.salary), count: arr.length };
+    const arr=[...map.entries()].sort((a,b)=>a[0]-b[0]).map(([key,salary])=>({key,salary}));
+    return { mode:"dated", salaries:arr.map(x=>x.salary), count:arr.length };
   }
-
-  // 無日期：以輸入順序視為時間序列
-  return { mode:"sequence", salaries: items.map(x=>x.salary), count: items.length };
+  return { mode:"sequence", salaries:items.map(x=>x.salary), count:items.length };
 }
 
-/** 平均月投保薪資：加保期間最高60個月平均；未滿5年(60個月)則用全部平均 */
+/** 平均月投保薪資：最高60個月平均；未滿60用全部平均 */
 function calcAvgTop60(salaries){
-  if(!salaries || salaries.length === 0) return { avg: NaN, used: [], rule: "" };
-
-  const n = salaries.length;
-  const rule = (n < 60)
-    ? "未滿5年：以實際投保期間平均"
-    : "最高60個月平均";
-
-  if(n < 60){
-    const sum = salaries.reduce((a,b)=>a+b,0);
-    return { avg: sum/n, used: salaries.slice(), rule };
+  if(!salaries || salaries.length===0) return { avg:NaN, rule:"" };
+  const n=salaries.length;
+  if(n<60){
+    const sum=salaries.reduce((a,b)=>a+b,0);
+    return { avg:sum/n, rule:"未滿5年：以實際投保期間平均" };
   }
-
-  // 取最高60個月
-  const sorted = salaries.slice().sort((a,b)=>b-a);
-  const top60 = sorted.slice(0,60);
-  const sum = top60.reduce((a,b)=>a+b,0);
-  return { avg: sum/60, used: top60, rule };
+  const sorted=salaries.slice().sort((a,b)=>b-a);
+  const top60=sorted.slice(0,60);
+  const sum=top60.reduce((a,b)=>a+b,0);
+  return { avg:sum/60, rule:"最高60個月平均" };
 }
 
-/** 老年年金：兩式擇優，並依加減給調整 */
+/** 老年年金：兩式擇優＋加減給 */
 function calcPension(avgSalary, insMonths, factor){
   const insYears = insMonths / 12;
-
-  // 基礎（未加減給）
   const base1 = avgSalary * insYears * 0.00775 + 3000;
   const base2 = avgSalary * insYears * 0.0155;
-
   const chosenBase = Math.max(base1, base2);
   const chosen = (base1 >= base2)
     ? "第1式：平均月投保薪資×年資×0.775%＋3,000"
     : "第2式：平均月投保薪資×年資×1.55%";
-
   const finalMonthly = Math.round(chosenBase * factor);
-
   return { base1, base2, chosenBase, chosen, finalMonthly, insYears };
 }
 
-/** 老年一次金（年資不足15年常用）
- * 給付金額 = 平均月投保薪資 × 給付月數
- * 給付月數（簡化版）：年資每滿1年發給1個月（不足1年按比例、未滿30日以1個月計）
- * ※ 注意：實務還有「逾60歲繼續工作者，逾60歲以後年資最多計5年」等細節（此處不做拆分，提醒即可）
- */
+/** 一次金（簡化估算） */
 function calcLumpSum(avgSalary, insMonths){
-  // 以月為單位：insMonths/12 個月（每年=1個月）
-  const benefitMonths = insMonths / 12;
+  const benefitMonths = insMonths / 12; // 每滿1年≈1個月
   const amount = Math.round(avgSalary * benefitMonths);
   return { benefitMonths, amount };
 }
 
-function calcAll(){
-  showWarn("");
-  showOk("");
-  hideOutput();
+/** ======== 退休缺口模型（完整、可理解、可落地） ========
+ * 1) 把「今天的每月生活費」用通膨推到退休當年（名目）
+ * 2) 退休當年起，每年支出也隨通膨成長（名目）
+ * 3) 退休收入：勞保年金（月）+ 其他每月收入（自填），假設同樣隨通膨調整（名目）
+ * 4) 以「退休後名目報酬」與通膨換算成「實質報酬」，計算退休時所需資產（PV at retirement）
+ * 5) 再用「退休前名目報酬」推算：從現在到退休每月需存多少（PMT）
+ */
+function realRate(nominalPct, inflationPct){
+  const r = (1 + nominalPct/100) / (1 + inflationPct/100) - 1;
+  return r;
+}
 
-  const roc = Number($("birthRoc").value);
+/** 退休時缺口資產（以退休時的「今天幣值」計算，用實質利率） */
+function pvOfRealAnnuityGap(monthlyGapTodayValue, years, realAnnual){
+  // 若 gap <=0，PV=0
+  if(monthlyGapTodayValue <= 0) return 0;
+  const n = Math.max(0, Math.floor(years*12));
+  if(n === 0) return 0;
+
+  const r = realAnnual / 12; // 實質月利率
+  if(Math.abs(r) < 1e-9){
+    return monthlyGapTodayValue * n;
+  }
+  // PV = PMT * (1 - (1+r)^-n)/r
+  return monthlyGapTodayValue * (1 - Math.pow(1+r, -n)) / r;
+}
+
+/** 退休前每月存款需求（以「今天幣值」計算，用實質利率） */
+function pmtToReachFV(fvTodayValue, years, realAnnual){
+  if(fvTodayValue <= 0) return 0;
+  const n = Math.max(0, Math.floor(years*12));
+  if(n === 0) return Infinity;
+
+  const r = realAnnual / 12;
+  if(Math.abs(r) < 1e-9){
+    return fvTodayValue / n;
+  }
+  // FV = PMT * ((1+r)^n - 1)/r  => PMT = FV * r / ((1+r)^n - 1)
+  return fvTodayValue * r / (Math.pow(1+r, n) - 1);
+}
+
+function calcAll(){
+  showWarn(""); showOk(""); hideOutput();
+
+  const today = new Date();
+  // 讓 date input 沒填時，給預設（避免 NaN）
+  if(!$("birthDate").value){
+    // 預設 1980-01-01（你可改）
+    $("birthDate").value = "1980-01-01";
+  }
+  const birthDate = new Date($("birthDate").value + "T00:00:00");
+
+  if(!(birthDate instanceof Date) || isNaN(birthDate.getTime())){
+    alert("請輸入有效的出生年月日");
+    return;
+  }
+
+  const retireY = clampInt(Number($("retireYears").value));
+  const retireM = clampInt(Number($("retireMonths").value));
+  if(!Number.isFinite(retireY) || !Number.isFinite(retireM) || retireM>11){
+    alert("請輸入有效的預計退休年齡（月份 0~11）");
+    return;
+  }
+
+  const insNowMonths = insToMonths(
+    Number($("insYearsNow").value),
+    Number($("insMonthsNow").value),
+    Number($("insDaysNow").value)
+  );
+  if(!Number.isFinite(insNowMonths) || insNowMonths<=0){
+    alert("請輸入有效的目前投保年資（需大於0）");
+    return;
+  }
+
+  const keepInsured = $("keepInsured").value === "yes";
+
   const claimY = clampInt(Number($("claimYears").value));
   const claimM = clampInt(Number($("claimMonths").value));
-  const insY = clampInt(Number($("insYears").value));
-  const insM = clampInt(Number($("insMonths").value));
-  const insD = clampInt(Number($("insDays").value));
-
-  if(!Number.isFinite(roc) || roc<=0){ alert("請輸入有效的出生年次（民國）"); return; }
-  if(!Number.isFinite(claimY) || !Number.isFinite(claimM) || claimM>11){ alert("請輸入有效的請領年齡（月份 0~11）"); return; }
-  if(!Number.isFinite(insY) || !Number.isFinite(insM) || !Number.isFinite(insD) || insM>11 || insD>30){
-    alert("請輸入有效的年資（月份 0~11、天數 0~30）");
+  if(!Number.isFinite(claimY) || !Number.isFinite(claimM) || claimM>11){
+    alert("請輸入有效的預計請領年齡（月份 0~11）");
     return;
   }
 
-  const insMonthsTotal = insToMonths(insY, insM, insD);
-  if(!Number.isFinite(insMonthsTotal) || insMonthsTotal<=0){
-    alert("年資需大於 0");
+  // 年齡推算
+  const ageNowMonths = calcAgeMonths(birthDate, today);
+  const ageNowYearsFloor = Math.floor(ageNowMonths/12);
+  const ageNowMonthsR = ageNowMonths % 12;
+
+  const retireAgeMonths = ageToMonths(retireY, retireM);
+  const retireDate = calcDateAtAge(birthDate, retireAgeMonths);
+
+  const monthsToRetire = Math.max(0, (retireDate.getFullYear()-today.getFullYear())*12 + (retireDate.getMonth()-today.getMonth())
+    + ((retireDate.getDate() >= today.getDate()) ? 0 : -1)
+  );
+  const yearsToRetire = monthsToRetire / 12;
+
+  if(retireAgeMonths <= ageNowMonths){
+    showWarn("你輸入的退休年齡 ≤ 目前年齡：到退休時間為 0。若你已退休，建議直接用退休後情境估算。");
+  }
+
+  // 退休時投保年資（月）
+  const insAtRetireMonths = keepInsured ? (insNowMonths + monthsToRetire) : insNowMonths;
+
+  // 薪資：明細 or 平均
+  const salaryMode = $("salaryMode").value;
+  const detail = parseSalaryLines($("salaryLines").value);
+  const avgSalaryInput = parseMoneyStr($("avgSalaryInput").value);
+
+  let avgSalary = NaN;
+  let avgRule = "";
+  let salaryInfo = "";
+
+  if(salaryMode === "avg"){
+    if(!Number.isFinite(avgSalaryInput) || avgSalaryInput<=0){
+      alert("你選擇強制用平均薪資，但平均月投保薪資未填或無效");
+      return;
+    }
+    avgSalary = avgSalaryInput;
+    avgRule = "使用你輸入的平均月投保薪資";
+    salaryInfo = "平均薪資模式";
+  } else if(salaryMode === "detail"){
+    if(!detail.count){
+      alert("你選擇強制用明細，但明細沒有有效資料");
+      return;
+    }
+    const avgRes = calcAvgTop60(detail.salaries);
+    avgSalary = avgRes.avg;
+    avgRule = avgRes.rule;
+    salaryInfo = `明細模式（${detail.count} 筆）`;
+  } else {
+    // auto
+    if(detail.count){
+      const avgRes = calcAvgTop60(detail.salaries);
+      avgSalary = avgRes.avg;
+      avgRule = avgRes.rule;
+      salaryInfo = `自動：採用明細（${detail.count} 筆）`;
+    } else {
+      if(!Number.isFinite(avgSalaryInput) || avgSalaryInput<=0){
+        alert("未貼明細時，請至少輸入「平均月投保薪資」");
+        return;
+      }
+      avgSalary = avgSalaryInput;
+      avgRule = "自動：無明細，使用你輸入的平均月投保薪資";
+      salaryInfo = "自動：平均薪資";
+    }
+  }
+
+  if(!Number.isFinite(avgSalary) || avgSalary<=0){
+    alert("投保薪資無法解析，請確認輸入");
     return;
   }
 
-  const salParsed = parseSalaryLines($("salaryLines").value);
-  if(!salParsed.count){
-    alert("請至少輸入 1 筆投保薪資明細");
-    return;
-  }
-
-  // 更真實：若你貼的月數 < 你填的年資月數，提醒（不強制）
-  if(salParsed.count < insMonthsTotal){
-    showWarn(`你貼的投保薪資月數（${salParsed.count}）小於你填的年資月數（${insMonthsTotal}）。若中間有空窗或未投保沒關係；但若其實每月都有投保，建議貼滿會更準。`);
-  }else{
-    showOk(`已讀取 ${salParsed.count} 筆投保薪資資料（${salParsed.mode==="dated" ? "依月份排序" : "依輸入順序"}）。`);
-  }
-
-  // 平均月投保薪資：最高60個月平均（或未滿60用全部平均）
-  const avgRes = calcAvgTop60(salParsed.salaries);
-  if(!Number.isFinite(avgRes.avg) || avgRes.avg<=0){
-    alert("投保薪資資料解析失敗，請確認每行為有效金額");
-    return;
-  }
-
-  // 法定請領年齡與加減給
-  const legal = RULES.legalAgeByBirthRoc(roc);
+  // 勞保法定年齡＆加減給係數
+  const rocBirthYear = birthDateToRocYear(birthDate);
+  const legal = RULES.legalAgeByBirthRoc(rocBirthYear);
   const legalMonths = ageToMonths(legal.years, legal.months);
   const claimMonthsTotal = ageToMonths(claimY, claimM);
   const adj = adjustFactor(legalMonths, claimMonthsTotal);
@@ -383,37 +545,76 @@ function calcAll(){
   const earlyTooMuch = (adj.diffMonths < -60);
   const lateTooMuch  = (adj.diffMonths >  60);
 
-  // 年金（需年資滿15年）
-  const eligiblePension = insMonthsTotal >= 15*12;
-
+  const eligiblePension = insAtRetireMonths >= 15*12;
   let pension = null;
   if(eligiblePension){
-    pension = calcPension(avgRes.avg, insMonthsTotal, adj.factor);
+    pension = calcPension(avgSalary, insAtRetireMonths, adj.factor);
   }
+  const lump = calcLumpSum(avgSalary, insAtRetireMonths);
 
-  // 一次金（任何年資都可試算）
-  const lump = calcLumpSum(avgRes.avg, insMonthsTotal);
+  // ====== 退休缺口 ======
+  const needMonthlyToday = parseMoneyStr($("needMonthlyToday").value);
+  const inflation = Number($("inflation").value);
+  const otherMonthlyIncome = parseMoneyStr($("otherMonthlyIncome").value) || 0;
+  const lifeExp = Number($("lifeExpectancy").value);
+  const rNominalPost = Number($("returnNominal").value);
+  const rNominalPre  = Number($("returnPreNominal").value);
 
-  // 顯示
-  const out = $("output");
-  out.style.display="block";
+  if(!Number.isFinite(needMonthlyToday) || needMonthlyToday<0){ alert("退休後每月目標生活費請輸入有效數字"); return; }
+  if(!Number.isFinite(inflation) || inflation<0){ alert("通膨請輸入有效數字"); return; }
+  if(!Number.isFinite(lifeExp) || lifeExp<=0){ alert("預計壽命請輸入有效數字"); return; }
+  if(!Number.isFinite(rNominalPost)){ alert("退休後投資報酬請輸入有效數字"); return; }
+  if(!Number.isFinite(rNominalPre)){ alert("退休前投資報酬請輸入有效數字"); return; }
+
+  // 退休年數
+  const retireYearsSpan = Math.max(0, lifeExp - retireY - retireM/12);
+
+  // 把「今天的生活費」推到退休當年的名目：needRetire = needToday*(1+inf)^yearsToRetire
+  const needMonthlyAtRetireNominal = needMonthlyToday * Math.pow(1 + inflation/100, yearsToRetire);
+
+  // 收入：勞保年金 + 其他每月收入（假設同樣會隨通膨，先用今天價值 → 退休名目）
+  const laborMonthlyAtRetire = eligiblePension ? pension.finalMonthly : 0;
+  const otherMonthlyAtRetireNominal = otherMonthlyIncome * Math.pow(1 + inflation/100, yearsToRetire);
+
+  // 退休當年名目缺口（每月）
+  const gapMonthlyAtRetireNominal = Math.max(0, needMonthlyAtRetireNominal - (laborMonthlyAtRetire + otherMonthlyAtRetireNominal));
+
+  // 用實質利率計算「以今天幣值」的缺口資產
+  const rRealPost = realRate(rNominalPost, inflation);
+  const rRealPre  = realRate(rNominalPre, inflation);
+
+  // 先把退休當年的名目缺口換回「今天價值」：gapToday = gapAtRetire / (1+inf)^yearsToRetire
+  const gapMonthlyTodayValue = gapMonthlyAtRetireNominal / Math.pow(1 + inflation/100, yearsToRetire);
+
+  const pvGapAtRetireTodayValue = pvOfRealAnnuityGap(gapMonthlyTodayValue, retireYearsSpan, rRealPost);
+  const pmtNeedTodayValue = pmtToReachFV(pvGapAtRetireTodayValue, yearsToRetire, rRealPre);
+
+  // 顯示用資訊
+  if(detail.count && detail.count < insAtRetireMonths){
+    showWarn(`你貼的投保薪資明細月數（${detail.count}）小於「預估到退休的總投保月數」（${insAtRetireMonths}）。這不一定錯（可能有空窗/未投保），但若你要更貼近勞保計算，建議貼更多實際月份資料。`);
+  }else{
+    showOk(`已完成推算：目前年齡約 ${ageNowYearsFloor}歲${ageNowMonthsR}月；距離退休約 ${yearsToRetire.toFixed(2)} 年；退休時投保年資約 ${(insAtRetireMonths/12).toFixed(2)} 年。`);
+  }
 
   const diffText = (adj.diffMonths === 0)
     ? "依法定年齡請領（不加減給）"
     : (adj.diffMonths > 0)
-      ? `展延 ${Math.abs(adj.diffMonths)} 個月（約 ${adj.rawYears.toFixed(2)} 年；上限採 ${adj.cappedYears.toFixed(2)} 年）`
-      : `提早 ${Math.abs(adj.diffMonths)} 個月（約 ${Math.abs(adj.rawYears).toFixed(2)} 年；上限採 ${Math.abs(adj.cappedYears).toFixed(2)} 年）`;
+      ? `展延 ${Math.abs(adj.diffMonths)} 個月（約 ${adj.rawYears.toFixed(2)} 年；封頂採 ${adj.cappedYears.toFixed(2)} 年）`
+      : `提早 ${Math.abs(adj.diffMonths)} 個月（約 ${Math.abs(adj.rawYears).toFixed(2)} 年；封頂採 ${Math.abs(adj.cappedYears).toFixed(2)} 年）`;
 
   const capWarn = (earlyTooMuch || lateTooMuch)
     ? `<div class="warn" style="display:block;margin-top:10px">
-         你輸入的請領年齡與法定年齡相差超過 5 年。依規定提早/展延最多 5 年（±20%），本工具已自動「封頂」計算。
+         你輸入的請領年齡與法定年齡相差超過 5 年。依規定提早/展延最多 5 年（±20%），本工具已自動封頂計算。
        </div>`
     : "";
 
+  const out = $("output");
+  out.style.display="block";
+
   const pensionBlock = eligiblePension ? `
-    <div style="font-weight:900;font-size:16px;margin-top:10px">老年年金（估算）</div>
+    <div style="font-weight:900;font-size:16px;margin-top:10px">A) 勞保老年年金（估算）</div>
     <div style="font-weight:900;font-size:18px;margin-top:6px">
-      預估每月可領：NT$ ${fmt(pension.finalMonthly)}
+      預估每月可領：NT$ ${fmt(laborMonthlyAtRetire)}
       <span class="muted" style="font-weight:600;font-size:12.5px">（採用：${pension.chosen}）</span>
     </div>
 
@@ -422,57 +623,96 @@ function calcAll(){
       <tr><td class="muted">第2式（未加減給）</td><td>NT$ ${fmt(Math.round(pension.base2))}</td></tr>
       <tr><td class="muted">擇優基礎金額（未加減給）</td><td>NT$ ${fmt(Math.round(pension.chosenBase))}</td></tr>
       <tr><td class="muted">提早/展延係數</td><td>× ${adj.factor.toFixed(4)}</td></tr>
-      <tr><td style="font-weight:900">加減給後月領</td><td style="font-weight:900">NT$ ${fmt(pension.finalMonthly)}</td></tr>
+      <tr><td style="font-weight:900">加減給後月領</td><td style="font-weight:900">NT$ ${fmt(laborMonthlyAtRetire)}</td></tr>
     </table>
   ` : `
     <div class="warn" style="display:block;margin-top:10px">
-      你填的勞保年資未滿 15 年：一般不符合「老年年金」請領條件；下面仍提供「老年一次金」估算。
+      退休時推估投保年資未滿 15 年：一般不符合「老年年金」條件；下面仍提供一次金估算，退休缺口會以「勞保年金=0」估算。
+    </div>
+  `;
+
+  const gapBlock = `
+    <div style="font-weight:900;font-size:16px;margin-top:14px">B) 退休缺口（你真正要的）</div>
+    <table class="table">
+      <tr><td class="muted">退休後目標生活費（今天價值）</td><td>NT$ ${fmt(Math.round(needMonthlyToday))} /月</td></tr>
+      <tr><td class="muted">推估退休當年目標生活費（名目）</td><td>NT$ ${fmt(Math.round(needMonthlyAtRetireNominal))} /月</td></tr>
+      <tr><td class="muted">退休當年勞保年金（名目）</td><td>NT$ ${fmt(Math.round(laborMonthlyAtRetire))} /月</td></tr>
+      <tr><td class="muted">退休當年其他收入（名目）</td><td>NT$ ${fmt(Math.round(otherMonthlyAtRetireNominal))} /月</td></tr>
+      <tr><td class="muted">退休當年每月缺口（名目）</td><td style="font-weight:900">NT$ ${fmt(Math.round(gapMonthlyAtRetireNominal))} /月</td></tr>
+      <tr><td class="muted">退休後期間（至 ${lifeExp} 歲）</td><td>${retireYearsSpan.toFixed(2)} 年</td></tr>
+      <tr><td class="muted">退休後實質報酬（已扣通膨）</td><td>${(rRealPost*100).toFixed(2)}%</td></tr>
+      <tr><td class="muted">退休時需準備資產（以今天價值）</td><td style="font-weight:900">NT$ ${fmt(Math.round(pvGapAtRetireTodayValue))}</td></tr>
+      <tr><td class="muted">距離退休時間</td><td>${yearsToRetire.toFixed(2)} 年</td></tr>
+      <tr><td class="muted">退休前實質報酬（已扣通膨）</td><td>${(rRealPre*100).toFixed(2)}%</td></tr>
+      <tr><td class="muted">為達成缺口資產：現在起每月需存（今天價值）</td><td style="font-weight:900">NT$ ${isFinite(pmtNeedTodayValue) ? fmt(Math.round(pmtNeedTodayValue)) : "—"} /月</td></tr>
+    </table>
+
+    <div class="small muted" style="margin-top:8px;">
+      說明：本工具用「實質利率」（名目報酬扣通膨）計算缺口資產，能避免把通膨算兩次。<br>
+      若你有「自提退休金、勞退、企業年金、房租、配偶年金」等，請填在「其他每月收入」。
     </div>
   `;
 
   out.innerHTML = `
-    <div style="font-weight:900;font-size:16px">關鍵參數（你這次的「真實基礎」）</div>
+    <div style="font-weight:900;font-size:16px">關鍵推算（自動）</div>
     <table class="table">
-      <tr><td class="muted">年資（換算）</td><td>${insY}年 ${insM}月 ${insD}天 → <b>${insMonthsTotal}</b> 個月（≈ ${(insMonthsTotal/12).toFixed(2)} 年）</td></tr>
-      <tr><td class="muted">投保薪資資料筆數</td><td>${salParsed.count} 個月</td></tr>
-      <tr><td class="muted">平均月投保薪資（計算規則）</td><td>${avgRes.rule}</td></tr>
-      <tr><td class="muted">平均月投保薪資（結果）</td><td><b>NT$ ${fmt(Math.round(avgRes.avg))}</b></td></tr>
-      <tr><td class="muted">法定請領年齡（依出生年次）</td><td>${legal.years}歲</td></tr>
+      <tr><td class="muted">目前日期</td><td>${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}</td></tr>
+      <tr><td class="muted">目前年齡（估）</td><td>${ageNowYearsFloor} 歲 ${ageNowMonthsR} 月</td></tr>
+      <tr><td class="muted">退休日期（估）</td><td>${retireDate.getFullYear()}-${String(retireDate.getMonth()+1).padStart(2,"0")}-${String(retireDate.getDate()).padStart(2,"0")}</td></tr>
+      <tr><td class="muted">距離退休</td><td>${monthsToRetire} 個月（≈ ${yearsToRetire.toFixed(2)} 年）</td></tr>
+      <tr><td class="muted">目前投保年資（月）</td><td>${insNowMonths}（≈ ${(insNowMonths/12).toFixed(2)} 年）</td></tr>
+      <tr><td class="muted">到退休是否持續投保</td><td>${keepInsured ? "是（年資會增加）" : "否（年資不增加）"}</td></tr>
+      <tr><td class="muted">退休時投保年資（估）</td><td><b>${insAtRetireMonths}</b>（≈ ${(insAtRetireMonths/12).toFixed(2)} 年）</td></tr>
+      <tr><td class="muted">投保薪資採用方式</td><td>${salaryInfo}</td></tr>
+      <tr><td class="muted">平均月投保薪資（結果）</td><td><b>NT$ ${fmt(Math.round(avgSalary))}</b> <span class="muted">（${avgRule}）</span></td></tr>
+      <tr><td class="muted">法定請領年齡（依出生年次 ROC ${rocBirthYear}）</td><td>${legal.years}歲</td></tr>
       <tr><td class="muted">你設定的請領年齡</td><td>${claimY}歲 ${claimM}月</td></tr>
       <tr><td class="muted">提早/展延判定</td><td>${diffText}</td></tr>
     </table>
 
     ${capWarn}
+
     ${pensionBlock}
 
-    <div style="font-weight:900;font-size:16px;margin-top:14px">老年一次金（估算）</div>
+    <div style="font-weight:900;font-size:16px;margin-top:14px">C) 勞保一次金（估算）</div>
     <div class="small muted">給付金額＝平均月投保薪資 × 給付月數（年資每滿1年約=1個月；不足按比例；未滿30日以1個月計）。</div>
     <table class="table">
       <tr><td class="muted">給付月數（估）</td><td>${lump.benefitMonths.toFixed(4)} 個月</td></tr>
       <tr><td style="font-weight:900">一次金金額（估）</td><td style="font-weight:900">NT$ ${fmt(lump.amount)}</td></tr>
     </table>
 
-    <div class="small muted" style="margin-top:10px">
-      提醒：一次金在實務還可能受「逾60歲繼續工作者，其逾60歲後年資最多計5年」等條件影響；本工具未拆分60歲前後年資，若你要更精準，可把60歲後年資另填並加上封頂規則（我也可以再幫你加）。
-    </div>
+    ${gapBlock}
   `;
 }
 
 function loadExample(){
-  // 範例：以序列方式貼 72 個月，讓工具會取最高60個月平均
+  // 範例：假設有 72 個月投保薪資序列，工具會取最高60個月平均
   const arr = [];
   for(let i=0;i<12;i++) arr.push("38200");
   for(let i=0;i<24;i++) arr.push("45800");
   for(let i=0;i<36;i++) arr.push("48000");
   $("salaryLines").value = arr.join("\n");
-  showOk("已帶入範例：72個月投保薪資序列（工具會自動取最高60個月平均）");
+
+  // 範例出生日期
+  $("birthDate").value = "1980-01-01";
+
+  showOk("已帶入範例：出生 1980-01-01 + 72個月投保薪資序列（會自動取最高60個月平均）");
   showWarn("");
   hideOutput();
 }
 
 (function init(){
-  // 預設：今天不需要日期，直接靠出生年次推法定年齡
-  ["birthRoc","claimYears","claimMonths","insYears","insMonths","insDays","salaryLines"].forEach(id=>{
+  // 預設出生日期：避免空白時使用者按計算會跳錯
+  if(!$("birthDate").value) $("birthDate").value = "1980-01-01";
+
+  [
+    "birthDate","retireYears","retireMonths",
+    "insYearsNow","insMonthsNow","insDaysNow","keepInsured",
+    "claimYears","claimMonths",
+    "avgSalaryInput","salaryMode","salaryLines",
+    "needMonthlyToday","inflation","otherMonthlyIncome",
+    "lifeExpectancy","returnNominal","returnPreNominal"
+  ].forEach(id=>{
     $(id).addEventListener("input", hideOutput);
     $(id).addEventListener("change", hideOutput);
   });
