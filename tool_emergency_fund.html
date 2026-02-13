@@ -4,50 +4,54 @@
   <meta charset="UTF-8" />
   <title>緊急預備金計算器｜智 Financial Path</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="用保守方式估算緊急預備金：必要支出、收入穩定度、家庭責任與固定負擔。" />
   <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333}
-    .nav{background:#fff;border-bottom:1px solid #e6e8ee;position:sticky;top:0}
-    .nav-inner{max-width:1000px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:700;color:#0b3d91;text-decoration:none}
-    .links a{margin-left:14px;color:#333;text-decoration:none}
-    .links a:hover{color:#0b3d91}
-    .container{max-width:1000px;margin:auto;padding:28px 20px}
-    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f7fa;color:#333;line-height:1.8}
+    .topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:10}
+    .topbar .inner{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .topbar a{color:#0b3d91;text-decoration:none;font-size:14px}
+    .container{max-width:1000px;margin:auto;padding:26px 20px 70px}
+    .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
     label{display:block;margin:12px 0 6px;font-size:14px;color:#444}
     input,select{width:100%;padding:10px;border:1px solid #d7dbe6;border-radius:10px;font-size:14px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{margin-top:14px;display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
-    .muted{font-size:13px;color:#666;line-height:1.5}
-    .result{margin-top:14px;padding:12px;border-radius:10px;background:#eef4ff;color:#0b3d91}
+    @media (max-width: 720px){ .row{grid-template-columns:1fr} }
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-block;background:#0b3d91;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
+    .btn.ghost{background:#fff;color:#0b3d91;border:1px solid #cfe0ff}
+    .muted{font-size:13px;color:#666;line-height:1.6}
+    .result{margin-top:14px;padding:12px;border-radius:12px;background:#eef4ff;color:#0b3d91}
+    .note{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #e6e8ee}
     footer{margin-top:18px;text-align:center;color:#777;font-size:13px}
   </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./index.html">智 Financial Path</a>
-    <div class="links">
-      <a href="./tools.html">工具</a>
-      <a href="./library.html">知識庫</a>
-      <a href="./path.html">學習路徑</a>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./tools.html">回工具</a>
     </div>
   </div>
-</nav>
+</div>
 
 <div class="container">
-  <h1>緊急預備金計算器</h1>
-  <p class="muted">用保守方式估算：先把「必要支出」抓出來，再決定要備幾個月。教育用途。</p>
+  <h1 style="color:#0b3d91;margin:0 0 10px;">緊急預備金計算器</h1>
+  <p class="muted">先把「生活不翻車」做穩，再談投資。這個工具用保守方式估算：必要支出 × 建議月份。</p>
 
   <div class="card">
     <div class="row">
       <div>
         <label>每月「必要支出」(NT$)</label>
         <input id="need" type="number" min="0" placeholder="例：65000" />
+        <div class="muted">必要支出＝房租/房貸、餐食、交通、保費、基本育兒/照護等「停不掉」的費用。</div>
       </div>
       <div>
-        <label>收入穩定度</label>
+        <label>收入穩定度（決定基本月份）</label>
         <select id="stability">
-          <option value="3">穩定（公職/大企業/固定薪）→ 建議 3–6 個月</option>
+          <option value="3">穩定（固定薪/高可預期）→ 建議 3–6 個月</option>
           <option value="6">普通（一般受薪/可被替代）→ 建議 6–9 個月</option>
           <option value="9">不穩（業務/接案/獎金比高）→ 建議 9–12 個月</option>
         </select>
@@ -72,10 +76,22 @@
       </div>
     </div>
 
-    <button class="btn" onclick="calc()">計算建議預備金</button>
+    <div class="btnrow">
+      <button class="btn" onclick="calc()">計算建議預備金</button>
+      <button class="btn ghost" onclick="fillExample()">填入範例</button>
+      <button class="btn ghost" onclick="clearAll()">清空</button>
+    </div>
 
     <div id="out" class="result" style="display:none;"></div>
-    <p class="muted" style="margin-top:10px;">小提醒：預備金建議放「高流動、低波動」工具（如活存/貨幣型/短期工具），不要拿來押波動資產。</p>
+
+    <div class="note">
+      <b>互動提醒（建議你真的做一次）：</b>
+      <ol class="muted" style="margin:8px 0 0;padding-left:18px;">
+        <li>把「必要支出」上調 10%（常見漏算：保費、育兒、交通、孝親）。</li>
+        <li>把月份上調 3 個月，看看你是否仍覺得可接受。</li>
+        <li>如果多 3 個月你就很痛苦，那代表你的現金流結構需要先修，而不是先投資。</li>
+      </ol>
+    </div>
   </div>
 
   <footer><a href="./disclaimer.html">免責聲明</a></footer>
@@ -93,7 +109,6 @@ function calc(){
   const family = n(document.getElementById('family').value);  // 0/1/2
   const fixed = n(document.getElementById('fixed').value);    // 0/1
 
-  // 區間：base 到 base+3（依責任與固定負擔上調）
   let minM = base;
   let maxM = base + 3;
 
@@ -101,7 +116,6 @@ function calc(){
   if(family === 2){ minM += 2; maxM += 2; }
   if(fixed === 1){ minM += 1; maxM += 1; }
 
-  // 上限封頂 18 個月避免過度保守
   if(maxM > 18) maxM = 18;
   if(minM > maxM) minM = maxM;
 
@@ -113,9 +127,25 @@ function calc(){
   out.innerHTML =
     `建議預備金：<b>${minM}～${maxM}</b> 個月<br>` +
     `金額區間：<b>NT$ ${fmt(minMoney)} ～ ${fmt(maxMoney)}</b><br>` +
-    `（以每月必要支出 NT$ ${fmt(need)} 計）`;
+    `（以每月必要支出 NT$ ${fmt(need)} 計）<br><br>` +
+    `<span style="font-size:13px;">放置建議：高流動、低波動（活存/貨幣型/短期工具）。不要用高波動資產當預備金。</span>`;
+}
+
+function fillExample(){
+  document.getElementById('need').value = 65000;
+  document.getElementById('stability').value = 6;
+  document.getElementById('family').value = 1;
+  document.getElementById('fixed').value = 1;
+  calc();
+}
+
+function clearAll(){
+  document.getElementById('need').value = '';
+  document.getElementById('stability').value = 3;
+  document.getElementById('family').value = 0;
+  document.getElementById('fixed').value = 0;
+  document.getElementById('out').style.display='none';
 }
 </script>
 </body>
 </html>
-
