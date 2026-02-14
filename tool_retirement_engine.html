@@ -2,9 +2,9 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
+<title>退休缺口專業工具（勞保制度精準＋資產模擬＋制度比較＋安全邊際）｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>退休缺口工具（制度校正＋資產模擬｜精簡版）｜智 Financial Path</title>
-<meta name="description" content="勞保制度校正（請領點認定）＋退休缺口資產模擬＋年金vs一次金比較＋安全邊際壓力測試（精簡好填版）。" />
+<meta name="description" content="勞保老年年金/老年一次金/一次請領老年給付（制度精準分流）＋退休缺口資產模擬（股息/債息/增值/房租/通膨/投入）＋年金vs一次請領打平年齡＋安全邊際壓力測試（市場-2%、通膨+1%）。教育用途。" />
 
 <style>
   :root{
@@ -12,49 +12,48 @@
     --line:#e6e8ee; --primary:#0b3d91; --soft:#eef4ff;
     --warnbg:#fff4e5; --warn:#8a5300;
     --goodbg:#ecfdf3; --good:#027a48;
-    --shadow:0 6px 16px rgba(0,0,0,.06);
+    --dangerbg:#fff4f4; --danger:#b42318;
   }
-  body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.6}
+  body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text)}
   a{color:var(--primary);text-decoration:none}
   a:hover{text-decoration:underline}
   .topbar{background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;position:sticky;top:0;z-index:10}
-  .topbar-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .topbar-inner{max-width:1160px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
   .left-nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .brand{font-size:13px;color:var(--muted)}
-  .container{max-width:1100px;margin:auto;padding:18px}
-  h1{margin:4px 0 10px;color:var(--primary);font-size:24px}
-  .sub{color:var(--muted);font-size:13.5px;margin:6px 0 14px}
+  .container{max-width:1160px;margin:auto;padding:22px 18px}
+  h1{margin:0 0 10px;color:var(--primary);font-size:26px}
+  .chip{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff;vertical-align:middle}
   .grid{display:grid;grid-template-columns:1fr;gap:14px}
-  @media (min-width:1020px){ .grid{grid-template-columns:1.15fr 0.85fr} }
-  .card{background:var(--card);padding:16px;border-radius:14px;box-shadow:var(--shadow)}
+  @media (min-width:980px){ .grid{grid-template-columns:1.15fr 0.85fr} }
+
+  .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:0 6px 16px rgba(0,0,0,.05)}
   .card h2{margin:0 0 10px;font-size:16px;color:#0f172a}
-  .hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+  .card h3{margin:10px 0 6px;font-size:14.5px;color:#0f172a}
   label{display:block;margin-top:10px;font-size:14px;color:#0f172a}
   input,select,textarea,button{
     width:100%;padding:10px 10px;margin-top:6px;border:1px solid #d7dbe6;border-radius:10px;
     box-sizing:border-box;background:#fff;font-size:14px;
   }
-  textarea{min-height:92px;resize:vertical;line-height:1.35}
-  input:focus,select:focus,textarea:focus{outline:2px solid #cfe0ff;border-color:#cfe0ff}
+  input[type="checkbox"]{width:auto;margin:0 8px 0 0;transform:translateY(1px)}
+  textarea{min-height:110px;resize:vertical;line-height:1.35}
   .row{display:flex;gap:10px;flex-wrap:wrap}
   .row > *{flex:1;min-width:160px}
-  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  button{background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:900}
+  .hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+  button{margin-top:14px;background:var(--primary);color:#fff;border:0;cursor:pointer;font-weight:900}
   button.secondary{background:#334155}
-  button.ghost{background:#fff;color:var(--primary);border:1px solid #cfe0ff}
-  button:hover{opacity:.92}
-  .warn,.ok{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45}
+  .warn,.ok,.danger{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45}
   .warn{background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5}
   .ok{background:var(--goodbg);color:var(--good);border:1px solid #b7f0cc}
-  .small{font-size:12.8px;color:var(--muted);line-height:1.55;margin-top:10px}
-  .chip{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5ff;color:var(--primary);border:1px solid #dbe7ff}
+  .danger{background:var(--dangerbg);color:var(--danger);border:1px solid #ffd2d2}
+  .small{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:10px}
   .result{display:none}
   .kpi{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
   @media (min-width:980px){ .kpi{grid-template-columns:1fr 1fr} }
   .kpi-box{border:1px solid #dbe7ff;background:var(--soft);border-radius:12px;padding:12px}
   .kpi-title{font-size:12px;color:var(--muted);margin-bottom:6px}
   .kpi-value{font-size:18px;font-weight:900;color:var(--primary)}
-  .kpi-sub{font-size:12.8px;color:var(--muted);margin-top:6px;line-height:1.55}
+  .kpi-sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
   details{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
   summary{cursor:pointer;padding:12px 12px;font-weight:900;color:#0f172a}
   details .inner{padding:0 12px 12px}
@@ -63,9 +62,9 @@
   .table td:last-child{text-align:right}
   .muted{color:var(--muted)}
   .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
-  .badge{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#334155}
-  .badge.ok{border-color:#b7f0cc;background:#ecfdf3;color:#027a48}
-  .badge.no{border-color:#ffd6d6;background:#fff4f4;color:#b42318}
+  .pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#0f172a}
+  .twocol{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:980px){ .twocol{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 
@@ -81,15 +80,12 @@
   </div>
 
   <div class="container">
-    <h1>退休缺口工具 <span class="chip">制度校正（請領點）＋資產模擬（精簡好填）</span></h1>
-    <div class="sub">
-      這版刻意「不複雜」：預設只算 <b>年金 vs 老年一次金</b>；「一次請領老年給付」放在進階折疊區，想算再開。
-    </div>
+    <h1>退休缺口專業工具 <span class="chip">制度精準＋資產模擬＋制度比較＋安全邊際</span></h1>
 
     <div class="grid">
       <!-- LEFT INPUT -->
       <div class="card">
-        <h2>Step 1｜三個關鍵欄位（就能算）</h2>
+        <h2>Step 1｜基本資料</h2>
 
         <div class="row">
           <div>
@@ -97,71 +93,82 @@
             <input id="birthDate" type="date" />
           </div>
           <div>
+            <label>性別（影響一次請領條件之一：女性55歲）</label>
+            <select id="gender">
+              <option value="male" selected>男性</option>
+              <option value="female">女性</option>
+            </select>
+          </div>
+          <div>
+            <label>預計壽命</label>
+            <input id="lifeExpectancy" type="number" min="60" step="1" value="90" />
+            <div class="small">用來判斷「撐多久」</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
             <label>預計退休年齡</label>
             <div class="row">
-              <div><input id="retireYears" type="number" min="0" step="1" value="65" /><div class="small">歲</div></div>
+              <div><input id="retireYears" type="number" min="40" step="1" value="65" /><div class="small">歲</div></div>
               <div><input id="retireMonths" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
             </div>
           </div>
           <div>
-            <label>預計請領年齡（年金/一次金的起算點）</label>
+            <label>預計請領年齡（年金/一次金/一次請領）</label>
             <div class="row">
-              <div><input id="claimYears" type="number" min="0" step="1" value="65" /><div class="small">歲</div></div>
+              <div><input id="claimYears" type="number" min="50" step="1" value="65" /><div class="small">歲</div></div>
               <div><input id="claimMonths" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
             </div>
-            <div class="small">重點：制度/金額都以「請領年齡」認定（不是退休年齡）。</div>
+          </div>
+          <div>
+            <label>到退休是否持續投保？</label>
+            <select id="keepInsured">
+              <option value="yes" selected>是：一直投保到退休</option>
+              <option value="no">否：用目前年資（不再增加）</option>
+            </select>
           </div>
         </div>
 
-        <label>目前勞保年資（未滿30日以1個月計）</label>
+        <label>目前投保年資（未滿30日以1個月計）</label>
         <div class="row">
           <div><input id="insYearsNow" type="number" min="0" step="1" value="30" /><div class="small">年</div></div>
           <div><input id="insMonthsNow" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
           <div><input id="insDaysNow" type="number" min="0" max="30" step="1" value="0" /><div class="small">天（>0 視為 +1月）</div></div>
         </div>
 
-        <div class="row">
-          <div>
-            <label>到請領前是否持續投保？</label>
-            <select id="keepInsured">
-              <option value="yes" selected>是：一直投保到請領</option>
-              <option value="no">否：用目前年資（不再增加）</option>
-            </select>
-          </div>
-          <div>
-            <label>預計壽命（用來看撐不撐得住）</label>
-            <input id="lifeExpectancy" type="number" min="1" step="1" value="90" />
-          </div>
-        </div>
-
         <hr class="hr" />
 
-        <h2>Step 2｜平均月投保薪資（簡化）</h2>
+        <h2>Step 2｜勞保（制度精準分流）</h2>
         <div class="small">
-          精簡版預設你只填一個數字（大多數人用得到）。<br/>
-          若你想更準：可在下方貼投保薪資明細，系統會自動算「最高60月平均」與「最後36月平均」。
+          這頁把<strong>三種制度</strong>切清楚：<br>
+          ① 老年年金（年資≥15年等）　② 老年一次金（年資<15年）　③ 一次請領老年給付（僅限<strong>98年以前有年資</strong>者且符合條件，核付後不得變更）。
         </div>
+
+        <label style="margin-top:12px;">
+          <input type="checkbox" id="hasPre98" />
+          98年以前曾有勞保年資（是否可出現「一次請領」選項的關鍵）
+        </label>
 
         <div class="row">
           <div>
-            <label>平均月投保薪資（不貼明細時用；建議填你常見的那個級距）</label>
-            <input id="avgSalarySimple" type="number" min="0" step="100" placeholder="例：45800" />
+            <label>年金平均月投保薪資（最高60月平均）</label>
+            <input id="avgSalaryPension" type="number" min="0" step="100" placeholder="例：45800" />
           </div>
           <div>
-            <label>首次投保日期（用來判斷是否 98/01/01 前已有年資）</label>
-            <input id="firstInsuredDate" type="date" />
-            <div class="small">不確定可留空→系統會保守視為「98後」避免誤判一次請領。</div>
+            <label>一次請領平均月投保薪資（退保當月起前3年＝36月平均）</label>
+            <input id="avgSalaryLump36" type="number" min="0" step="100" placeholder="例：45800" />
           </div>
         </div>
 
         <details>
-          <summary>進階（可不填）｜貼投保薪資明細：自動算 60月最高平均＋36月最後平均</summary>
+          <summary>進階：貼投保薪資明細（自動算 60月最高平均＋36月最近平均）</summary>
           <div class="inner">
             <div class="small">
-              格式：<span class="mono">YYYY-MM 金額</span>（推薦）或只貼金額（需依時間順序）。<br/>
-              年金/一次金取<strong>最高60筆</strong>；一次請領取<strong>最後36筆</strong>。
+              格式：<span class="mono">YYYY-MM 金額</span> 或只貼金額（依時間順序）。<br/>
+              年金會取<strong>最高60筆</strong>；一次請領/一次金會取<strong>最後36筆</strong>（若不足則用實際筆數平均）。
             </div>
-            <label>投保薪資明細</label>
+            <label>投保薪資明細（可留空；有貼就優先使用）</label>
             <textarea id="salaryLines" placeholder="例：
 2024-01 45800
 2024-02 45800
@@ -169,13 +176,66 @@
           </div>
         </details>
 
+        <details>
+          <summary>進階：一次請領條件所需資訊（用於「自動判斷」）</summary>
+          <div class="inner">
+            <div class="small">
+              ※ 一次請領老年給付：你必須「98年前有年資」且符合條件之一，且通常需離職退保。<br>
+              條件（你提供的版本）：<br>
+              (1) 年資≥1年，年滿60（女性55）退職<br>
+              (2) 年資≥15年，年滿55退職<br>
+              (3) 同一投保單位年資≥25年退職<br>
+              (4) 年資≥25年，年滿50退職<br>
+              (5) 特殊性質工作年資≥5年，年滿55退職
+            </div>
+
+            <label style="margin-top:10px;">
+              <input type="checkbox" id="isRetiredOut" />
+              我已離職退保（或預計請領時會離職退保）
+            </label>
+
+            <div class="row">
+              <div>
+                <label>同一投保單位年資（年）</label>
+                <input id="sameUnitYears" type="number" min="0" step="1" value="0" />
+              </div>
+              <div>
+                <label>特殊性質工作年資（年）</label>
+                <input id="specialWorkYears" type="number" min="0" step="1" value="0" />
+              </div>
+              <div>
+                <label>（年金）國民年金年資（年）（選填：用於「勞保<15年但合計≥15年」的65歲選擇）</label>
+                <input id="natPensionYears" type="number" min="0" step="1" value="0" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>60歲後加保年資（最多5年，影響一次請領上限50月）</label>
+                <div class="row">
+                  <div><input id="insAfter60Years" type="number" min="0" step="1" value="0" /><div class="small">年</div></div>
+                  <div><input id="insAfter60Months" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
+                </div>
+              </div>
+              <div>
+                <label>一次請領是否在未滿60歲請領？</label>
+                <select id="claimBefore60">
+                  <option value="no" selected>否（60歲或之後）</option>
+                  <option value="yes">是（未滿60歲）</option>
+                </select>
+                <div class="small">未滿60歲：上限45月；60歲後最多加計5年，合併上限50月。</div>
+              </div>
+            </div>
+          </div>
+        </details>
+
         <hr class="hr" />
 
-        <h2>Step 3｜退休缺口模擬（精簡版：少填也能跑）</h2>
+        <h2>Step 3｜資產模擬（缺口仍保留：股息/債息/增值＋房租＋投入）</h2>
 
         <div class="row">
           <div>
-            <label>目前可投資資產（本金）</label>
+            <label>現在投資總額（資產池本金）</label>
             <input id="assetNow" type="number" min="0" step="10000" value="0" />
           </div>
           <div>
@@ -186,16 +246,75 @@
 
         <div class="row">
           <div>
-            <label>退休前年化報酬率（%）</label>
-            <input id="returnPre" type="number" step="0.1" value="3.0" />
+            <label>退休前年化股息 %（現金流）</label>
+            <input id="divPre" type="number" step="0.1" value="0" />
           </div>
           <div>
-            <label>退休後年化報酬率（%）</label>
-            <input id="returnPost" type="number" step="0.1" value="2.0" />
+            <label>退休前年化債息 %（現金流）</label>
+            <input id="bondPre" type="number" step="0.1" value="0" />
           </div>
           <div>
-            <label>預期通膨（年%）</label>
-            <input id="inflation" type="number" step="0.1" value="2.0" />
+            <label>退休前年化增值 %（資產成長）</label>
+            <input id="growthPre" type="number" step="0.1" value="0" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休前：股息/債息是否再投入？</label>
+            <select id="reinvestPre">
+              <option value="yes" selected>是：股息/債息再投入資產池</option>
+              <option value="no">否：股息/債息不投入（累積成準備金）</option>
+            </select>
+          </div>
+          <div>
+            <label>退休後：股息/債息用途</label>
+            <select id="reinvestPost">
+              <option value="spend" selected>拿來生活費（抵缺口）</option>
+              <option value="reinvest">再投入（不抵生活費）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休後年化股息 %</label>
+            <input id="divPost" type="number" step="0.1" value="0" />
+          </div>
+          <div>
+            <label>退休後年化債息 %</label>
+            <input id="bondPost" type="number" step="0.1" value="0" />
+          </div>
+          <div>
+            <label>退休後年化增值 %</label>
+            <input id="growthPost" type="number" step="0.1" value="0" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>房租收入（選填，固定月額）</label>
+            <input id="rentMonthly" type="number" min="0" step="1000" value="0" />
+            <div class="small">房租用「月額」，不走%，符合你要的模式。</div>
+          </div>
+          <div>
+            <label>退休後是否仍每月投入？</label>
+            <select id="postContribMode">
+              <option value="no" selected>否：退休後不再投入</option>
+              <option value="yes">是：退休後仍每月投入（下方填金額）</option>
+            </select>
+            <div class="small">可用來模擬「半退休」或「持續工作」。</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>退休後每月投入（若有）</label>
+            <input id="postContribMonthly" type="number" min="0" step="1000" value="0" />
+          </div>
+          <div>
+            <label>退休後其他每月收入（不含勞保/股息債息/房租）</label>
+            <input id="otherIncomeMonthly" type="number" min="0" step="1000" value="0" />
           </div>
         </div>
 
@@ -205,88 +324,85 @@
             <input id="needMonthlyToday" type="number" min="0" step="1000" value="80000" />
           </div>
           <div>
-            <label>退休後其他每月收入（不含勞保；例：兼職/年金/補助）</label>
-            <input id="otherIncomeMonthly" type="number" min="0" step="1000" value="0" />
-          </div>
-          <div>
-            <label>房租收入（每月固定；選填）</label>
-            <input id="rentMonthly" type="number" min="0" step="1000" value="0" />
+            <label>預期通膨（年%）</label>
+            <input id="inflation" type="number" min="0" step="0.1" value="2.0" />
           </div>
         </div>
 
-        <details>
-          <summary>進階（可不填）｜一次請領老年給付試算（98前才可能）</summary>
-          <div class="inner">
-            <div class="small">
-              這是「你有 98/01/01 前勞保年資」才可能選的選項；而且核付後通常不得變更。<br/>
-              不想填就不要算，預設以「年金 vs 老年一次金」就夠做決策。
-            </div>
-            <label>你想要試算一次請領嗎？</label>
-            <select id="wantOneTime">
-              <option value="no" selected>否（不顯示一次請領）</option>
-              <option value="yes">是（我有98前年資，想試算看看）</option>
-            </select>
+        <hr class="hr" />
 
-            <div class="row">
-              <div>
-                <label>（一次請領用）60歲後加保年資（不確定就填0）</label>
-                <div class="row">
-                  <div><input id="insAfter60Years" type="number" min="0" step="1" value="0" /><div class="small">年</div></div>
-                  <div><input id="insAfter60Months" type="number" min="0" max="11" step="1" value="0" /><div class="small">月</div></div>
-                </div>
-                <div class="small">若你不想研究，填0即可（系統仍能算大概）。</div>
-              </div>
-              <div>
-                <label>（一次請領用）未滿60歲就請領？</label>
-                <select id="claimBefore60">
-                  <option value="no" selected>否（60歲或之後）</option>
-                  <option value="yes">是（未滿60歲）</option>
-                </select>
-              </div>
-            </div>
+        <h2>Level 2｜安全邊際模型（壓力測試）</h2>
+        <div class="small">
+          這不是「另外一套工具」，而是用同一套模型改假設：<br>
+          <span class="pill">市場回報 -2%</span>、<span class="pill">通膨 +1%</span>，看<strong>撐多久</strong>與<strong>缺口翻不翻</strong>。
+        </div>
 
-            <label>（一次請領資格）你是否「確認自己符合一次請領條件」？</label>
-            <select id="oneTimeEligibleConfirm">
-              <option value="no" selected>不確定（只顯示保守提示，不直接判定符合）</option>
-              <option value="yes">我確定符合（我已查過勞保局條件）</option>
+        <div class="row">
+          <div>
+            <label>壓力測試情境</label>
+            <select id="stressScenario">
+              <option value="base" selected>基準（不調整）</option>
+              <option value="mkt">市場回報 -2%（退休前後「增值%」都 -2%）</option>
+              <option value="inf">通膨 +1%</option>
+              <option value="both">市場回報 -2% + 通膨 +1%</option>
             </select>
-            <div class="small">為了避免誤判，若你選「不確定」，系統不會把一次請領當成可用方案，只會顯示試算參考。</div>
           </div>
-        </details>
+          <div>
+            <label>年金 vs 一次請領比較：折現率（年%）</label>
+            <input id="discountRate" type="number" min="0" step="0.1" value="2.0" />
+            <div class="small">用於「更專業」的打平計算（未填也可用簡單打平）。</div>
+          </div>
+        </div>
 
-        <div class="btnrow">
-          <button onclick="calcAll()">計算（制度＋模擬＋安全邊際）</button>
+        <div class="row">
+          <button onclick="calcAll()">計算（制度＋模擬＋差額＋比較＋壓力）</button>
           <button class="secondary" onclick="loadExample()">帶入範例</button>
-          <button class="ghost" onclick="resetMsgs()">清除提示</button>
         </div>
 
         <div id="warnBox" class="warn"></div>
+        <div id="dangerBox" class="danger"></div>
         <div id="okBox" class="ok"></div>
 
         <p class="small">
-          ※ 教育用途：實際核付以勞保局為準；此工具重點是「把時點改正（以請領點）＋情境模擬」。
+          ※ 教育用途：勞保實際核付以勞保局為準。一次請領屬「選擇制」，核付後一般不得變更。
         </p>
       </div>
 
       <!-- RIGHT OUTPUT -->
       <div class="card">
-        <h2>結果</h2>
+        <h2>結果（清晰＋詳細）</h2>
         <div id="output" class="result"></div>
       </div>
     </div>
   </div>
 
 <script>
-/* ===================== 核心制度：精簡且保守 =====================
-- 時點校正：所有「資格/年資/一次金入帳/年金開始」都以「請領年齡」為準
-- 預設方案：年金 vs 老年一次金（最常用、最不會誤導）
-- 一次請領：放進階，且預設不把它當“可用方案”除非使用者自行確認
-=============================================================== */
-
-/* ---------- 常數 ---------- */
-const DATE_98 = new Date("2009-01-01T00:00:00"); // 98/01/01
+/* ===================== 制度規則（依你提供的規則文字整理） =====================
+A. 老年年金給付：符合其一
+  (1) 年滿60歲，保險年資合計滿15年
+  (2) 特殊性質工作合計滿15年，年滿55歲
+  (3) 勞保年資未滿15年，但併計國民年金年資滿15年，年滿65歲得選擇請領
+B. 老年一次金給付：
+  年滿60歲，保險年資合計未滿15年
+C. 一次請領老年給付（選擇制）：
+  98年1月1日前有保險年資者，且符合條件之一（核付後不得變更）
+    (1) 年資≥1年，年滿60或女性55退職
+    (2) 年資≥15年，年滿55退職
+    (3) 同一投保單位年資≥25年退職
+    (4) 年資≥25年，年滿50退職
+    (5) 特殊性質工作年資≥5年，年滿55退職
+年金計算：兩式擇優
+  (1) 平均月投保薪資×年資×0.775% + 3000
+  (2) 平均月投保薪資×年資×1.55%
+提早/展延：每年±4%，最多±20%，未滿1年按月比例
+平均薪資：年金=最高60月平均；一次請領=退保當月起前3年（36月）平均
+年資月化：未滿30日以1個月計；年資不足1年按月比例計
+一次請領給付月數：每滿1年1月；超過15年部分每滿1年2月；上限45月
+  60歲後最多加計5年，合併上限50月；若未滿60歲請領，上限45月
+老年一次金給付月數：每滿1年1月（本工具以月比例計）
+*/
 const RULES = {
-  // 依出生年次(民國)法定請領年齡：46含以前60、47=61、48=62、49=63、50=64、51含以後65
+  // 你原本用「出生年次（民國）」推法定請領年齡（常見表）
   legalAgeByBirthRoc: (roc) => {
     if (roc <= 46) return { years: 60, months: 0 };
     if (roc === 47) return { years: 61, months: 0 };
@@ -303,13 +419,12 @@ function $(id){ return document.getElementById(id); }
 function fmt(n){ try { return Number(n).toLocaleString("en-US"); } catch { return String(n); } }
 function money(v){ const n = Number(String(v||"").replace(/[,，\s]/g,"")); return Number.isFinite(n) ? n : NaN; }
 function clampInt(v){ if(!Number.isFinite(v)) return NaN; return Math.max(0, Math.floor(v)); }
+
 function showWarn(msg){ const w=$("warnBox"); if(!msg){w.style.display="none";w.textContent="";return;} w.style.display="block"; w.textContent=msg; }
+function showDanger(msg){ const d=$("dangerBox"); if(!msg){d.style.display="none";d.textContent="";return;} d.style.display="block"; d.textContent=msg; }
 function showOk(msg){ const o=$("okBox"); if(!msg){o.style.display="none";o.textContent="";return;} o.style.display="block"; o.textContent=msg; }
 function hideOutput(){ $("output").style.display="none"; $("output").innerHTML=""; }
-function resetMsgs(){ showWarn(""); showOk(""); }
-function round2(x){ return Math.round(x * 100) / 100; }
 
-/* ---------- 年齡/日期/年資 ---------- */
 function ageToMonths(y,m){ return clampInt(y)*12 + clampInt(m); }
 function birthDateToRocYear(d){ return d.getFullYear() - 1911; }
 
@@ -323,9 +438,9 @@ function calcDateAtAge(birthDate, targetAgeMonths){
   d.setMonth(d.getMonth() + targetAgeMonths);
   return d;
 }
-function monthsBetween(fromDate, toDate){
-  let m = (toDate.getFullYear()-fromDate.getFullYear())*12 + (toDate.getMonth()-fromDate.getMonth());
-  if (toDate.getDate() < fromDate.getDate()) m -= 1;
+function monthsBetween(today, future){
+  let m = (future.getFullYear()-today.getFullYear())*12 + (future.getMonth()-today.getMonth());
+  if (future.getDate() < today.getDate()) m -= 1;
   return Math.max(0, m);
 }
 function insToMonths(years, months, days){
@@ -335,19 +450,15 @@ function insToMonths(years, months, days){
   const extraMonth = (d > 0) ? 1 : 0;
   return y*12 + m + extraMonth;
 }
-
-/* ---------- 98前後判斷（保守） ---------- */
-function isPre98(){
-  const dStr = ($("firstInsuredDate").value || "").trim();
-  if(dStr){
-    const d = new Date(dStr + "T00:00:00");
-    if(!isNaN(d.getTime())) return d < DATE_98;
-  }
-  // 沒填日期 → 保守視為 98後，避免誤判一次請領
-  return false;
+function adjustFactor(legalMonths, claimMonths){
+  const diffMonths = claimMonths - legalMonths; // >0展延 <0提早
+  const rawYears = diffMonths / 12;
+  const cappedYears = Math.max(-RULES.maxAdjYears, Math.min(RULES.maxAdjYears, rawYears));
+  const factor = 1 + cappedYears * RULES.adjPerYear;
+  return { factor, diffMonths, rawYears, cappedYears };
 }
 
-/* ---------- 薪資明細（可選） ---------- */
+/* ---------- 薪資明細 ---------- */
 function parseSalaryLines(text){
   const lines = (text||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
   const dated = [];
@@ -366,7 +477,7 @@ function parseSalaryLines(text){
   }
   if(dated.length){
     const map=new Map();
-    for(const it of dated) map.set(it.key, it.salary);
+    for(const it of dated) map.set(it.key, it.salary); // 同月取最後一筆
     const arr=[...map.entries()].sort((a,b)=>a[0]-b[0]).map(([k,s])=>s);
     return { mode:"dated", salaries: arr, count: arr.length };
   }
@@ -377,162 +488,219 @@ function avgTop60(salaries){
   const n=salaries.length;
   if(n<60){
     const sum=salaries.reduce((a,b)=>a+b,0);
-    return { avg: sum/n, rule:"未滿60個月：用實際平均" };
+    return { avg: sum/n, rule:"未滿60個月：用實際期間平均（年金）" };
   }
   const top = salaries.slice().sort((a,b)=>b-a).slice(0,60);
   const sum=top.reduce((a,b)=>a+b,0);
-  return { avg: sum/60, rule:"最高60個月平均" };
+  return { avg: sum/60, rule:"最高60個月平均（年金）" };
 }
 function avgLast36(salaries){
   if(!salaries || salaries.length===0) return { avg:NaN, rule:"" };
   const n=salaries.length;
   const used = (n<=36) ? salaries.slice() : salaries.slice(n-36);
   const sum=used.reduce((a,b)=>a+b,0);
-  return { avg: sum/used.length, rule:(n<36) ? "未滿36個月：用實際平均" : "最後36個月平均" };
+  return { avg: sum/used.length, rule:(n<36) ? "未滿36個月：用實際期間平均（36月）" : "最近36個月平均（36月）" };
 }
 
-/* ---------- 提早/展延係數 ---------- */
-function adjustFactor(legalMonths, claimMonths){
-  const diffMonths = claimMonths - legalMonths;
-  const rawYears = diffMonths / 12;
-  const cappedYears = Math.max(-RULES.maxAdjYears, Math.min(RULES.maxAdjYears, rawYears));
-  const factor = 1 + cappedYears * RULES.adjPerYear;
-  return { factor, diffMonths, rawYears, cappedYears };
-}
-
-/* ===================== 制度計算（精簡） ===================== */
-
-/* 年金：兩式擇優 */
-function calcPension(avgSalary60, insMonths, factor){
-  const insYears = insMonths / 12; // 用月比例
-  const base1 = avgSalary60 * insYears * 0.00775 + 3000;
-  const base2 = avgSalary60 * insYears * 0.0155;
+/* ---------- 年金計算：兩式擇優 + 提早/展延 ---------- */
+function calcPension(avgSalary, insMonths, factor){
+  const insYears = insMonths / 12;
+  const base1 = avgSalary * insYears * 0.00775 + 3000;
+  const base2 = avgSalary * insYears * 0.0155;
   const chosenBase = Math.max(base1, base2);
-  const chosen = (base1 >= base2) ? "式1（0.775%×年資 + 3000）" : "式2（1.55%×年資）";
+  const chosen = (base1 >= base2) ? "式1（0.775%×年資＋3000）" : "式2（1.55%×年資）";
   const finalMonthly = Math.round(chosenBase * factor);
   return { base1, base2, chosenBase, chosen, finalMonthly };
 }
 
-/* 老年一次金：年資<15年才是主情境 */
-function calcOldAgeLump60(avgSalary60, insMonthsTotal, after60MonthsInput){
-  const total = Math.max(0, insMonthsTotal);
-  const after60 = Math.min(Math.max(0, after60MonthsInput || 0), 60, total);
-  const pre60 = Math.max(0, total - after60);
-  const benefitMonths = round2((pre60 + after60) / 12);
-  const amount = Math.round(avgSalary60 * benefitMonths);
-  return { benefitMonths, amount, capAfter60Months: 60 };
+/* ---------- 老年一次金（年資<15年，月比例） ---------- */
+function calcOldAgeLumpSum(avg60Salary, insMonths){
+  const benefitMonths = insMonths / 12; // 用月比例更精準
+  const amount = avg60Salary * benefitMonths;
+  return { benefitMonths, amount: Math.round(amount) };
 }
 
-/* 一次請領（進階） */
-function calcOneTimeOldAgeLump36(avgSalary36, insMonthsTotal, after60MonthsInput, claimBefore60){
-  const total = Math.max(0, insMonthsTotal);
-  const after60Raw = claimBefore60 ? 0 : Math.max(0, after60MonthsInput || 0);
-  const after60 = Math.min(after60Raw, 60, total);
-  const pre60 = Math.max(0, total - after60);
+/* ---------- 一次請領老年給付（98年前有年資者） ---------- */
+function calcOneTimeClaim(avg36Salary, insMonthsTotal, after60MonthsInput, claimBefore60){
+  const after60MonthsCapped = Math.min(Math.max(0, after60MonthsInput), 60); // 最多5年
+  const after60Months = claimBefore60 ? 0 : after60MonthsCapped;
 
-  const pre60Years = pre60 / 12;
+  let pre60Months = Math.max(0, insMonthsTotal - after60Months);
+
+  const pre60Years = pre60Months / 12;
+
   const y1 = Math.min(15, pre60Years);
   const y2 = Math.max(0, pre60Years - 15);
 
-  const benefitPre60 = Math.min((y1 * 1) + (y2 * 2), 45);
-  const benefitAfter60 = after60 / 12;
+  const benefitPre60 = Math.min(y1*1 + y2*2, 45);
+
+  const benefitAfter60 = after60Months / 12; // 0~5（按比例）
   const cap = claimBefore60 ? 45 : 50;
 
-  const benefitMonths = round2(Math.min(benefitPre60 + benefitAfter60, cap));
-  const amount = Math.round(avgSalary36 * benefitMonths);
-
-  return { benefitMonths, amount, cap };
+  const total = Math.min(benefitPre60 + benefitAfter60, cap);
+  return { benefitMonths: total, cap, amount: Math.round(avg36Salary * total) };
 }
 
-/* 資格（精簡：只做最常用的） */
-function determineEligibilitySimple({ claimAgeMonths, legalAgeMonths, insMonthsAtClaim }){
-  const eligiblePension = (claimAgeMonths >= legalAgeMonths) && (insMonthsAtClaim >= 15*12);
-  const eligibleOldAgeLump = (claimAgeMonths >= legalAgeMonths) && (insMonthsAtClaim < 15*12);
-  return { eligiblePension, eligibleOldAgeLump };
+/* ---------- 一次請領資格（自動判斷） ---------- */
+function isEligibleOneTimeClaimAuto(opts){
+  const { hasPre98, isRetiredOut, gender, claimAgeMonths, insMonths, sameUnitYears, specialWorkYears } = opts;
+  if(!hasPre98) return { ok:false, reasons:["你未勾選「98年前有年資」，依法無一次請領選項。"] };
+  if(!isRetiredOut) return { ok:false, reasons:["一次請領通常需離職退保；你未勾選「已離職退保/會離職退保」。"] };
+
+  const ageYears = claimAgeMonths / 12;
+  const female = (gender === "female");
+
+  const cond1 = (insMonths >= 12) && (ageYears >= (female ? 55 : 60));
+  const cond2 = (insMonths >= 15*12) && (ageYears >= 55);
+  const cond3 = (Number(sameUnitYears) >= 25);
+  const cond4 = (insMonths >= 25*12) && (ageYears >= 50);
+  const cond5 = (Number(specialWorkYears) >= 5) && (ageYears >= 55);
+
+  const ok = cond1 || cond2 || cond3 || cond4 || cond5;
+  const hits = [];
+  if(cond1) hits.push("條件(1) 年資≥1年，年滿60（女55）退職");
+  if(cond2) hits.push("條件(2) 年資≥15年，年滿55退職");
+  if(cond3) hits.push("條件(3) 同一投保單位年資≥25年退職");
+  if(cond4) hits.push("條件(4) 年資≥25年，年滿50退職");
+  if(cond5) hits.push("條件(5) 特殊性質工作≥5年，年滿55退職");
+
+  if(!ok){
+    return { ok:false, reasons:["依你輸入的條件，自動判斷未符合一次請領5款任一條件。你可檢查：請領年齡/年資/同單位年資/特殊工作年資/是否退保。"] };
+  }
+  return { ok:true, reasons:hits };
 }
 
-/* ===================== 財務模擬（退休→請領→請領後） ===================== */
-function annualToMonthlyRate(r){ return (1 + r) ** (1/12) - 1; }
+/* ---------- 年金 vs 一次請領：打平年齡 ---------- */
+function breakEvenSimple(oneTimeAmount, pensionMonthly){
+  if(pensionMonthly <= 0) return null;
+  const months = oneTimeAmount / pensionMonthly;
+  return months / 12;
+}
+function breakEvenDiscounted(oneTimeAmount, pensionMonthly, annualDiscount){
+  // 找出使得 PV(年金) >= 一次金 的最小月數（以月折現）
+  if(pensionMonthly <= 0) return null;
+  const r = Math.max(0, annualDiscount) ** (1/12) - 1;
+  if(r <= 0){
+    // 無折現時就是簡單打平
+    return breakEvenSimple(oneTimeAmount, pensionMonthly);
+  }
+  let pv = 0;
+  for(let m=1; m<=1200; m++){ // 最多100年（足夠）
+    pv += pensionMonthly / ((1+r) ** m);
+    if(pv >= oneTimeAmount) return m / 12;
+  }
+  return null;
+}
+
+/* ===================== 資產模擬（單一資產池：股息/債息/增值拆解） ===================== */
+function annualToMonthlyRate(r){
+  return (1 + r) ** (1/12) - 1;
+}
 
 function simulatePlan(params){
   const {
-    monthsToRetire, monthsRetiredTotal,
-    monthsRetireToClaim,
-    principal0,
-    contribMonthly,
-    returnPre, returnPost,
-    inflation,
+    monthsToRetire, monthsRetired,
+    principal0, reserve0,
+    contribMonthly, reinvestPre,
+    divPre, bondPre, growthPre,
+    reinvestPostMode,
+    divPost, bondPost, growthPost,
     rentMonthly, otherIncomeMonthlyAtRetire,
-    laborMonthlyAtClaim,
-    needMonthlyToday,
-    lumpSumAtClaim,
-    stress // boolean: 壓力測試
+    laborMonthlyAtRetire,
+    needMonthlyToday, inflation,
+    postContribMode, postContribMonthly
   } = params;
 
-  // 壓力測試：回報 -2%、通膨 +1%
-  const rPre = stress ? (returnPre - 0.02) : returnPre;
-  const rPost = stress ? (returnPost - 0.02) : returnPost;
-  const inf = stress ? (inflation + 0.01) : inflation;
+  let principal = principal0;
+  let reserve = reserve0;
 
-  let principal = Math.max(0, principal0);
+  const gPreM = annualToMonthlyRate(growthPre);
+  const dPreM = (divPre/12);
+  const bPreM = (bondPre/12);
 
-  const gPreM = annualToMonthlyRate(rPre);
-  const gPostM = annualToMonthlyRate(rPost);
-  const infM = annualToMonthlyRate(inf);
-
-  // Phase 1：退休前
+  // 退休前
   for(let t=0; t<monthsToRetire; t++){
-    principal = principal * (1 + gPreM) + contribMonthly;
+    principal = principal * (1 + gPreM);
+
+    const divInc = principal * dPreM;
+    const bondInc = principal * bPreM;
+
+    if(reinvestPre){
+      principal += (divInc + bondInc);
+    }else{
+      reserve += (divInc + bondInc);
+    }
+
+    principal += contribMonthly;
   }
 
   const principalAtRetire = principal;
+  const reserveAtRetire = reserve;
+  const totalAtRetire = principalAtRetire + reserveAtRetire;
 
-  // 退休時生活費（名目）
+  const infM = annualToMonthlyRate(inflation);
   let needM = needMonthlyToday * ((1 + infM) ** monthsToRetire);
+  let otherIncomeM = otherIncomeMonthlyAtRetire;
+
+  const gPostM = annualToMonthlyRate(growthPost);
+  const dPostM = (divPost/12);
+  const bPostM = (bondPost/12);
 
   let brokeMonth = null;
+  let minTotal = totalAtRetire;
 
-  // Phase 2：退休→請領（無勞保、無一次金）
-  const gapMonths = Math.max(0, monthsRetireToClaim || 0);
-  for(let k=0; k<Math.min(gapMonths, monthsRetiredTotal); k++){
+  for(let k=0; k<monthsRetired; k++){
     if(k>0) needM *= (1 + infM);
+
     principal = principal * (1 + gPostM);
 
-    const income = otherIncomeMonthlyAtRetire + rentMonthly; // 退休到請領：勞保=0
-    const gap = needM - income;
-    principal -= Math.max(0, gap);
+    const divInc = principal * dPostM;
+    const bondInc = principal * bPostM;
+
+    let incomeFromYields = 0;
+    if(reinvestPostMode === "reinvest"){
+      principal += (divInc + bondInc);
+    }else{
+      incomeFromYields = divInc + bondInc;
+    }
+
+    const postContrib = (postContribMode === "yes") ? postContribMonthly : 0;
+    principal += postContrib;
+
+    const income = laborMonthlyAtRetire + otherIncomeM + rentMonthly + incomeFromYields;
+
+    let gap = needM - income;
+
+    if(gap <= 0){
+      reserve += (-gap);
+    }else{
+      const useReserve = Math.min(reserve, gap);
+      reserve -= useReserve;
+      gap -= useReserve;
+
+      if(gap > 0){
+        principal -= gap;
+      }
+    }
+
+    const total = principal + reserve;
+    if(total < minTotal) minTotal = total;
 
     if(principal < 0){
       brokeMonth = k + 1;
-      return { ok:false, principalAtRetire, principalEnd: principal, brokeMonth };
-    }
-  }
-
-  // 請領點：一次金注入（若有）
-  if(Number.isFinite(lumpSumAtClaim) && lumpSumAtClaim > 0){
-    principal += lumpSumAtClaim;
-  }
-
-  // Phase 3：請領後
-  const monthsAfterClaim = Math.max(0, monthsRetiredTotal - gapMonths);
-  for(let k=0; k<monthsAfterClaim; k++){
-    needM *= (1 + infM);
-    principal = principal * (1 + gPostM);
-
-    const income = (laborMonthlyAtClaim || 0) + otherIncomeMonthlyAtRetire + rentMonthly;
-    const gap = needM - income;
-    principal -= Math.max(0, gap);
-
-    if(principal < 0){
-      brokeMonth = gapMonths + k + 1;
       break;
     }
   }
 
-  return { ok: brokeMonth === null, principalAtRetire, principalEnd: principal, brokeMonth };
+  return {
+    ok: brokeMonth === null,
+    principalAtRetire, reserveAtRetire, totalAtRetire,
+    principalEnd: principal, reserveEnd: reserve, totalEnd: principal + reserve,
+    brokeMonth,
+    minTotal
+  };
 }
 
-/* 退休前每月需多存多少（用二分搜尋） */
 function solveExtraContribution(baseParams){
   const base = simulatePlan(baseParams);
   if(base.ok) return { extra: 0, base, final: base };
@@ -547,23 +715,39 @@ function solveExtraContribution(baseParams){
   const final = simulatePlan({ ...baseParams, contribMonthly: baseParams.contribMonthly + extra });
   return { extra, base, final };
 }
+function solveExpenseCut(baseParams){
+  const base = simulatePlan(baseParams);
+  if(base.ok) return { cut: 0, base, final: base };
+
+  let lo = 0, hi = Math.max(0, baseParams.needMonthlyToday);
+  for(let i=0;i<32;i++){
+    const mid = (lo+hi)/2;
+    const test = simulatePlan({ ...baseParams, needMonthlyToday: Math.max(0, baseParams.needMonthlyToday - mid) });
+    if(test.ok) hi = mid; else lo = mid;
+  }
+  const cut = Math.ceil(hi);
+  const final = simulatePlan({ ...baseParams, needMonthlyToday: Math.max(0, baseParams.needMonthlyToday - cut) });
+  return { cut, base, final };
+}
 
 /* ===================== 主流程 ===================== */
 function calcAll(){
-  resetMsgs(); hideOutput();
-  const today = new Date();
+  showWarn(""); showDanger(""); showOk(""); hideOutput();
 
+  const today = new Date();
   if(!$("birthDate").value) $("birthDate").value = "1980-01-01";
   const birthDate = new Date($("birthDate").value + "T00:00:00");
   if(isNaN(birthDate.getTime())){ alert("請輸入有效的出生年月日"); return; }
 
+  const gender = $("gender").value;
+
   const retireY = clampInt(Number($("retireYears").value));
   const retireM = clampInt(Number($("retireMonths").value));
-  const claimY  = clampInt(Number($("claimYears").value));
-  const claimM  = clampInt(Number($("claimMonths").value));
-  if(!Number.isFinite(retireY) || retireM>11 || !Number.isFinite(claimY) || claimM>11){
-    alert("退休/請領年齡輸入錯誤"); return;
-  }
+  if(!Number.isFinite(retireY) || retireM>11){ alert("退休年齡輸入錯誤"); return; }
+
+  const claimY = clampInt(Number($("claimYears").value));
+  const claimM = clampInt(Number($("claimMonths").value));
+  if(!Number.isFinite(claimY) || claimM>11){ alert("請領年齡輸入錯誤"); return; }
 
   const lifeExp = Number($("lifeExpectancy").value);
   if(!Number.isFinite(lifeExp) || lifeExp <= 0){ alert("預計壽命輸入錯誤"); return; }
@@ -573,258 +757,433 @@ function calcAll(){
 
   const keepInsured = $("keepInsured").value === "yes";
 
+  // 年齡推算
   const retireAgeMonths = ageToMonths(retireY, retireM);
   const claimAgeMonths  = ageToMonths(claimY, claimM);
 
   const retireDate = calcDateAtAge(birthDate, retireAgeMonths);
-  const claimDate  = calcDateAtAge(birthDate, claimAgeMonths);
-
   const monthsToRetire = monthsBetween(today, retireDate);
-  const monthsToClaim  = monthsBetween(today, claimDate);
-  const monthsRetireToClaim = monthsBetween(retireDate, claimDate);
 
-  if(claimAgeMonths < retireAgeMonths){
-    showWarn("你設定「請領年齡」小於「退休年齡」。若你是提前請領後才退休，請確認輸入是否符合你的情境。");
+  // 退休時年資（估）
+  const insAtRetireMonths = keepInsured ? (insNowMonths + monthsToRetire) : insNowMonths;
+
+  // 薪資：優先明細
+  const detail = parseSalaryLines($("salaryLines")?.value || "");
+  let avgPension = money($("avgSalaryPension").value);
+  let avgLump36 = money($("avgSalaryLump36").value);
+  let salaryNote = "";
+
+  if(detail.count){
+    const p = avgTop60(detail.salaries);
+    const l = avgLast36(detail.salaries);
+    avgPension = p.avg;
+    avgLump36 = l.avg;
+    salaryNote = `已使用明細：${p.rule} / ${l.rule}（共${detail.count}筆）`;
+  }else{
+    if(!Number.isFinite(avgPension) || avgPension<=0 || !Number.isFinite(avgLump36) || avgLump36<=0){
+      alert("未貼明細時，請填：年金平均薪資（60月）與一次請領36月平均薪資");
+      return;
+    }
+    salaryNote = "未貼明細：使用你輸入的兩個平均薪資";
   }
 
-  // ★制度年資：以「請領時」年資估算（關鍵修正）
-  const insAtClaimMonths = keepInsured ? (insNowMonths + monthsToClaim) : insNowMonths;
-
-  // 法定請領年齡（一般）
+  // 法定請領年齡（依出生年次）
   const rocBirthYear = birthDateToRocYear(birthDate);
   const legal = RULES.legalAgeByBirthRoc(rocBirthYear);
-  const legalAgeMonths = ageToMonths(legal.years, legal.months);
+  const legalMonths = ageToMonths(legal.years, legal.months);
+  const adj = adjustFactor(legalMonths, claimAgeMonths);
 
-  // 提早/展延（年金才用）
-  const adj = adjustFactor(legalAgeMonths, claimAgeMonths);
-
-  // 薪資：明細優先，否則用簡化單一輸入
-  const detail = parseSalaryLines($("salaryLines")?.value || "");
-  let avg60 = NaN, avg36 = NaN, salaryNote = "";
-  if(detail.count){
-    const p60 = avgTop60(detail.salaries);
-    const l36 = avgLast36(detail.salaries);
-    avg60 = p60.avg;
-    avg36 = l36.avg;
-    salaryNote = `已用明細：${p60.rule} / ${l36.rule}（共${detail.count}筆）`;
-  }else{
-    const simple = money($("avgSalarySimple").value);
-    if(!Number.isFinite(simple) || simple<=0){
-      alert("請填「平均月投保薪資」或貼投保薪資明細。"); return;
-    }
-    avg60 = simple;
-    avg36 = simple; // 精簡版：一次請領若試算，先用同一值（會提示）
-    salaryNote = "未貼明細：以你填的單一平均薪資作為60月/36月估算（精簡）";
-  }
-
-  // 資格（精簡）
-  const elig = determineEligibilitySimple({
-    claimAgeMonths,
-    legalAgeMonths,
-    insMonthsAtClaim: insAtClaimMonths
-  });
-
-  // 年金/老年一次金
-  const pension = elig.eligiblePension ? calcPension(avg60, insAtClaimMonths, adj.factor) : null;
-
-  // 60歲後年資（精簡：由使用者可選填；不填就用0）
-  const after60MonthsInput = insToMonths($("insAfter60Years")?.value || 0, $("insAfter60Months")?.value || 0, 0) || 0;
-
-  const oldAgeLump = elig.eligibleOldAgeLump ? calcOldAgeLump60(avg60, insAtClaimMonths, after60MonthsInput) : null;
-
-  // 一次請領（進階：不作主情境）
-  const pre98 = isPre98();
-  const wantOneTime = ($("wantOneTime")?.value === "yes");
-  const oneTimeEligibleConfirm = ($("oneTimeEligibleConfirm")?.value === "yes");
-  const claimBefore60 = ($("claimBefore60")?.value === "yes");
-
-  const oneTime = (wantOneTime && pre98)
-    ? calcOneTimeOldAgeLump36(avg36, insAtClaimMonths, after60MonthsInput, claimBefore60)
-    : null;
-
-  // ===== 財務參數（精簡）=====
-  const principal0 = Math.max(0, money($("assetNow").value) || 0);
-  const contribMonthly = Math.max(0, money($("contribMonthly").value) || 0);
-
-  const returnPre  = (Number($("returnPre").value || 0) / 100);
-  const returnPost = (Number($("returnPost").value || 0) / 100);
-  const inflation  = Math.max(0, Number($("inflation").value || 0) / 100);
-
-  const rentMonthly = Math.max(0, money($("rentMonthly").value) || 0);
-  const otherIncomeMonthly = Math.max(0, money($("otherIncomeMonthly").value) || 0);
-  const needMonthlyToday = Math.max(0, money($("needMonthlyToday").value) || 0);
-
-  const retireAge = retireY + retireM/12;
-  const monthsRetiredTotal = Math.max(0, Math.floor((lifeExp - retireAge) * 12));
-
-  // 其他收入推到退休（名目）
-  const infM = annualToMonthlyRate(inflation);
-  const otherIncomeMonthlyAtRetire = otherIncomeMonthly * ((1 + infM) ** monthsToRetire);
-
-  // ===== 三情境（同投資假設）=====
-  const laborMonthlyPension = pension ? pension.finalMonthly : 0;
-
-  const baseA = {
-    monthsToRetire,
-    monthsRetiredTotal,
-    monthsRetireToClaim,
-    principal0,
-    contribMonthly,
-    returnPre, returnPost,
-    inflation,
-    rentMonthly,
-    otherIncomeMonthlyAtRetire,
-    laborMonthlyAtClaim: laborMonthlyPension, // ★請領後才開始
-    needMonthlyToday,
-    lumpSumAtClaim: 0,
-    stress: false
-  };
-
-  const baseB = {
-    ...baseA,
-    laborMonthlyAtClaim: 0,
-    lumpSumAtClaim: oldAgeLump ? oldAgeLump.amount : 0
-  };
-
-  // 一次請領情境只做參考：除非你自行確認符合
-  const baseC = {
-    ...baseA,
-    laborMonthlyAtClaim: 0,
-    lumpSumAtClaim: oneTime ? oneTime.amount : 0
-  };
-
-  const simA = simulatePlan(baseA);
-  const simB = simulatePlan(baseB);
-  const simC = oneTime ? simulatePlan(baseC) : null;
-
-  // 主情境選擇：先年金，否則老年一次金，否則不含勞保
-  let mainTitle = "以「年金」作為主情境";
-  let mainParams = baseA;
-  let mainSim = simA;
-
-  if(!elig.eligiblePension){
-    if(oldAgeLump){
-      mainTitle = "以「老年一次金」作為主情境";
-      mainParams = baseB;
-      mainSim = simB;
-    }else{
-      mainTitle = "以「不含勞保」作為主情境";
-      mainParams = { ...baseA, laborMonthlyAtClaim: 0, lumpSumAtClaim: 0 };
-      mainSim = simulatePlan(mainParams);
-    }
-  }
-
-  // 壓力測試（主情境）
-  const simStress = simulatePlan({ ...mainParams, stress: true });
-
-  // 反推：退休前每月需多存多少（主情境）
-  const solveSave = solveExtraContribution(mainParams);
-
-  // 顯示文字：提早/展延
   const diffText = (adj.diffMonths === 0) ? "依法定年齡請領（不加減給）"
     : (adj.diffMonths > 0) ? `展延 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}，封頂±20%）`
     : `提早 ${Math.abs(adj.diffMonths)} 個月（係數×${adj.factor.toFixed(3)}，封頂±20%）`;
 
-  // 生存文字
-  function survive(sim){
-    if(sim.ok) return { badge:"ok", text:`撐到 ${lifeExp} 歲（模擬期末仍有資產）` };
-    const yearsAfter = sim.brokeMonth/12;
-    const ageAtBroke = retireAge + yearsAfter;
-    return { badge:"no", text:`約撐到 ${ageAtBroke.toFixed(1)} 歲（退休後約 ${yearsAfter.toFixed(1)} 年）` };
+  // 進階條件
+  const hasPre98 = $("hasPre98").checked;
+  const isRetiredOut = $("isRetiredOut").checked;
+  const sameUnitYears = Number($("sameUnitYears").value || 0);
+  const specialWorkYears = Number($("specialWorkYears").value || 0);
+  const natPensionYears = Number($("natPensionYears").value || 0);
+
+  // 制度資格判斷（年金）
+  const claimAgeYears = claimAgeMonths / 12;
+  const insYearsAtRet = insAtRetireMonths / 12;
+
+  const eligiblePension_1 = (claimAgeYears >= 60) && (insAtRetireMonths >= 15*12);
+  const eligiblePension_2 = (claimAgeYears >= 55) && (specialWorkYears >= 15);
+  const eligiblePension_3 = (claimAgeYears >= 65) && (insYearsAtRet < 15) && ((insYearsAtRet + natPensionYears) >= 15);
+
+  const eligiblePension = eligiblePension_1 || eligiblePension_2 || eligiblePension_3;
+
+  const pension = eligiblePension ? calcPension(avgPension, insAtRetireMonths, adj.factor) : null;
+  const laborMonthlyAtRetire = eligiblePension ? pension.finalMonthly : 0;
+
+  // 老年一次金（<15年且年滿60）— 這裡仍計算金額供比較，但會標示資格
+  const eligibleOldLump = (claimAgeYears >= 60) && (insAtRetireMonths < 15*12);
+  const oldLump = calcOldAgeLumpSum(avgPension, insAtRetireMonths);
+
+  // 一次請領（98年前有年資 + 自動判斷條件）
+  const claimBefore60 = ($("claimBefore60").value === "yes");
+  const after60MonthsInput = insToMonths($("insAfter60Years").value, $("insAfter60Months").value, 0);
+  const oneTimeAuto = isEligibleOneTimeClaimAuto({
+    hasPre98, isRetiredOut, gender,
+    claimAgeMonths,
+    insMonths: insAtRetireMonths,
+    sameUnitYears,
+    specialWorkYears
+  });
+  const eligibleOneTimeClaim = oneTimeAuto.ok;
+
+  const oneTime = (hasPre98 && eligibleOneTimeClaim)
+    ? calcOneTimeClaim(avgLump36, insAtRetireMonths, after60MonthsInput, claimBefore60)
+    : null;
+
+  // ===== 98年後投保者「自動限制」：年資>=15 → 只能年金；年資<15 → 只能老年一次金 =====
+  // 這裡用「hasPre98」作為制度分流開關（你選A：最穩定）
+  const post98Only = !hasPre98;
+  const onlyPensionByLaw = post98Only && (insAtRetireMonths >= 15*12);
+  const onlyOldLumpByLaw = post98Only && (insAtRetireMonths < 15*12);
+
+  // 財務參數
+  const principal0 = Math.max(0, money($("assetNow").value) || 0);
+  const contribMonthly = Math.max(0, money($("contribMonthly").value) || 0);
+
+  let divPre = Math.max(0, Number($("divPre").value) || 0) / 100;
+  let bondPre = Math.max(0, Number($("bondPre").value) || 0) / 100;
+  let growthPre = Number($("growthPre").value || 0) / 100;
+
+  let divPost = Math.max(0, Number($("divPost").value) || 0) / 100;
+  let bondPost = Math.max(0, Number($("bondPost").value) || 0) / 100;
+  let growthPost = Number($("growthPost").value || 0) / 100;
+
+  const reinvestPre = ($("reinvestPre").value === "yes");
+  const reinvestPostMode = $("reinvestPost").value; // spend / reinvest
+
+  const rentMonthly = Math.max(0, money($("rentMonthly").value) || 0);
+  const otherIncomeMonthly = Math.max(0, money($("otherIncomeMonthly").value) || 0);
+
+  const needMonthlyToday = Math.max(0, money($("needMonthlyToday").value) || 0);
+  let inflation = Math.max(0, Number($("inflation").value) || 0) / 100;
+
+  const postContribMode = $("postContribMode").value;
+  const postContribMonthly = Math.max(0, money($("postContribMonthly").value) || 0);
+
+  // 安全邊際：調整假設
+  const stress = $("stressScenario").value;
+  if(stress === "mkt" || stress === "both"){
+    growthPre -= 0.02;
+    growthPost -= 0.02;
   }
-  const sBase = survive(mainSim);
-  const sStress = survive(simStress);
+  if(stress === "inf" || stress === "both"){
+    inflation += 0.01;
+  }
 
-  // 日期字串
+  // 退休後期間（月）
+  const retireAge = retireY + retireM/12;
+  const monthsRetired = Math.max(0, Math.floor((lifeExp - retireAge) * 12));
+
+  // 其他收入推到退休（名目）：用通膨月化推
+  const infM = annualToMonthlyRate(inflation);
+  const otherIncomeMonthlyAtRetire = otherIncomeMonthly * ((1 + infM) ** monthsToRetire);
+
+  // 用「年金月領」進行缺口模擬（制度比較時會另外補一組）
+  const baseParams = {
+    monthsToRetire, monthsRetired,
+    principal0, reserve0: 0,
+    contribMonthly, reinvestPre,
+    divPre, bondPre, growthPre,
+    reinvestPostMode,
+    divPost, bondPost, growthPost,
+    rentMonthly, otherIncomeMonthlyAtRetire,
+    laborMonthlyAtRetire,
+    needMonthlyToday, inflation,
+    postContribMode, postContribMonthly
+  };
+
+  const sim = simulatePlan(baseParams);
+  const solveSave = solveExtraContribution(baseParams);
+  const solveCut  = solveExpenseCut(baseParams);
+
+  // 退休當下差額項（用退休當月名目）
+  const divInc0 = (sim.principalAtRetire) * (divPost/12);
+  const bondInc0 = (sim.principalAtRetire) * (bondPost/12);
+  const incomeFromYields0 = (reinvestPostMode === "spend") ? (divInc0 + bondInc0) : 0;
+
+  const infToRetire = (1 + infM) ** monthsToRetire;
+  const needAtRetire = needMonthlyToday * infToRetire;
+
+  const incomeAtRetire =
+    laborMonthlyAtRetire +
+    otherIncomeMonthlyAtRetire +
+    rentMonthly +
+    incomeFromYields0;
+
+  const gapAtRetire = Math.max(0, needAtRetire - incomeAtRetire);
+
   const retireDateStr = `${retireDate.getFullYear()}-${String(retireDate.getMonth()+1).padStart(2,"0")}-${String(retireDate.getDate()).padStart(2,"0")}`;
-  const claimDateStr  = `${claimDate.getFullYear()}-${String(claimDate.getMonth()+1).padStart(2,"0")}-${String(claimDate.getDate()).padStart(2,"0")}`;
 
-  // 98前後徽章
-  const pre98Txt = pre98 ? `<span class="badge ok">98/01/01 前已有年資（可能有一次請領）</span>`
-                         : `<span class="badge no">未確認98前年資（保守視為98後）</span>`;
-
-  const badge = (b, okTxt="符合", noTxt="不符合") => b ? `<span class="badge ok">${okTxt}</span>` : `<span class="badge no">${noTxt}</span>`;
-
-  // 結果輸出
-  const out = $("output");
-  out.style.display="block";
+  const statusTitle = sim.ok ? "✅ 模擬可撐到預計壽命" : "⚠️ 模擬可能提前用完資產";
+  const statusSub = sim.ok
+    ? `模擬到 ${lifeExp} 歲結束，資產仍為正（最低總資產 NT$ ${fmt(Math.round(sim.minTotal))}）。`
+    : `約在退休後第 ${sim.brokeMonth} 個月資產轉負（≈ ${(sim.brokeMonth/12).toFixed(1)} 年）；最低總資產 NT$ ${fmt(Math.round(sim.minTotal))}。`;
 
   const extraSaveText = (solveSave.extra<=0)
-    ? "在此假設下：不需要額外增加退休前投入。"
+    ? "不需要額外增加退休前投入。"
     : `若要撐到 ${lifeExp} 歲：退休前每月需「再多存」約 NT$ ${fmt(solveSave.extra)}。`;
 
-  // 一次請領顯示策略（避免誤導）
-  let oneTimeBlock = "";
-  if(oneTime){
-    const note = (!oneTimeEligibleConfirm)
-      ? `<div class="small muted">※ 你選擇「不確定是否符合一次請領資格」：此金額僅作參考，不會被系統當成可用方案。</div>`
-      : `<div class="small muted">※ 你已自行確認符合一次請領資格：可將此方案納入你自己的比較。</div>`;
+  const cutText = (solveCut.cut<=0)
+    ? "生活費不需要調降。"
+    : `或：把「今天價值的生活費」每月調降約 NT$ ${fmt(solveCut.cut)}（其他假設不變）。`;
 
-    oneTimeBlock = `
-      <div style="margin-top:10px">
-        一次請領老年給付（參考）：<b>NT$ ${fmt(oneTime.amount)}</b>
-        ${note}
+  // ===== Level 1：制度比較引擎（年金 vs 一次請領） =====
+  let compareHtml = "";
+  let compareNote = "";
+
+  const discount = Math.max(0, Number($("discountRate").value || 0) / 100);
+
+  // 只有在「可選」時才做比較：有一次請領 + 年金可領（或至少有估算值）
+  if(oneTime && eligiblePension){
+    const beSimpleYears = breakEvenSimple(oneTime.amount, laborMonthlyAtRetire);
+    const beDiscYears = breakEvenDiscounted(oneTime.amount, laborMonthlyAtRetire, (1 + discount));
+
+    const beAgeSimple = beSimpleYears ? (claimAgeYears + beSimpleYears) : null;
+    const beAgeDisc = beDiscYears ? (claimAgeYears + beDiscYears) : null;
+
+    compareHtml = `
+      <div class="kpi-box">
+        <div class="kpi-title">Level 1｜年金 vs 一次請領比較</div>
+        <div class="kpi-value">打平年齡：${beAgeSimple ? beAgeSimple.toFixed(1) + " 歲" : "—"}</div>
+        <div class="kpi-sub">
+          一次請領：NT$ ${fmt(oneTime.amount)}（給付月數 ${oneTime.benefitMonths.toFixed(2)}，上限${oneTime.cap}）<br>
+          年金：NT$ ${fmt(laborMonthlyAtRetire)} /月（${pension.chosen}；${diffText}）<br>
+          簡單打平：約 ${beSimpleYears ? beSimpleYears.toFixed(1) : "—"} 年（從請領當月開始）<br>
+          折現打平（折現率年${(discount*100).toFixed(1)}%）：約 ${beDiscYears ? beDiscYears.toFixed(1) : "—"} 年（從請領當月開始）
+        </div>
+      </div>
+    `;
+    compareNote = "此比較是「制度選擇」用：一次請領是大筆現金；年金是終身月領。打平不是結論，而是你理解取捨的起點。";
+  }else{
+    // 給使用者清楚原因
+    const reasons = [];
+    if(!oneTime) reasons.push("一次請領：不符合（需98年前有年資且符合條件並離職退保）。");
+    if(!eligiblePension) reasons.push("年金：不符合（需符合年資/年齡/特殊工作/合計國民年金等條件）。");
+    compareHtml = `
+      <div class="kpi-box">
+        <div class="kpi-title">Level 1｜年金 vs 一次請領比較</div>
+        <div class="kpi-sub">${reasons.map(r=>"• "+r).join("<br>")}</div>
       </div>
     `;
   }
 
-  out.innerHTML = `
-    <div class="kpi">
-      <div class="kpi-box">
-        <div class="kpi-title">主情境（${mainTitle}）</div>
-        <div class="kpi-value">退休時資產：NT$ ${fmt(Math.round(mainSim.principalAtRetire))}</div>
-        <div class="kpi-sub">
-          退休日期（估）：${retireDateStr}<br/>
-          請領日期（估）：${claimDateStr}（退休→請領：${monthsRetireToClaim} 個月）<br/>
-          基準：<span class="badge ${sBase.badge}">${sBase.text}</span><br/>
-          壓力（回報-2%、通膨+1%）：<span class="badge ${sStress.badge}">${sStress.text}</span>
-        </div>
-      </div>
+  // ===== 以「一次請領」做缺口模擬（把一次金放入退休時資產，且年金=0） =====
+  // 只有在一次請領可選時才做
+  let simOneTime = null;
+  if(oneTime){
+    const paramsOneTime = {
+      ...baseParams,
+      laborMonthlyAtRetire: 0,
+      principal0: baseParams.principal0 + oneTime.amount // 直接把一次金視為退休前/当下可用資產（保守：放入principal）
+    };
+    simOneTime = simulatePlan(paramsOneTime);
+  }
 
-      <div class="kpi-box">
-        <div class="kpi-title">差額反推（好用）</div>
-        <div class="kpi-value">${extraSaveText}</div>
-        <div class="kpi-sub">反推是以「主情境」假設計算（同一套通膨/報酬/支出）。</div>
-      </div>
+  // 輸出區
+  const out = $("output");
+  out.style.display="block";
 
-      <div class="kpi-box">
-        <div class="kpi-title">制度資格（以請領點判定）</div>
-        <div class="kpi-sub">
-          法定請領年齡：${legal.years} 歲（ROC ${rocBirthYear}）<br/>
-          你設定的請領年齡：${claimY} 歲 ${claimM} 月<br/>
-          請領時年資（估）：${(insAtClaimMonths/12).toFixed(2)} 年<br/>
-          年金：${badge(elig.eligiblePension)}　
-          老年一次金：${badge(elig.eligibleOldAgeLump)}<br/>
-          ${pre98Txt}
-        </div>
-      </div>
+  // 制度分流提示（98後投保）
+  let ruleBanner = "";
+  if(onlyPensionByLaw){
+    ruleBanner = `<div class="warn" style="display:block">制度分流：你未勾選「98年前有年資」且年資≥15年 → 依你指定規則：只能請領「老年年金」。</div>`;
+  }else if(onlyOldLumpByLaw){
+    ruleBanner = `<div class="warn" style="display:block">制度分流：你未勾選「98年前有年資」且年資<15年 → 依你指定規則：只能請領「老年一次金」。</div>`;
+  }
 
-      <div class="kpi-box">
-        <div class="kpi-title">制度金額（同一請領點）</div>
-        <div class="kpi-sub">
-          年金（月）：<b>${pension ? "NT$ "+fmt(laborMonthlyPension) : "—"}</b>
-          ${pension ? `（${pension.chosen}；${diffText}）` : "（不符或未到法定年齡/年資）"}<br/>
-          老年一次金：<b>${oldAgeLump ? "NT$ "+fmt(oldAgeLump.amount) : "—"}</b>
-          ${oldAgeLump ? `（給付月數 ${oldAgeLump.benefitMonths.toFixed(2)}）` : "" }
-          ${oneTimeBlock}
-        </div>
+  const oneTimeBlock = oneTime ? `
+    <div class="kpi-box">
+      <div class="kpi-title">一次請領老年給付（選擇制）</div>
+      <div class="kpi-value">NT$ ${fmt(oneTime.amount)}</div>
+      <div class="kpi-sub">
+        資格（自動判斷）：✅ ${oneTimeAuto.reasons.join("；")}<br>
+        給付月數：${oneTime.benefitMonths.toFixed(2)}（上限${oneTime.cap}）<br>
+        ※ 你若實際核付一次請領，通常不得再改領年金。
       </div>
     </div>
+  ` : `
+    <div class="kpi-box">
+      <div class="kpi-title">一次請領老年給付（選擇制）</div>
+      <div class="kpi-sub">
+        ${hasPre98 ? "你勾選了98年前有年資，但" : "你未勾選98年前有年資，因此"}
+        一次請領狀態：❌ 不可用。<br>
+        ${oneTimeAuto.reasons ? oneTimeAuto.reasons.map(x=>"• "+x).join("<br>") : ""}
+      </div>
+    </div>
+  `;
+
+  // 老年一次金區塊
+  const oldLumpBlock = `
+    <div class="kpi-box">
+      <div class="kpi-title">老年一次金給付</div>
+      <div class="kpi-value">NT$ ${fmt(oldLump.amount)}</div>
+      <div class="kpi-sub">
+        給付月數（按月比例）：${oldLump.benefitMonths.toFixed(2)}<br>
+        資格：${eligibleOldLump ? "✅ 年滿60且年資<15年" : "⚠️ 你目前請領年齡/年資未符合（此金額僅供估算參考）"}
+      </div>
+    </div>
+  `;
+
+  // 年金區塊
+  const pensionBlock = `
+    <div class="kpi-box">
+      <div class="kpi-title">老年年金給付</div>
+      <div class="kpi-value">${eligiblePension ? `NT$ ${fmt(laborMonthlyAtRetire)} /月` : "—"}</div>
+      <div class="kpi-sub">
+        ${eligiblePension
+          ? `兩式擇優：${pension.chosen}；${diffText}`
+          : `❌ 依你輸入，未符合年金三條之一：<br>
+             • (1) 年滿60且年資≥15<br>
+             • (2) 特殊工作≥15且年滿55<br>
+             • (3) 勞保<15但合計國民年金≥15且年滿65（選擇）`
+        }
+      </div>
+    </div>
+  `;
+
+  // 壓力測試文字
+  const stressLabel = {
+    base:"基準",
+    mkt:"市場回報 -2%",
+    inf:"通膨 +1%",
+    both:"市場回報 -2% + 通膨 +1%"
+  }[stress] || "基準";
+
+  // 安全邊際：用「同一情境」已調整後的 sim 就是壓力結果
+  const safetyTitle = sim.ok ? "✅ 安全邊際：撐得到" : "⚠️ 安全邊際：可能撐不到";
+  const safetySub = sim.ok
+    ? `情境「${stressLabel}」下，仍可撐到 ${lifeExp} 歲。`
+    : `情境「${stressLabel}」下，約撐到退休後第 ${sim.brokeMonth} 個月（≈ ${(sim.brokeMonth/12).toFixed(1)} 年）。`;
+
+  // 年金 vs 一次請領：兩種制度的「撐多久」並排
+  let policyDurHtml = "";
+  if(oneTime){
+    const durA = sim; // 年金流方案（你目前的缺口模擬）
+    const durB = simOneTime; // 一次請領方案（把一次金加到資產、年金=0）
+    policyDurHtml = `
+      <details>
+        <summary>展開：制度比較（撐多久）</summary>
+        <div class="inner">
+          <div class="small muted">同一組投資/通膨假設下，對比「年金月領」vs「一次請領現金」對資產耗盡的影響。</div>
+          <div class="twocol">
+            <div class="kpi-box">
+              <div class="kpi-title">方案A：年金月領（目前模擬）</div>
+              <div class="kpi-sub">
+                結果：${durA.ok ? "✅ 撐到預計壽命" : `⚠️ 約在退休後第 ${durA.brokeMonth} 月用完`}<br>
+                退休時總資產：NT$ ${fmt(Math.round(durA.totalAtRetire))}<br>
+                最低總資產：NT$ ${fmt(Math.round(durA.minTotal))}
+              </div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-title">方案B：一次請領（年金=0，一次金入資產）</div>
+              <div class="kpi-sub">
+                結果：${durB.ok ? "✅ 撐到預計壽命" : `⚠️ 約在退休後第 ${durB.brokeMonth} 月用完`}<br>
+                退休時總資產（含一次金）：NT$ ${fmt(Math.round(durB.totalAtRetire))}<br>
+                最低總資產：NT$ ${fmt(Math.round(durB.minTotal))}
+              </div>
+            </div>
+          </div>
+          <div class="small muted" style="margin-top:10px">
+            解讀：若方案B更能撐住，代表你更需要「大筆現金彈性」；若方案A更能撐住，代表你更需要「穩定終身現金流」。
+          </div>
+        </div>
+      </details>
+    `;
+  }
+
+  out.innerHTML = `
+    ${ruleBanner}
+
+    <div class="kpi">
+      <div class="kpi-box">
+        <div class="kpi-title">${statusTitle}</div>
+        <div class="kpi-value">退休時總資產：NT$ ${fmt(Math.round(sim.totalAtRetire))}</div>
+        <div class="kpi-sub">${statusSub}</div>
+      </div>
+
+      <div class="kpi-box">
+        <div class="kpi-title">差額項（最重要）</div>
+        <div class="kpi-value">退休當下每月缺口：NT$ ${fmt(Math.round(gapAtRetire))}</div>
+        <div class="kpi-sub">
+          ${extraSaveText}<br/>${cutText}
+        </div>
+      </div>
+
+      <div class="kpi-box">
+        <div class="kpi-title">Level 2｜安全邊際模型（壓力測試）</div>
+        <div class="kpi-value">${safetyTitle}</div>
+        <div class="kpi-sub">${safetySub}</div>
+      </div>
+
+      ${compareHtml}
+
+      ${pensionBlock}
+      ${oldLumpBlock}
+      ${oneTimeBlock}
+    </div>
+
+    ${policyDurHtml}
 
     <details style="margin-top:12px">
-      <summary>展開：你這次計算用到的關鍵假設</summary>
+      <summary>展開：退休當下現金流拆解（清晰版）</summary>
+      <div class="inner">
+        <table class="table">
+          <tr><td class="muted">退休日期（估）</td><td>${retireDateStr}</td></tr>
+          <tr><td class="muted">請領年齡（你輸入）</td><td>${(claimAgeMonths/12).toFixed(2)} 歲</td></tr>
+          <tr><td class="muted">退休當下生活費（名目）</td><td>NT$ ${fmt(Math.round(needAtRetire))}</td></tr>
+          <tr><td class="muted">勞保年金月領</td><td>NT$ ${fmt(laborMonthlyAtRetire)}</td></tr>
+          <tr><td class="muted">其他收入（名目）</td><td>NT$ ${fmt(Math.round(otherIncomeMonthlyAtRetire))}</td></tr>
+          <tr><td class="muted">房租（月額）</td><td>NT$ ${fmt(Math.round(rentMonthly))}</td></tr>
+          <tr><td class="muted">股息+債息（月）</td><td>NT$ ${fmt(Math.round(incomeFromYields0))} ${reinvestPostMode==="reinvest" ? "（你選擇再投入→此項不作生活費收入）" : ""}</td></tr>
+          <tr><td style="font-weight:900">合計收入</td><td style="font-weight:900">NT$ ${fmt(Math.round(incomeAtRetire))}</td></tr>
+          <tr><td style="font-weight:900">缺口（需提領/動用資產）</td><td style="font-weight:900">NT$ ${fmt(Math.round(gapAtRetire))}</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>展開：制度計算細節（給想確認規則的人）</summary>
       <div class="inner">
         <table class="table">
           <tr><td class="muted">薪資來源</td><td>${salaryNote}</td></tr>
-          <tr><td class="muted">60月平均（年金/一次金用）</td><td>NT$ ${fmt(Math.round(avg60))}</td></tr>
-          <tr><td class="muted">36月平均（一次請領用；精簡版可能等於上方）</td><td>NT$ ${fmt(Math.round(avg36))}</td></tr>
-          <tr><td class="muted">退休前報酬率 / 退休後報酬率</td><td>${(returnPre*100).toFixed(1)}% / ${(returnPost*100).toFixed(1)}%</td></tr>
-          <tr><td class="muted">通膨</td><td>${(inflation*100).toFixed(1)}%</td></tr>
-          <tr><td class="muted">退休後生活費（今天價值）</td><td>NT$ ${fmt(Math.round(needMonthlyToday))}</td></tr>
-          <tr><td class="muted">退休後其他收入 / 房租</td><td>NT$ ${fmt(Math.round(otherIncomeMonthly))} / NT$ ${fmt(Math.round(rentMonthly))}</td></tr>
+          <tr><td class="muted">年金平均薪資（最高60月平均）</td><td>NT$ ${fmt(Math.round(avgPension))}</td></tr>
+          <tr><td class="muted">一次請領平均薪資（退保前36月平均）</td><td>NT$ ${fmt(Math.round(avgLump36))}</td></tr>
+          <tr><td class="muted">退休時年資（估）</td><td>${(insAtRetireMonths/12).toFixed(2)} 年</td></tr>
+          <tr><td class="muted">法定請領年齡（依出生年次 ROC ${rocBirthYear}）</td><td>${legal.years} 歲</td></tr>
+          <tr><td class="muted">提早/展延</td><td>${diffText}</td></tr>
+          ${eligiblePension ? `
+            <tr><td class="muted">年金式1（未加減給）</td><td>NT$ ${fmt(Math.round(pension.base1))}</td></tr>
+            <tr><td class="muted">年金式2（未加減給）</td><td>NT$ ${fmt(Math.round(pension.base2))}</td></tr>
+            <tr><td class="muted">擇優基礎（未加減給）</td><td>NT$ ${fmt(Math.round(pension.chosenBase))}</td></tr>
+            <tr><td class="muted">加減給係數</td><td>× ${adj.factor.toFixed(4)}</td></tr>
+          ` : ``}
+          <tr><td class="muted">老年一次金給付月數</td><td>${oldLump.benefitMonths.toFixed(2)}（按月比例）</td></tr>
+          <tr><td class="muted">一次請領老年給付月數</td><td>${oneTime ? `${oneTime.benefitMonths.toFixed(2)}（上限${oneTime.cap}）` : "—"}</td></tr>
         </table>
+
         <div class="small muted">
-          提醒：若你設定「展延請領」，退休到請領期間不會有年金收入也沒有一次金入帳；本工具已用分段模擬避免偏樂觀。
+          重要提醒：一次請領是「選擇制」；若你符合一次請領與年金，工具會提供比較（打平年齡/撐多久），但實務仍需以勞保局核定為準。
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>展開：這個工具在做什麼（給你日後寫教學用）</summary>
+      <div class="inner">
+        <div class="small muted">
+          1) 先用你輸入的出生年次推「法定請領年齡」，再依你輸入的請領年齡套「提早/展延係數」。<br>
+          2) 制度分流：年金/老年一次金/一次請領三條線完全分開，並用「98年前是否有年資」做開關。<br>
+          3) 缺口模擬：用同一個資產池，拆成「增值」與「股息債息」避免 double count；退休後把年金/其他收入/房租/殖利（若選拿來生活）一起抵支出，不足才提領資產。<br>
+          4) 差額反推：用二分搜尋算出「每月需要多存多少」或「生活費要少多少」才能撐到預計壽命。<br>
+          5) 安全邊際：同一套模型直接把回報下修、通膨上修，看撐多久、缺口是否翻轉。<br>
+          6) 制度比較引擎：若同時可選年金與一次請領，計算打平年齡並比較兩方案「撐多久」。
         </div>
       </div>
     </details>
@@ -832,26 +1191,19 @@ function calcAll(){
 
   // 提示
   if(Math.abs(adj.diffMonths) > 60){
-    showWarn("你設定的請領年齡與法定年齡相差超過5年；年金加減給已封頂（±20%）。");
-  }else{
-    showOk("完成：制度以請領點校正＋年金/一次金比較＋退休缺口模擬＋壓力測試＋差額反推。");
+    showWarn("你輸入的請領年齡與法定年齡相差超過5年；年金加減給已依規則封頂（±20%）。");
   }
 
-  if(!$("firstInsuredDate").value){
-    showWarn("提醒：你未填「首次投保日期」。我已保守視為「98/01/01 後首次投保」避免誤判一次請領；若你確定98年前已有年資，建議補上日期。");
+  if(onlyPensionByLaw && !eligiblePension){
+    showDanger("你屬「98後投保且年資≥15年」分流為年金，但目前你輸入的請領年齡/條件未符合年金規則（請檢查請領年齡是否≥60或特殊工作/合計國民年金條件）。");
   }
 
-  if(wantOneTime && !pre98){
-    showWarn("你勾選了試算一次請領，但你未填或未能證明98前已有年資（系統保守視為98後）。一次請領仍會以參考方式顯示，請自行查核資格。");
-  }
-
-  if(wantOneTime && detail.count === 0){
-    showWarn("提醒：你在試算一次請領，但未貼明細。一次請領理論上應採「最後36月平均」。精簡版會先用你填的單一平均薪資作近似，建議貼明細更準。");
-  }
+  showOk("已完成：制度精準分流＋缺口模擬＋差額反推＋制度比較（打平/撐多久）＋安全邊際壓力測試。");
 }
 
 function loadExample(){
   $("birthDate").value = "1980-01-01";
+  $("gender").value = "male";
   $("retireYears").value = 65; $("retireMonths").value = 0;
   $("claimYears").value = 65; $("claimMonths").value = 0;
   $("lifeExpectancy").value = 90;
@@ -859,48 +1211,73 @@ function loadExample(){
   $("insYearsNow").value = 28; $("insMonthsNow").value = 0; $("insDaysNow").value = 5;
   $("keepInsured").value = "yes";
 
-  $("avgSalarySimple").value = 45800;
-  $("firstInsuredDate").value = "2010-01-01";
+  $("hasPre98").checked = true;
+  $("isRetiredOut").checked = true;
+  $("sameUnitYears").value = 0;
+  $("specialWorkYears").value = 0;
+  $("natPensionYears").value = 0;
+
+  $("avgSalaryPension").value = 45800;
+  $("avgSalaryLump36").value = 45800;
   $("salaryLines").value = "";
 
-  $("assetNow").value = 8000000;
-  $("contribMonthly").value = 30000;
-
-  $("returnPre").value = 3.0;
-  $("returnPost").value = 2.0;
-  $("inflation").value = 2.0;
-
-  $("needMonthlyToday").value = 80000;
-  $("otherIncomeMonthly").value = 0;
-  $("rentMonthly").value = 15000;
-
-  // 進階一次請領：預設不算
-  $("wantOneTime").value = "no";
-  $("oneTimeEligibleConfirm").value = "no";
   $("insAfter60Years").value = 0;
   $("insAfter60Months").value = 0;
   $("claimBefore60").value = "no";
 
-  showOk("已帶入範例：資產800萬、每月投入3萬、報酬(前3%後2%)、通膨2%、房租1.5萬、生活費8萬。");
-  showWarn("");
+  $("assetNow").value = 8000000;
+  $("contribMonthly").value = 30000;
+
+  $("divPre").value = 3.0;
+  $("bondPre").value = 1.0;
+  $("growthPre").value = 3.0;
+  $("reinvestPre").value = "yes";
+
+  $("divPost").value = 3.0;
+  $("bondPost").value = 1.0;
+  $("growthPost").value = 2.0;
+  $("reinvestPost").value = "spend";
+
+  $("rentMonthly").value = 15000;
+  $("otherIncomeMonthly").value = 0;
+
+  $("needMonthlyToday").value = 80000;
+  $("inflation").value = 2.0;
+
+  $("postContribMode").value = "no";
+  $("postContribMonthly").value = 0;
+
+  $("stressScenario").value = "both";
+  $("discountRate").value = 2.0;
+
+  showOk("已帶入範例：資產800萬、每月投入3萬、股息3%債息1%增值(前3%後2%)、房租1.5萬、生活費8萬、壓力測試=市場-2%+通膨+1%。");
+  showWarn(""); showDanger("");
   hideOutput();
 }
 
 (function init(){
   if(!$("birthDate").value) $("birthDate").value = "1980-01-01";
   [
-    "birthDate","retireYears","retireMonths","claimYears","claimMonths","lifeExpectancy",
+    "birthDate","gender","retireYears","retireMonths","claimYears","claimMonths","lifeExpectancy",
     "insYearsNow","insMonthsNow","insDaysNow","keepInsured",
-    "avgSalarySimple","firstInsuredDate","salaryLines",
-    "assetNow","contribMonthly","returnPre","returnPost","inflation",
-    "needMonthlyToday","otherIncomeMonthly","rentMonthly",
-    "wantOneTime","insAfter60Years","insAfter60Months","claimBefore60","oneTimeEligibleConfirm"
+    "hasPre98","avgSalaryPension","avgSalaryLump36","salaryLines",
+    "isRetiredOut","sameUnitYears","specialWorkYears","natPensionYears",
+    "insAfter60Years","insAfter60Months","claimBefore60",
+    "assetNow","contribMonthly",
+    "divPre","bondPre","growthPre","reinvestPre",
+    "divPost","bondPost","growthPost","reinvestPost",
+    "rentMonthly","otherIncomeMonthly",
+    "needMonthlyToday","inflation",
+    "postContribMode","postContribMonthly",
+    "stressScenario","discountRate"
   ].forEach(id=>{
     const el = $(id);
     if(!el) return;
     el.addEventListener("input", hideOutput);
     el.addEventListener("change", hideOutput);
   });
+
+  // 初始不自動算（避免使用者沒填薪資就報錯）
 })();
 </script>
 </body>
