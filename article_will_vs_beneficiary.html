@@ -4,215 +4,470 @@
 <meta charset="UTF-8">
 <title>遺囑 vs 保險受益人：差別與常見風險｜智 Financial Path</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="用制度推演理解：遺囑與保險受益人屬於不同法律路徑，將影響資金到位速度、家庭爭議風險與遺產稅課稅基礎。">
+<meta name="description" content="用顧問式推演理解：遺囑與保險受益人屬不同制度路徑，影響資金到位、爭議、隱私與遺產稅課稅基礎。附數字化對照圖與嚴謹試算工具。">
 
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f6f8fb;color:#333;line-height:1.9}
-.topbar{background:#fff;border-bottom:1px solid #e6e8ee;padding:12px 20px;position:sticky;top:0;z-index:999}
-.topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between}
-.container{max-width:1100px;margin:auto;padding:40px 20px 90px}
-h1,h2,h3{color:#0b3d91}
-.card{background:#fff;padding:22px;border-radius:16px;margin:20px 0;box-shadow:0 10px 24px rgba(0,0,0,.06)}
-.note{background:#fff;border-left:4px solid #0b3d91;border-radius:14px;padding:18px;margin:22px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
-.warn{border-left-color:#d33}
-.hr{margin:40px 0;border:none;border-top:1px solid #e6e8ee}
-button{padding:10px 20px;border:none;border-radius:8px;background:#0b3d91;color:white;font-size:14px}
-input{padding:6px;margin-top:5px;margin-bottom:10px}
-svg text{font-size:14px;font-family:Arial}
+  :root{
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --text:#2f2f2f;
+    --muted:#5c6670;
+    --line:#e6e8ee;
+    --brand:#0b3d91;
+    --warn:#d33;
+    --shadow:0 10px 24px rgba(0,0,0,.06);
+    --radius:16px;
+  }
+  body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.9}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 18px;position:sticky;top:0;z-index:999}
+  .topbar .inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .topbar a{color:var(--brand);text-decoration:none;font-size:14px}
+  .container{max-width:1100px;margin:auto;padding:34px 18px 90px}
+  h1,h2,h3{color:var(--brand);margin:0 0 10px 0}
+  .sub{color:var(--muted);max-width:980px;margin-top:8px}
+  .card{background:var(--card);padding:22px;border-radius:var(--radius);margin:18px 0;box-shadow:var(--shadow)}
+  .note{background:var(--card);border-left:4px solid var(--brand);border-radius:14px;padding:16px 18px;margin:18px 0;box-shadow:0 6px 16px rgba(0,0,0,.05)}
+  .warn{border-left-color:var(--warn)}
+  .hr{margin:34px 0;border:none;border-top:1px solid var(--line)}
+  ul,ol{margin:10px 0 0 22px}
+  .small{color:#66707a;font-size:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:860px){.grid2{grid-template-columns:1fr}}
+  .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef4ff;color:var(--brand);font-size:12px;margin-left:8px}
+  .svgWrap{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin-top:14px}
+  .svgWrap svg{width:100%;height:auto;display:block}
+
+  /* Tool UI */
+  .tool-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:860px){.tool-row{grid-template-columns:1fr}}
+  label{display:block;font-size:13px;color:#49525b;margin-top:10px}
+  input,select{width:100%;box-sizing:border-box;padding:10px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:14px}
+  .inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .check{display:flex;align-items:center;gap:8px}
+  .check input{width:auto}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  button{padding:10px 16px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-size:14px;cursor:pointer}
+  button.secondary{background:#1f2a37}
+  .result{background:#0b3d910d;border:1px solid #0b3d9122;border-radius:14px;padding:16px;margin-top:14px}
+  .kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:860px){.kpi{grid-template-columns:1fr}}
+  .kpi .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+  .kpi .t{color:#5b6570;font-size:12px}
+  .kpi .v{font-size:18px;font-weight:bold;margin-top:6px;color:#111827}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+  .footer-links{text-align:center;margin-top:34px}
+  .footer-links a{margin:0 12px;color:var(--brand);text-decoration:none}
 </style>
 </head>
+
 <body>
+<div class="topbar">
+  <div class="inner">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <div>
+      <a href="./index.html" style="margin-right:14px;">回主頁</a>
+      <a href="./library.html" style="margin-right:14px;">知識庫</a>
+      <a href="./library.html#inherit">回資產傳承分類</a>
+    </div>
+  </div>
+</div>
 
 <div class="container">
 
-<h1>遺囑 vs 保險受益人：差別與常見風險</h1>
+  <h1>遺囑 vs 保險受益人：差別與常見風險</h1>
+  <p class="sub">
+    很多人把「遺囑」與「保險指定受益人」當成同一件事，但它們其實是兩條不同的制度路徑。<br>
+    影響的不只「誰拿到」，更在於：<b>資金到位速度、家庭爭議風險、隱私程度</b>與<b>遺產稅課稅基礎</b>。
+  </p>
 
-<p>
-許多人以為寫遺囑就完成傳承規劃，
-但實務上，<b>遺囑</b>與<b>保險指定受益人</b>屬於不同法律制度，
-影響的是：
-</p>
+  <div class="note">
+    <b>一句話：</b><br>
+    <b>遺囑</b>是「遺產如何分配的規則」；<b>保險受益人</b>是「保險金給付的契約路徑」。<br>
+    專業架構設計不是二選一，而是理解兩者如何搭配並避開常見風險。
+  </div>
 
-<ul>
-<li>資金到位速度</li>
-<li>家庭衝突風險</li>
-<li>隱私程度</li>
-<li>遺產稅課稅基礎</li>
-</ul>
+  <hr class="hr">
 
-<div class="note">
-<strong>關鍵觀念：</strong><br>
-遺囑是「整體財產分配規則」。<br>
-保險受益人是「契約請求權給付路徑」。
+  <h2>一、差異總覽：四個你一定要分清的點</h2>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <h3>遺囑 <span class="pill">整體分配規則</span></h3>
+        <ul>
+          <li>處理「遺產」範圍內的資產與分配規則</li>
+          <li>常牽涉遺產處理、分割協議與家族協調</li>
+          <li>需面對特留分與公平感問題</li>
+          <li>資產全貌更可能被攤開討論</li>
+        </ul>
+      </div>
+      <div>
+        <h3>保險指定受益人 <span class="pill">契約給付路徑</span></h3>
+        <ul>
+          <li>保險公司依契約直接給付給受益人</li>
+          <li>常用於「資金快速到位」與家庭急需現金流</li>
+          <li>通常隱私性較高（仍可能受法律/稅務檢視）</li>
+          <li>身故保險金在現行制度下有特定計算規範（常見參考上限：3,740 萬）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b>常見地雷：</b><br>
+    只指定受益人、卻未同步用遺囑與其他資產配置調整整體公平，容易導致：不動產難分、家人覺得失衡、爭議升級。
+  </div>
+
+  <hr class="hr">
+
+  <h2>二、制度路徑差異圖（放大高質感版）</h2>
+  <p class="sub">
+    下面用相同總資產做對照：差異不是稅率不同，而是<b>制度路徑與課稅基礎不同</b>（示意推演）。
+  </p>
+
+  <div class="svgWrap">
+    <svg viewBox="0 0 1200 520" role="img" aria-label="制度路徑差異圖：未規劃 vs 制度分流">
+      <defs>
+        <linearGradient id="bgGrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#0b3d910d"></stop>
+          <stop offset="1" stop-color="#0b3d9100"></stop>
+        </linearGradient>
+        <linearGradient id="cardGrad" x1="0" x2="1">
+          <stop offset="0" stop-color="#ffffff"></stop>
+          <stop offset="1" stop-color="#fbfcff"></stop>
+        </linearGradient>
+        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000000" flood-opacity="0.12"/>
+        </filter>
+      </defs>
+
+      <rect x="0" y="0" width="1200" height="520" rx="22" fill="url(#bgGrad)"/>
+
+      <text x="600" y="62" text-anchor="middle" font-weight="700" fill="#0b3d91" style="font-size:22px;">
+        資產移轉路徑 vs 課稅基礎：未規劃 與 制度分流 的差異（示意）
+      </text>
+      <text x="600" y="92" text-anchor="middle" fill="#5c6670" style="font-size:14px;">
+        重點：差異來自制度路徑與課稅基礎，不是稅率不同
+      </text>
+
+      <!-- Left -->
+      <rect x="70" y="130" width="500" height="310" rx="22" fill="url(#cardGrad)" stroke="#e6e8ee" filter="url(#softShadow)"/>
+      <text x="320" y="170" text-anchor="middle" font-weight="700" fill="#111827" style="font-size:18px;">未規劃情境（單純法定繼承）</text>
+
+      <rect x="115" y="200" width="410" height="68" rx="14" fill="#f3f6ff" stroke="#e6e8ee"/>
+      <text x="320" y="240" text-anchor="middle" fill="#111827" style="font-size:16px;">總資產：8,000 萬</text>
+
+      <text x="140" y="300" fill="#374151" style="font-size:15px;">• 多數資產納入遺產總額</text>
+      <text x="140" y="332" fill="#374151" style="font-size:15px;">• 扣除額後計算遺產稅</text>
+      <text x="140" y="364" fill="#374151" style="font-size:15px;">• 稅額取決於應稅遺產與級距</text>
+
+      <rect x="115" y="390" width="410" height="40" rx="12" fill="#ffffff" stroke="#0b3d9133"/>
+      <text x="320" y="416" text-anchor="middle" font-weight="700" fill="#0b3d91" style="font-size:16px;">
+        課稅基礎（示意）：8,000 萬
+      </text>
+
+      <!-- Right -->
+      <rect x="630" y="130" width="500" height="310" rx="22" fill="url(#cardGrad)" stroke="#e6e8ee" filter="url(#softShadow)"/>
+      <text x="880" y="170" text-anchor="middle" font-weight="700" fill="#111827" style="font-size:18px;">制度分流情境（遺囑 + 壽險受益人）</text>
+
+      <rect x="675" y="200" width="410" height="68" rx="14" fill="#f3f6ff" stroke="#e6e8ee"/>
+      <text x="880" y="234" text-anchor="middle" fill="#111827" style="font-size:16px;">一般資產：5,000 萬</text>
+      <text x="880" y="256" text-anchor="middle" fill="#111827" style="font-size:16px;">保險給付路徑：3,000 萬（示意）</text>
+
+      <text x="700" y="300" fill="#374151" style="font-size:15px;">• 一部分資產走契約給付路徑</text>
+      <text x="700" y="332" fill="#374151" style="font-size:15px;">• 遺產總額的計算基礎可能不同（視個案）</text>
+      <text x="700" y="364" fill="#374151" style="font-size:15px;">• 仍需留意稅務與法律風險情境</text>
+
+      <rect x="675" y="390" width="410" height="40" rx="12" fill="#ffffff" stroke="#0b3d9133"/>
+      <text x="880" y="416" text-anchor="middle" font-weight="700" fill="#0b3d91" style="font-size:16px;">
+        課稅基礎（示意）：5,000 萬
+      </text>
+
+      <path d="M 570 285 C 610 285, 590 285, 630 285" stroke="#0b3d91" stroke-width="3" fill="none"/>
+      <polygon points="630,285 617,278 617,292" fill="#0b3d91"/>
+    </svg>
+
+    <p class="small" style="margin:12px 6px 0 6px;">
+      ※ 圖為制度理解示意：實務上「保險金是否、以及在何種範圍內」影響遺產總額計算，需依投保方式、保費來源與時間結構等因素判斷。
+    </p>
+  </div>
+
+  <hr class="hr">
+
+  <h2>三、常見風險：為什麼「只指定受益人」仍可能出問題？</h2>
+  <div class="card">
+    <ul>
+      <li><b>公平失衡：</b>保險金給某一人，其他資產未同步調整，容易引發不公平感。</li>
+      <li><b>不動產難題：</b>房子常是最大宗資產，單靠受益人無法處理共有與分割問題。</li>
+      <li><b>特留分/法律爭議：</b>遺囑未規劃或結構不完整，可能引發後續主張與訴訟風險。</li>
+      <li><b>稅務風險情境：</b>若投保安排與保費來源不合理等，可能影響「是否納入遺產總額」的判斷。</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <b>顧問式結論：</b><br>
+    壽險的強項是「資金到位」與「制度路徑分流」；<br>
+    遺囑的強項是「全局公平」與「處理不動產/分配規則」。
+  </div>
+
+  <hr class="hr">
+
+  <h2>四、嚴謹試算工具：兩情境對照（課稅基礎與稅額）</h2>
+  <p class="sub">
+    這個工具用來做制度理解：<b>未分流（單純法定繼承）</b> vs <b>制度分流（含保險給付路徑）</b> 的差異。<br>
+    本頁避免使用「節稅」等描述，僅呈現「課稅基礎與制度路徑」在數字上的推演結果。
+  </p>
+
+  <div class="note">
+    <b>提醒：</b><br>
+    身故保險金在現行制度下有特定計算規範；常見制度理解參考上限為 <b>3,740 萬</b>（超過或特殊情況仍可能受到檢視）。<br>
+    本工具以「制度分流金額」做推演示意，不代表對任何個案的法律或稅務結論。
+  </div>
+
+  <div class="card">
+    <div class="tool-row">
+      <div>
+        <h3>1) 輸入資產</h3>
+        <label>總資產（萬元）</label>
+        <input type="number" id="totalAsset" value="8000" min="0" step="1">
+
+        <label>制度分流金額（保險給付路徑）（萬元）</label>
+        <input type="number" id="insSplit" value="3000" min="0" step="1">
+
+        <label>喪葬費（萬元，未填則用制度常見預設）</label>
+        <input type="number" id="funeralInput" placeholder="例如 138" min="0" step="1">
+      </div>
+
+      <div>
+        <h3>2) 選擇家庭成員（扣除額會自動套用）</h3>
+
+        <div class="inline">
+          <label style="margin:0;">配偶</label>
+          <div class="check">
+            <input type="checkbox" id="hasSpouse" checked>
+            <span>有配偶</span>
+          </div>
+        </div>
+
+        <label>子女人數</label>
+        <select id="childrenCount">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+
+        <label>父母人數</label>
+        <select id="parentsCount">
+          <option value="0" selected>0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>
+
+        <label>身心障礙受扶養人數</label>
+        <select id="disabledCount">
+          <option value="0" selected>0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3+</option>
+        </select>
+
+        <div class="btns">
+          <button onclick="calculate()">計算對照</button>
+          <button class="secondary" onclick="resetDefaults()">恢復預設值</button>
+        </div>
+
+        <p class="small" style="margin-top:10px;">
+          ※ 若你有更複雜的家族結構（重組家庭、代位繼承、股權/信託等），建議用個案推演處理。
+        </p>
+      </div>
+    </div>
+
+    <div id="outBox" class="result" style="display:none;"></div>
+
+    <div class="kpi" id="kpiBox" style="display:none;">
+      <div class="box">
+        <div class="t">未分流情境：應稅遺產（萬元）</div>
+        <div class="v" id="kpi_taxableA">-</div>
+      </div>
+      <div class="box">
+        <div class="t">制度分流情境：應稅遺產（萬元）</div>
+        <div class="v" id="kpi_taxableB">-</div>
+      </div>
+      <div class="box">
+        <div class="t">差異來源</div>
+        <div class="v">課稅基礎不同</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================
+       內部法規參數（讀者不需要看到）
+       你未來要更新，只改這一段即可。
+       ========================== */
+    const LAW = {
+      // 單位：萬元（依你要求：民國115年）
+      basicExemption: 1333,
+      spouseDeduction: 553,
+      perChildDeduction: 56,
+      perParentDeduction: 138,
+      perDisabledDeduction: 693,
+      defaultFuneralDeduction: 138,
+      // 身故保險金制度理解常見參考上限（萬元）
+      insuranceCapRef: 3740
+    };
+
+    function num(v){ v = parseFloat(v); return isNaN(v)?0:v; }
+    function intv(v){ v = parseInt(v,10); return isNaN(v)?0:v; }
+    function clampMin0(v){ return v<0?0:v; }
+    function fmt(x){ return (Math.round(x*10)/10).toLocaleString("zh-Hant"); }
+
+    function estateTax(amount){
+      // 遺產稅級距（萬元）
+      if(amount <= 5000){
+        return {tax: amount*0.10, bracket:"10%", formula:`${fmt(amount)} × 10%`};
+      }else if(amount <= 10000){
+        return {tax: amount*0.15 - 250, bracket:"15%（累進差額 250萬）", formula:`${fmt(amount)} × 15% − 250`};
+      }else{
+        return {tax: amount*0.20 - 750, bracket:"20%（累進差額 750萬）", formula:`${fmt(amount)} × 20% − 750`};
+      }
+    }
+
+    function normalizeSelectToNumber(id){
+      const v = document.getElementById(id).value;
+      if(v.endsWith("+")) return 5; // 5+ 以 5 做推演基數（制度理解用）
+      return intv(v);
+    }
+
+    function calculate(){
+      const totalAsset = num(document.getElementById("totalAsset").value);
+      let insSplit = num(document.getElementById("insSplit").value);
+      if(insSplit > totalAsset) insSplit = totalAsset;
+
+      const hasSpouse = document.getElementById("hasSpouse").checked ? 1 : 0;
+      const childrenCount = normalizeSelectToNumber("childrenCount");
+      const parentsCount = normalizeSelectToNumber("parentsCount");
+      const disabledCount = normalizeSelectToNumber("disabledCount");
+
+      const funeralInput = document.getElementById("funeralInput").value.trim();
+      const funeralDed = funeralInput === "" ? LAW.defaultFuneralDeduction : num(funeralInput);
+
+      // 扣除額（簡化推演：讀者選家庭成員 -> 內部套用對應參數）
+      const spousePart = hasSpouse ? LAW.spouseDeduction : 0;
+      const childPart = childrenCount * LAW.perChildDeduction;
+      const parentPart = parentsCount * LAW.perParentDeduction;
+      const disabledPart = disabledCount * LAW.perDisabledDeduction;
+
+      const totalDeduction = LAW.basicExemption + spousePart + childPart + parentPart + disabledPart + funeralDed;
+
+      // A：未分流（全納入）
+      const taxableA = clampMin0(totalAsset - totalDeduction);
+      const taxA = estateTax(taxableA);
+
+      // B：制度分流（示意）
+      // 以「分流金額」但上限採制度理解參考：min(insSplit, capRef)
+      const effectiveSplit = Math.min(insSplit, LAW.insuranceCapRef);
+      const estateBaseB = clampMin0(totalAsset - effectiveSplit);
+      const taxableB = clampMin0(estateBaseB - totalDeduction);
+      const taxB = estateTax(taxableB);
+
+      const diffTax = taxA.tax - taxB.tax;
+
+      const out =
+        `<div><b>扣除額明細（萬元）</b></div>
+         <div class="mono small" style="margin-top:6px;">
+           基本免稅額 ${fmt(LAW.basicExemption)} +
+           配偶扣除 ${fmt(spousePart)} +
+           子女扣除 ${fmt(childPart)} +
+           父母扣除 ${fmt(parentPart)} +
+           身障扣除 ${fmt(disabledPart)} +
+           喪葬費 ${fmt(funeralDed)}
+           = <b>${fmt(totalDeduction)}</b>
+         </div>
+
+         <hr style="border:none;border-top:1px solid #0b3d9122;margin:14px 0;">
+
+         <div class="grid2" style="gap:12px;">
+           <div style="background:#fff;border:1px solid #e6e8ee;border-radius:14px;padding:14px;">
+             <b>未分流情境（單純法定繼承）</b><br>
+             <span class="small">遺產總額基礎（示意）：</span> <b>${fmt(totalAsset)}</b> 萬<br>
+             <span class="small">應稅遺產：</span> <b>${fmt(taxableA)}</b> 萬<br>
+             <span class="small">適用級距：</span> <b>${taxA.bracket}</b><br>
+             <span class="small">計算式：</span> <span class="mono">${taxA.formula}</span><br>
+             <span class="small">遺產稅（估算）：</span> <b>${fmt(taxA.tax)}</b> 萬
+           </div>
+
+           <div style="background:#fff;border:1px solid #e6e8ee;border-radius:14px;padding:14px;">
+             <b>制度分流情境（含保險給付路徑，示意）</b><br>
+             <span class="small">分流金額輸入：</span> ${fmt(insSplit)} 萬<br>
+             <span class="small">本次分流採用（制度理解參考上限 ${fmt(LAW.insuranceCapRef)} 萬）：</span>
+             <b>${fmt(effectiveSplit)}</b> 萬<br>
+             <span class="small">遺產總額基礎（示意）：</span> <b>${fmt(estateBaseB)}</b> 萬<br>
+             <span class="small">應稅遺產：</span> <b>${fmt(taxableB)}</b> 萬<br>
+             <span class="small">適用級距：</span> <b>${taxB.bracket}</b><br>
+             <span class="small">計算式：</span> <span class="mono">${taxB.formula}</span><br>
+             <span class="small">遺產稅（估算）：</span> <b>${fmt(taxB.tax)}</b> 萬
+           </div>
+         </div>
+
+         <div class="note" style="margin-top:14px;">
+           <b>對照結論（制度理解）：</b><br>
+           兩情境差異源自「課稅基礎與制度路徑」不同，而非稅率不同。<br>
+           本次估算差異：<b>${fmt(diffTax)}</b> 萬（僅反映此頁推演假設）。
+         </div>
+
+         <div class="note warn">
+           <b>風險提醒（務必閱讀）：</b><br>
+           身故保險金在特定情況下仍可能被檢視並影響遺產總額計算。<br>
+           本頁「制度分流」為推演示意，不構成對任何個案之法律或稅務結論。
+         </div>
+        `;
+
+      document.getElementById("outBox").style.display = "block";
+      document.getElementById("outBox").innerHTML = out;
+
+      document.getElementById("kpiBox").style.display = "grid";
+      document.getElementById("kpi_taxableA").textContent = fmt(taxableA);
+      document.getElementById("kpi_taxableB").textContent = fmt(taxableB);
+    }
+
+    function resetDefaults(){
+      document.getElementById("totalAsset").value = 8000;
+      document.getElementById("insSplit").value = 3000;
+      document.getElementById("funeralInput").value = "";
+      document.getElementById("hasSpouse").checked = true;
+      document.getElementById("childrenCount").value = "2";
+      document.getElementById("parentsCount").value = "0";
+      document.getElementById("disabledCount").value = "0";
+      document.getElementById("outBox").style.display = "none";
+      document.getElementById("kpiBox").style.display = "none";
+    }
+  </script>
+
+  <hr class="hr">
+
+  <h2>五、你可以用的顧問式檢核問題</h2>
+  <div class="card">
+    <ol>
+      <li>哪一筆資金需要在家庭最脆弱的時刻「快速到位」？（生活費、房貸、照護費）</li>
+      <li>哪些資產必須用「規則」處理？（不動產、股權、家族共有資產）</li>
+      <li>你要的「公平」是形式公平還是實質公平？是否需要用不同工具做補償與平衡？</li>
+      <li>如果今天家族關係緊張，這套安排會不會把衝突放大？</li>
+    </ol>
+    <p class="small">
+      若你想用你家資產/成員組合做一次制度推演，可進行架構討論：
+      <a href="https://lin.ee/yvD5Vu8" target="_blank" rel="noopener">架構推演討論</a>
+    </p>
+  </div>
+
+  <div class="footer-links">
+    <a href="javascript:history.back()">← 回上頁</a>
+    <a href="./library.html#inherit">回資產傳承分類</a>
+    <a href="./index.html">回主頁</a>
+  </div>
+
 </div>
-
-<hr class="hr">
-
-<h2>一、法律性質差異</h2>
-
-<div class="card">
-<h3>遺囑</h3>
-<ul>
-<li>處理全部遺產</li>
-<li>需進入遺產程序</li>
-<li>依法定繼承人與特留分規範運作</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>保險指定受益人</h3>
-<ul>
-<li>屬於契約請求權</li>
-<li>保險公司依契約給付</li>
-<li>在一定規範下適用 3,740 萬計算制度</li>
-</ul>
-</div>
-
-<hr class="hr">
-
-<h2>二、制度路徑差異（高質感架構圖）</h2>
-
-<div class="card">
-
-<svg width="100%" height="320">
-
-<!-- 左側 未規劃 -->
-<rect x="50" y="40" width="300" height="200" rx="18" fill="#ffffff" stroke="#e6e8ee"/>
-<text x="200" y="70" text-anchor="middle" font-weight="bold">未規劃情境</text>
-<text x="200" y="110" text-anchor="middle">總資產 8,000 萬</text>
-<text x="200" y="140" text-anchor="middle">全部納入遺產總額</text>
-<text x="200" y="170" text-anchor="middle">扣除額後計算遺產稅</text>
-<text x="200" y="200" text-anchor="middle" font-weight="bold">課稅基礎：8,000 萬</text>
-
-<!-- 右側 有規劃 -->
-<rect x="450" y="40" width="300" height="200" rx="18" fill="#ffffff" stroke="#e6e8ee"/>
-<text x="600" y="70" text-anchor="middle" font-weight="bold">制度分流情境</text>
-<text x="600" y="110" text-anchor="middle">一般資產 5,000 萬</text>
-<text x="600" y="140" text-anchor="middle">保險架構 3,000 萬</text>
-<text x="600" y="170" text-anchor="middle">遺產總額基礎降低</text>
-<text x="600" y="200" text-anchor="middle" font-weight="bold">課稅基礎：5,000 萬</text>
-
-<!-- 中間箭頭 -->
-<line x1="350" y1="140" x2="450" y2="140" stroke="#0b3d91" stroke-width="2"/>
-<polygon points="450,140 440,135 440,145" fill="#0b3d91"/>
-
-</svg>
-
-<p style="text-align:center;font-weight:bold;margin-top:15px;">
-差異來自法律路徑不同，而非稅率不同
-</p>
-
-</div>
-
-<hr class="hr">
-
-<h2>三、稅負推演邏輯（民國115年規範）</h2>
-
-<div class="note">
-遺產稅依「遺產總額」減除免稅額與各項扣除後，
-採累進稅率課徵。
-</div>
-
-<div class="card">
-<h3>主要數據（115年）</h3>
-<ul>
-<li>基本免稅額：約 1,333 萬</li>
-<li>配偶扣除額：約 553 萬</li>
-<li>每名子女扣除額：約 56 萬</li>
-<li>喪葬費扣除額：約 138 萬</li>
-<li>稅率級距：10% / 15% / 20%</li>
-</ul>
-</div>
-
-<hr class="hr">
-
-<h2>四、課稅基礎試算工具</h2>
-
-<div class="card">
-
-總資產（萬元）<br>
-<input type="number" id="total" value="8000"><br>
-
-保險架構金額（萬元）<br>
-<input type="number" id="insurance" value="3000"><br>
-
-子女人數<br>
-<input type="number" id="children" value="2"><br>
-
-<button onclick="calc()">計算</button>
-
-<h3 id="output"></h3>
-
-</div>
-
-<script>
-function calc(){
-
-let total = parseFloat(document.getElementById("total").value);
-let insurance = parseFloat(document.getElementById("insurance").value);
-let children = parseInt(document.getElementById("children").value);
-
-const basic = 1333;
-const spouse = 553;
-const funeral = 138;
-const child = 56 * children;
-
-let deduction = basic + spouse + funeral + child;
-
-function estateTax(amount){
-if(amount <= 5000){
-return amount*0.1;
-}else if(amount <= 10000){
-return amount*0.15 - 250;
-}else{
-return amount*0.2 - 750;
-}
-}
-
-let taxableA = total - deduction;
-if(taxableA < 0) taxableA = 0;
-let taxA = estateTax(taxableA);
-
-let taxableB = (total - insurance) - deduction;
-if(taxableB < 0) taxableB = 0;
-let taxB = estateTax(taxableB);
-
-document.getElementById("output").innerHTML =
-"未分流情境遺產稅：約 " + taxA.toFixed(1) + " 萬元<br>" +
-"制度分流情境遺產稅：約 " + taxB.toFixed(1) + " 萬元<br><br>" +
-"差異源自課稅基礎不同。";
-}
-</script>
-
-<hr class="hr">
-
-<h2>五、常見風險</h2>
-
-<div class="card">
-<ul>
-<li>臨終前高齡大量投保，可能被認定併入遺產</li>
-<li>未處理特留分，可能引發法律爭議</li>
-<li>只指定受益人，未整體搭配遺囑，可能失衡</li>
-</ul>
-</div>
-
-<div class="note warn">
-保險規劃必須合法、提前、合理。<br>
-制度理解重於數字差異。
-</div>
-
-<hr class="hr">
-
-<h2>結論</h2>
-
-<div class="note">
-成熟的傳承架構不是選擇遺囑或保險。<br><br>
-而是理解兩種制度如何交互作用，
-在合法規範下，
-設計穩定、透明、可預期的資產移轉路徑。
-</div>
-
-</div>
-
 </body>
 </html>
