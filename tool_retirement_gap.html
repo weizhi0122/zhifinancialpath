@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>勞保老年給付試算（98前/後＋60歲後加保）</title>
+<title>勞保老年給付試算（98前/後＋60歲後加保）｜智 Financial Path</title>
 <style>
   :root{
     --bg:#f6f8fb; --card:#fff; --text:#111827; --muted:#667085;
@@ -12,11 +12,25 @@
     --shadow:0 6px 16px rgba(0,0,0,.05);
   }
   body{font-family:Arial,"Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.55}
+  a{color:var(--primary);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Topbar */
   .topbar{background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;position:sticky;top:0;z-index:10}
-  .topbar-inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+  .topbar-inner{max-width:980px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .left-nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .brand{font-size:13px;color:var(--muted)}
+  .navbtn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;color:#0f172a;font-weight:800;font-size:13px;
+  }
+  .navbtn:hover{background:#f8fafc;text-decoration:none}
+
   .container{max-width:980px;margin:auto;padding:22px 18px}
   h1{margin:0 0 10px;color:var(--primary);font-size:24px}
   .sub{color:var(--muted);font-size:13.5px;margin-top:6px}
+
   .card{background:var(--card);padding:18px;border-radius:14px;box-shadow:var(--shadow)}
   label{display:block;margin-top:10px;font-size:14px;color:#0f172a;font-weight:800}
   input,select,button{
@@ -35,22 +49,26 @@
   .warn{background:var(--warnbg);color:var(--warn);border:1px solid #ffe2b5}
   .ok{background:var(--goodbg);color:var(--good);border:1px solid #b7f0cc}
   .result{display:none;margin-top:14px}
+
   .kpi{display:grid;grid-template-columns:1fr;gap:10px}
   @media (min-width:860px){ .kpi{grid-template-columns:1fr 1fr} }
   .kpi-box{border:1px solid #dbe7ff;background:var(--soft);border-radius:12px;padding:12px}
   .kpi-title{font-size:12px;color:var(--muted);margin-bottom:6px}
   .kpi-value{font-size:20px;font-weight:900;color:var(--primary)}
   .kpi-sub{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+
   details{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
   summary{cursor:pointer;padding:12px 12px;font-weight:900;color:#0f172a}
   details .inner{padding:0 12px 12px}
   .table{width:100%;border-collapse:collapse;margin-top:10px}
   .table td{padding:7px 0;border-bottom:1px dashed #dbe2f0;font-size:13.5px;vertical-align:top}
   .table td:last-child{text-align:right}
+
   .badge{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#334155}
   .badge.ok{border-color:#b7f0cc;background:#ecfdf3;color:#027a48}
   .badge.no{border-color:#ffd6d6;background:#fff4f4;color:#b42318}
   .badge.info{border-color:#dbe7ff;background:#eef4ff;color:#0b3d91}
+
   .chkline{display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
   .chkline input{width:auto;margin-top:3px}
   .chktext{display:flex;flex-direction:column;gap:2px}
@@ -62,15 +80,22 @@
 </head>
 
 <body>
+  <!-- Top navigation -->
   <div class="topbar">
     <div class="topbar-inner">
-      <div style="font-weight:900;color:#0f172a">勞保老年給付試算</div>
-      <div class="small">98 前/後分流＋60歲後加保併計（簡潔填寫）</div>
+      <div class="left-nav">
+        <!-- 回上頁：用 JS history.back()，不依賴固定路徑 -->
+        <a class="navbtn" href="javascript:history.back()">↩ 回上頁</a>
+        <!-- 回工具 / 回主頁：依你的站台檔名 -->
+        <a class="navbtn" href="./tools.html">🧰 回工具</a>
+        <a class="navbtn" href="./index.html">🏠 回主頁</a>
+      </div>
+      <div class="brand">智 Financial Path</div>
     </div>
   </div>
 
   <div class="container">
-    <h1>勞保老年給付試算 <span class="badge info">一次給付分開清楚寫</span></h1>
+    <h1>勞保老年給付試算 <span class="badge info">年金＋一次金＋一次請領（制度分開清楚寫）</span></h1>
     <div class="sub">
       勾選「98前已有投保」＝視為 98/01/01 前已有年資；不勾＝視為 98 後首次投保。<br/>
       不管勾不勾，都會依制度顯示：年金 / 老年一次金 /（可能）一次請領。
@@ -327,13 +352,9 @@ function calcOneTimeLump36(avgSalary36, insMonthsTotal, after60MonthsInput, clai
 
   const amount = Math.round(avgSalary36 * benefitMonths);
   return {
-    amount,
-    benefitMonths,
-    cap,
-    benefitPre60,
-    benefitAfter60,
-    after60Used,
-    after60Cap: 60
+    amount, benefitMonths, cap,
+    benefitPre60, benefitAfter60,
+    after60Used, after60Cap: 60
   };
 }
 
@@ -359,7 +380,6 @@ function determinePensionEligibility({
   return { legalAgeMonths, eligible, eligibleGeneral, eligibleSpecial, eligibleCombineNP };
 }
 
-// 一次請領資格：保守判定（你不填條件就不判定符合）
 function determineOneTimeEligibilityConservative({
   pre98,
   claimAgeMonths,
@@ -463,17 +483,14 @@ function calcAllBenefits(){
 
   const insYearsAtClaim = insAtClaimMonths/12;
 
-  // --- 年金 ---
   const pension = eligP.eligible ? calcPension(avgSalary60, insAtClaimMonths, adj.factor) : null;
 
-  // --- 老年一次金（98後年資<15年） ---
   const oldAgeLumpEligible = (insAtClaimMonths < 15*12) && (claimAgeMonths >= eligP.legalAgeMonths);
   const oldAgeLumpReason = !oldAgeLumpEligible
     ? (insAtClaimMonths >= 15*12 ? "年資已滿15年 → 通常走年金" : (claimAgeMonths < eligP.legalAgeMonths ? "未達法定請領年齡" : ""))
     : "";
   const oldAgeLump = oldAgeLumpEligible ? calcOldAgeLump60(avgSalary60, insAtClaimMonths, after60Clamped) : null;
 
-  // --- 一次請領（98前才可能）---
   let oneTime = null;
   let oneTimeElig = { eligible:false, reason:"" };
   let avgSalary36 = NaN;
@@ -503,7 +520,6 @@ function calcAllBenefits(){
     oneTimeElig = { eligible:false, reason:"98後首次投保 → 一次請領通常不可用" };
   }
 
-  // --- Output ---
   const out = $("output");
   out.style.display = "block";
 
@@ -513,7 +529,6 @@ function calcAllBenefits(){
 
   const claimDateStr = `${claimDate.getFullYear()}-${String(claimDate.getMonth()+1).padStart(2,"0")}-${String(claimDate.getDate()).padStart(2,"0")}`;
 
-  // 讓一次給付「像年金一樣」的顯示（分成兩塊）
   const oldLumpBox = `
     <div class="kpi-box">
       <div class="kpi-title">一次給付 A｜老年一次金（98後：年資＜15年）</div>
@@ -536,11 +551,9 @@ function calcAllBenefits(){
         資格：${badge(oneTimeElig.eligible)}（${oneTimeElig.reason || ""}）<br/>
         平均薪資：<span class="mono">avg36</span>（最近36月平均）
         ${pre98 ? (Number.isFinite(avgSalary36) && avgSalary36>0 ? `＝ NT$ ${fmt(Math.round(avgSalary36))}` : "＝（未填 → 不計金額）") : "＝（98後不適用）"}<br/>
-
         60歲前給付月數：<span class="mono">前15年每年1月；超過15年每年2月；上限45月</span><br/>
         60歲後併計：最多 <b>5年（60月）</b>；以月比例加到給付月數<br/>
         總上限：未滿60請領 → <b>45月</b>；60歲(含)後請領 → <b>50月</b><br/>
-
         ${oneTime ? `
           本次：60歲前給付＝<b>${oneTime.benefitPre60.toFixed(2)}</b> 月，
           60歲後併計＝<b>${oneTime.benefitAfter60.toFixed(2)}</b> 月（使用 ${oneTime.after60Used} 月）<br/>
@@ -624,9 +637,7 @@ function calcAllBenefits(){
             <tr><td>一次請領金額</td><td>NT$ ${fmt(oneTime.amount)}</td></tr>
           ` : ``}
         </table>
-        <div class="small">
-          ${warnExtra ? "注意：" + warnExtra : ""}
-        </div>
+        <div class="small">${warnExtra ? "注意：" + warnExtra : ""}</div>
       </div>
     </details>
   `;
