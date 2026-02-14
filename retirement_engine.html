@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>退休決策引擎｜智 Financial Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="制度精準 × 年金比較 × 資產模擬 × 安全邊際壓力測試的完整退休決策引擎。">
+
+<style>
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --primary:#0b3d91;
+  --muted:#667085;
+  --line:#e5e7eb;
+}
+
+body{
+  margin:0;
+  font-family:Arial,"Noto Sans TC",sans-serif;
+  background:var(--bg);
+  color:#111827;
+}
+
+.container{
+  max-width:1080px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+h1{
+  color:var(--primary);
+  margin-bottom:10px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:40px;
+}
+
+.section{
+  background:var(--card);
+  padding:24px;
+  border-radius:16px;
+  margin-bottom:30px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.section h2{
+  margin-top:0;
+  color:var(--primary);
+}
+
+.flow{
+  font-family:monospace;
+  background:#f1f5ff;
+  padding:16px;
+  border-radius:10px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.button-area{
+  text-align:center;
+  margin-top:40px;
+}
+
+button{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:14px 24px;
+  font-size:16px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.footer-note{
+  margin-top:40px;
+  font-size:14px;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>退休決策引擎</h1>
+<div class="subtitle">
+制度精準 + 年金比較 + 資產模擬 + 安全邊際壓力測試
+</div>
+
+<div class="section">
+<h2>Level 1｜制度合法性引擎</h2>
+<p>自動判斷你是否符合：</p>
+<ul>
+<li>老年年金給付資格</li>
+<li>老年一次金給付資格</li>
+<li>一次請領老年給付（舊制）</li>
+</ul>
+
+<div class="flow">
+98年前是否已有年資？
+  ├─ 否 → 年資≥15 → 年金
+  │       年資<15 → 老年一次金
+  └─ 是 → 是否符合舊制一次請領條件？
+            ├─ 是 → 年金 vs 一次請領 比較
+            └─ 否 → 回一般制度
+</div>
+</div>
+
+<div class="section">
+<h2>Level 2｜年金 vs 一次請領比較引擎</h2>
+<p>系統自動計算：</p>
+<ul>
+<li>年金每月領多少</li>
+<li>一次領多少</li>
+<li>幾歲打平</li>
+<li>活多久才回本</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Level 3｜退休現金流模擬</h2>
+<p>整合：</p>
+<ul>
+<li>投資總額</li>
+<li>退休前累積</li>
+<li>股息 / 債息 / 成長率拆解</li>
+<li>房租收入</li>
+<li>通膨</li>
+<li>是否再投入</li>
+</ul>
+<p>
+避免雙重計算，完整名目現金流模擬。
+</p>
+</div>
+
+<div class="section">
+<h2>Level 4｜安全邊際模型</h2>
+<p>自動進行壓力測試：</p>
+<ul>
+<li>市場回報 -2%</li>
+<li>通膨 +1%</li>
+<li>模擬撐多久</li>
+<li>最低資產點</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>整體決策結構</h2>
+
+<div class="flow">
+制度合法性
+      ↓
+制度比較
+      ↓
+退休現金流模擬
+      ↓
+制度整合策略比較
+      ↓
+安全邊際壓力測試
+</div>
+
+</div>
+
+<div class="button-area">
+<button onclick="location.href='tool_retirement.html'">
+進入退休決策工具
+</button>
+</div>
+
+<div class="footer-note">
+本頁為制度與決策架構說明頁。實際數據請進入工具頁計算。
+</div>
+
+</div>
+
+</body>
+</html>
