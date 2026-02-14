@@ -147,7 +147,7 @@
 
         <label style="margin-top:12px;">
           <input type="checkbox" id="hasPre98" />
-          98年以前曾有勞保年資（是否可出現「一次請領」選項的關鍵）
+          98年以前曾有勞保年資
         </label>
 
         <div class="row">
@@ -981,7 +981,7 @@ function calcAll(){
     const paramsOneTime = {
       ...baseParams,
       laborMonthlyAtRetire: 0,
-      principal0: baseParams.principal0 + oneTime.amount // 直接把一次金視為退休前/当下可用資產（保守：放入principal）
+      principal0: baseParams.principal0 + oneTime.amount // 直接把一次金視為退休前/當下可用資產（保守：放入principal）
     };
     simOneTime = simulatePlan(paramsOneTime);
   }
@@ -1000,7 +1000,7 @@ function calcAll(){
 
   const oneTimeBlock = oneTime ? `
     <div class="kpi-box">
-      <div class="kpi-title">一次請領老年給付（選擇制）</div>
+      <div class="kpi-title">一次請領老年給付（適用民國98年前已投保者可選擇）</div>
       <div class="kpi-value">NT$ ${fmt(oneTime.amount)}</div>
       <div class="kpi-sub">
         資格（自動判斷）：✅ ${oneTimeAuto.reasons.join("；")}<br>
@@ -1010,7 +1010,7 @@ function calcAll(){
     </div>
   ` : `
     <div class="kpi-box">
-      <div class="kpi-title">一次請領老年給付（選擇制）</div>
+      <div class="kpi-title">一次請領老年給付（適用民國98年前已投保者可選擇）</div>
       <div class="kpi-sub">
         ${hasPre98 ? "你勾選了98年前有年資，但" : "你未勾選98年前有年資，因此"}
         一次請領狀態：❌ 不可用。<br>
@@ -1022,7 +1022,7 @@ function calcAll(){
   // 老年一次金區塊
   const oldLumpBlock = `
     <div class="kpi-box">
-      <div class="kpi-title">老年一次金給付</div>
+      <div class="kpi-title">老年一次金給付(適用民國98年後投保未滿15年者)</div>
       <div class="kpi-value">NT$ ${fmt(oldLump.amount)}</div>
       <div class="kpi-sub">
         給付月數（按月比例）：${oldLump.benefitMonths.toFixed(2)}<br>
